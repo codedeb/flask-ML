@@ -47,7 +47,7 @@ def send_sqs_messages():
 
 
 def read_csv(image_key):
-    with open('dummy_input_output.csv', mode='r') as csv_file:
+    with open('dummy_input.csv', mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         line_count = 0
         response = {}
@@ -66,7 +66,7 @@ def read_csv(image_key):
                 break
             line_count += 1
         print(f'Processed {line_count} lines.')
-    # df = pd.read_csv("dummy_input_output.csv")
+    # df = pd.read_csv("dummy_input.csv")
     # print(df[(df['Picture File Name'] == '297719_dot_punched_IMG_2086.JPG')].values)
     # list = df[(df['Picture File Name'] == '297719_dot_punched_IMG_2086.JPG')].values
     # print(list[0][18])

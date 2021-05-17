@@ -127,10 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-#intellij
-ocr-wrapper-service.iml
+.ocr-wrapper-service.iml
 .idea/
-.idea/vcs.xml
 .idea
 *.idea/
