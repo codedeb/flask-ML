@@ -1,4 +1,4 @@
-library 'BanzaiCICDTest@master'
+library 'BanzaiCICD@develop'
 
 banzai ([
   appName: 'plp-cpl-ocr-service',  
