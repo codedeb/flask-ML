@@ -1,0 +1,39 @@
+library 'BanzaiCICDTest@master'
+
+banzai ([
+  appName: 'plp-cpl-ocr-service',  
+  sshCreds: ['server-ssh-creds-jenkins-service', 'git-ssh-creds-jenkins-service'],
+  gitTokenId: 'git-sso-creds-jenkins-service-secret',  
+  cleanWorkspace: [ 
+    pre: true
+  ],
+  build:  [ /.*/: [shell: 'buildScript.sh'] ],
+  publish: [ /.*/: [shell: 'publishScript.sh'] ],
+  email: [
+    addresses: [      
+      repoOwner1: 'ramesh.ganapathi@ge.com',
+	  repoOwner2: 'ramesh.ganapathi@ge.com'
+    ],
+    groups: [
+      repoOwner: ['repoOwner1', 'repoOwner2']
+    ]
+  ],
+  notifications: [
+    email: [
+      /.*/: [
+        groups: [
+          'repoOwner': [
+            'PIPELINE:(FAILURE|SUCCESS)'
+          ]
+        ]
+      ]
+    ]
+  ],    
+  
+  gitOpsTrigger: [
+	  /master/ : [
+	    jenkinsJob: 'CapitalPartsLife/cpl-deployment/master', 
+	    stackId: 'plp-cpl'                     
+	  ]
+	]
+])
