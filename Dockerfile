@@ -4,6 +4,9 @@ WORKDIR /ocr-wrapper-service
 COPY . ./
 EXPOSE 5000
 
+ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+
 RUN pip install -r requirements.txt
 CMD ["python", "./wsgi.py"]
 
