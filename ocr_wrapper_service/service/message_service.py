@@ -20,8 +20,6 @@ def process_sqs_messages():
     for message in response['Messages']:
         body = json.loads(message['Body'])
         picture_id = body['meta_data']['picture_id']
-        output = read_output_csv(picture_id)
-        response_list.append(output)
     return response_list
 
 
@@ -35,9 +33,7 @@ def send_sqs_messages():
     )
     for image in images['Contents']:
         print('images', image['Key'])
-        meta_data = read_csv(image['Key'].split('/')[1])
-        message_json = {'image_path': image['Key'], 'bucket_name': 'di-s3-cpl-idm-images',
-                         'meta_data': meta_data}
+        message_json = {'image_path': image['Key'], 'bucket_name': 'di-s3-cpl-idm-images'}
         print('message_json', message_json)
         sqs_client.send_message(
             QueueUrl='https://sqs.us-east-1.amazonaws.com/386826140800/di-sqs-cpl-idm',
@@ -45,52 +41,3 @@ def send_sqs_messages():
         )
     return True
 
-
-def read_csv(image_key):
-    with open('dummy_input.csv', mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        line_count = 0
-        response = {}
-        for row in csv_reader:
-            if line_count == 0:
-                print(f'Column names are {", ".join(row)}')
-                line_count += 1
-            if row.get('Picture File Name') == image_key:
-                print('Picture Id original', row.get('Picture Id'))
-                response = {'job_number': row.get('OutageId or Job Number'),
-                            'site_name': row.get('Site Name (Location Id)'),
-                            'customer_name': row.get('Customer Name'),
-                            'time_stamp': row.get('Timestamp'),
-                            'file_name': row.get('Picture File Name'),
-                            'picture_id': row.get('Picture Id')}
-                break
-            line_count += 1
-        print(f'Processed {line_count} lines.')
-    # df = pd.read_csv("dummy_input.csv")
-    # print(df[(df['Picture File Name'] == '297719_dot_punched_IMG_2086.JPG')].values)
-    # list = df[(df['Picture File Name'] == '297719_dot_punched_IMG_2086.JPG')].values
-    # print(list[0][18])
-    return response
-
-
-def read_output_csv(picture_id):
-    with open('dummy_output.csv', mode='r') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        line_count = 0
-        response = {}
-        print('picture_id', picture_id)
-        for row in csv_reader:
-            if line_count == 0:
-                print(f'Column names are {", ".join(row)}')
-                line_count += 1
-            if row.get('Picture Id') == picture_id:
-                response = {'part_serial_number': row.get('Part Serial Number (Optional)'),
-                            'part_serial_number_confidence': row.get('Part Serial Number Confidence (Optional)'),
-                            'part_number': row.get('Part Number/Drawing Number (Optional)'),
-                            'part_number_confidence': row.get('Part Number Confidence (Optional)'),
-                            'picture_id': row.get('Picture Id')
-                            }
-                break
-            line_count += 1
-        print(f'Processed {line_count} lines.')
-    return response
