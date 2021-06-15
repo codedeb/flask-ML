@@ -1,4 +1,8 @@
 FROM ubuntu:18.04
+
+ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+
 RUN apt-get update && apt-get install tesseract-ocr -y \
     python3 \
     #python-setuptools \
@@ -19,8 +23,7 @@ ENV RABBITMQ_HOST_NAME=rabbitmq \
     RABBITMQ_EXCHANGE=idm.exchange \
     RABBITMQ_INPUT_QUEUE=idm_ocr_input_queue \
     RABBITMQ_OUTPUT_QUEUE=idm_ocr_output_queue
-ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
-ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+
 
 ENTRYPOINT ["python3", "wsgi.py"]
 
