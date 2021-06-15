@@ -1,0 +1,9 @@
+{
+  "gitOps": {
+    "versions": {
+      "plp-cpl-ocr-service" : {
+        "version": "version"
+      }
+    }
+  }
+}
