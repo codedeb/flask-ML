@@ -3,6 +3,8 @@ FROM ubuntu:18.04
 ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
 ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
 
+COPY config/80proxy /etc/apt/apt.conf.d/80proxy
+
 RUN apt-get update && apt-get install tesseract-ocr -y \
     python3 \
     #python-setuptools \

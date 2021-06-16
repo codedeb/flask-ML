@@ -1,0 +1,2 @@
+Acquire::http::proxy "http://iss-americas-pitc-cincinnatiz.proxy.corporate.ge.com:80";
+Acquire::https::proxy "http://iss-americas-pitc-cincinnatiz.proxy.corporate.ge.com:80";
