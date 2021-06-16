@@ -1,7 +1,9 @@
 FROM ubuntu:18.04
 
-#ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
-#ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+
+COPY config/80proxy /etc/apt/apt.conf.d/80proxy
 
 RUN apt-get update && apt-get install tesseract-ocr -y \
     python3 \
@@ -22,8 +24,8 @@ ENV RABBITMQ_HOST_NAME=rabbitmq \
     RABBITMQ_PASSWORD=idm@user \
     RABBITMQ_EXCHANGE=idm.exchange \
     RABBITMQ_INPUT_QUEUE=idm_ocr_input_queue \
-    RABBITMQ_OUTPUT_QUEUE=idm_ocr_output_queue
-
+    RABBITMQ_OUTPUT_QUEUE=idm_ocr_output_queue \
+    NAS_PATH=/opt/shared/data/cpl/idm
 
 ENTRYPOINT ["python3", "wsgi.py"]
 
