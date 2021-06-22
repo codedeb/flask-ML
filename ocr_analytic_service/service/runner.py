@@ -24,34 +24,39 @@ def main(inp_json):
     with open("input.json") as f:
         inp_json = json.load(f)
     '''
-    
+
     out_json = []
     logger.info('in main of runner')
     for img_obj in inp_json:
-        # Read input image path
-        base_path = os.environ['NAS_PATH']
-        fl_nm = os.path.join(base_path, img_obj['imagePath'])
-        logger.info('fl_nm : %s' % fl_nm)
-        # Get masked image output
-        mask_img = one_mask.main(fl_nm)
-        # Get transformed image output
-        pre_img = two_transform.main(mask_img)
-        # Get Tesseract output
-        list_res, conf = three_tesseract.main(pre_img)
-        str_ocr = ''.join(list_res)
-        # Create output json objects
-        out_obj = img_obj.copy()
-        out_obj['ocrValue'] = str_ocr
-        out_obj['ocrConfidenceValue'] = conf
-        if int(conf) > 75:
-            out_obj['ocrConfidenceBand'] = 'HIGH'
-        elif int(conf) < 75 & int(conf) > 60:
-            out_obj['ocrConfidenceBand'] = 'MEDIUM'
-        else:
-            out_obj['ocrConfidenceBand'] = 'LOW'
-        out_obj['ocrAdditional'] = ''
-        out_json.append(out_obj)
-        logger.info('out_json : %s' % out_json)
+        try:
+            # Read input image path
+            base_path = os.environ['NAS_PATH']
+            fl_nm = os.path.join(base_path, img_obj['imagePath'])
+            logger.info('fl_nm : %s' % fl_nm)
+            # Get masked image output
+            mask_img = one_mask.main(fl_nm)
+            logger.info('after one : %s' % fl_nm)
+            # Get transformed image output
+            pre_img = two_transform.main(mask_img)
+            logger.info('after two : %s' % pre_img)
+            # Get Tesseract output
+            list_res, conf = three_tesseract.main(pre_img)
+            str_ocr = ''.join(list_res)
+            # Create output json objects
+            out_obj = img_obj.copy()
+            out_obj['ocrValue'] = str_ocr
+            out_obj['ocrConfidenceValue'] = conf
+            if int(conf) > 75:
+                out_obj['ocrConfidenceBand'] = 'HIGH'
+            elif int(conf) < 75 & int(conf) > 60:
+                out_obj['ocrConfidenceBand'] = 'MEDIUM'
+            else:
+                out_obj['ocrConfidenceBand'] = 'LOW'
+            out_obj['ocrAdditional'] = ''
+            out_json.append(out_obj)
+            logger.info('out_json : %s' % out_json)
+        except Exception as e:
+            logger.error('failed processing image :%s' % img_obj)
     '''
     with open('output.json', 'w') as f:
         json.dump(out_json, f)

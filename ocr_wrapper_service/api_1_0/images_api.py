@@ -11,3 +11,4 @@ class SendMessages(Resource):
     def post(cls):
         resize_images(request.data)
         return True
+

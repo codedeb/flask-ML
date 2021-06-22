@@ -7,6 +7,13 @@ import imutils
 import argparse
 from imutils import paths
 
+import logging
+
+logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 def order_points(pts):
 	# initialzie a list of coordinates that will be ordered
@@ -69,6 +76,7 @@ def four_point_transform(image, pts):
 	# return the warped image
 	return warped
 
+
 def order_points_clockwise(pts):
     # sort the points based on their x-coordinates
     xSorted = pts[np.argsort(pts[:, 0]), :]
@@ -108,7 +116,7 @@ def main(nm):
     
     #img_as_read = cv2.imread(fl_nm, cv2.IMREAD_GRAYSCALE)
     img_as_read = nm.copy()
-
+    logger.info('in two :%s' % img_as_read)
     # Re-size the image
     img = imutils.resize(img_as_read, width=1000)
     # threshold
@@ -118,18 +126,24 @@ def main(nm):
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (15,15))
     morph = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
     # Canny Edge Detection
+    logger.info('before for morph:%s' % morph)
     canny = cv2.Canny(morph, 120, 255, 1)
     # Find the corners
+    logger.info('before for canny:%s' % canny)
     corners = cv2.goodFeaturesToTrack(canny,4,0.5,50)
     c_list = []
+    logger.info('before for :%s' % corners)
     for corner in corners:
         x,y = corner.ravel()
         c_list.append([int(x), int(y)])
+    logger.info('after for :%s' % c_list)
 
     if(len(c_list) == 4):
         corner_points = np.array([c_list[0], c_list[1], c_list[2], c_list[3]])
         ordered_corner_points = order_points_clockwise(corner_points)
+        logger.info('before tuple for : %s')
         ocp = [tuple(x) for x in ordered_corner_points]
+        logger.info('after tuple for : %s' % ocp)
         pts = np.array(ocp, dtype = "float32")
         transformed = four_point_transform(img, pts) # Save this image if you need the full transformed image
         # Adjust for Contrast
@@ -144,4 +158,5 @@ def main(nm):
     # cv2.imshow("Transformed", transformed)
     # cv2.imshow("Adjusted", adjusted)
     # cv2.waitKey(0)
+    logger.info('return img from two :%s' % return_image)
     return return_image
