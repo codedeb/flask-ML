@@ -44,7 +44,10 @@ def main(inp_json):
             str_ocr = ''.join(list_res)
             # Create output json objects
             out_obj = img_obj.copy()
-            out_obj['ocrValue'] = str_ocr
+            if str_ocr == '':
+                out_obj['ocrValue'] = 'NOT DETECTED'
+            else:
+                out_obj['ocrValue'] = str_ocr
             out_obj['ocrConfidenceValue'] = conf
             if int(conf) > 75:
                 out_obj['ocrConfidenceBand'] = 'HIGH'
@@ -53,10 +56,15 @@ def main(inp_json):
             else:
                 out_obj['ocrConfidenceBand'] = 'LOW'
             out_obj['ocrAdditional'] = ''
-            out_json.append(out_obj)
-            logger.info('out_json : %s' % out_json)
         except Exception as e:
-            logger.error('failed processing image :%s' % img_obj)
+            logger.error('Exception occurred processing :%s' % img_obj)
+            out_obj = img_obj.copy()
+            out_obj['ocrValue'] = 'FAILED'
+            out_obj['ocrConfidenceValue'] = 0
+            out_obj['ocrConfidenceBand'] = 'LOW'
+            out_obj['ocrAdditional'] = ''
+        out_json.append(out_obj)
+        logger.info('out_json : %s' % out_json)
     '''
     with open('output.json', 'w') as f:
         json.dump(out_json, f)
