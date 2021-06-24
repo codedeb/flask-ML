@@ -23,13 +23,19 @@ def resize_images(input_images):
             h_scale = 1.0
 
             if w >= h:
-                w_scale = w/h;
+                w_scale = w/h
             else:
-                h_scale = h/w;
+                h_scale = h/w
 
             sizes = [100, 200, 1024]
             for size in sizes:
                 img_resized = image.resize((int(w_scale*size), int(h_scale*size)))
-                img_resized.save(os.path.join(os.environ['NAS_PATH'], image_path[:-4] + "_" + str(size) + ".jpg"))
+                # extract the file name and extension
+                filename_extension = os.path.splitext(image_path)
+                filename = filename_extension[0]
+                extension = filename_extension[1]
+                output_image = os.path.join(os.environ['NAS_PATH'], filename + "_" + str(size) + extension)
+                # img_resized.save(os.path.join(os.environ['NAS_PATH'], image_path[:-4] + "_" + str(size) + ".jpg"))
+                img_resized.save(output_image)
     return True
 
