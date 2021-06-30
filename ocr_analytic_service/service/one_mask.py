@@ -32,7 +32,6 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 
-
 def displayimg(img):
 
     return cv2.imshow("image", cv2.resize(img, (800, 600)))
@@ -436,9 +435,6 @@ def rotateimg(img, theta):
     M = cv2.getRotationMatrix2D((x, y), theta, 1.0)
 
     return cv2.warpAffine(img, M, (w, h))
-
-
-
 
 
 def main(fl_nm):

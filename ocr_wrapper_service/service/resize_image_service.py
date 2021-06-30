@@ -31,10 +31,10 @@ def resize_images(input_images):
             for size in sizes:
                 img_resized = image.resize((int(w_scale*size), int(h_scale*size)))
                 # extract the file name and extension
-                filename_extension = os.path.splitext(image_path)
-                filename = filename_extension[0]
-                extension = filename_extension[1]
-                output_image = os.path.join(os.environ['NAS_PATH'], filename + "_" + str(size) + extension)
+                base_path_name_extension = os.path.splitext(image_path)
+                base_path_name = base_path_name_extension[0]
+                extension = base_path_name_extension[1]
+                output_image = os.path.join(os.environ['NAS_PATH'], base_path_name + "_" + str(size) + extension)
                 # img_resized.save(os.path.join(os.environ['NAS_PATH'], image_path[:-4] + "_" + str(size) + ".jpg"))
                 img_resized.save(output_image)
     return True
