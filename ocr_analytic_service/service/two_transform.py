@@ -14,7 +14,6 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 def order_points(pts):
 
     # initialzie a list of coordinates that will be ordered
@@ -55,6 +54,8 @@ def order_points(pts):
     # return the ordered coordinates
 
     return rect
+
+
 
 def four_point_transform(image, pts):
 
@@ -173,16 +174,39 @@ def order_points_clockwise(pts):
 
 
 
+
+
+def imgcrop(img, htfc1=0.333, htfc2=0.666, wdfc1=0.05, wdfc2=0.8):
+
+    width = np.shape(img)[1]
+
+    height = np.shape(img)[0]
+
+    dy1 = int(height*htfc1)
+
+    dy2 = int(height*htfc2)
+
+    dx1 = int(width*wdfc1)
+
+    dx2 = int(width*wdfc2)
+
+    return img[dy1:dy2, dx1:dx2]
+
+
 def main(nm):
     # Adjusting Contrast and Brightness, if required
     alpha = 1.0 # Contrast control (1.0-3.0)
+
     beta = 0 # Brightness control (0-100)
     
     # Cropping Images co-ordinates
-    dx1 = 50
-    dy1 = 150
-    dx2 = 850
-    dy2 = 320
+    dx1 = 30
+
+    dy1 = 110
+
+    dx2 = 700
+
+    dy2 = 240
     
     #img_as_read = cv2.imread(fl_nm, cv2.IMREAD_GRAYSCALE)
     img_as_read = nm.copy()
@@ -219,11 +243,16 @@ def main(nm):
         # Adjust for Contrast
         adjusted = cv2.convertScaleAbs(transformed, alpha=alpha, beta=beta)
         # Crop the transformed image
-        image_crop = transformed[dy1:dy2, dx1:dx2]  # Save this image if you need the cropped, transformed image
+
+        # image_crop = transformed[dy1:dy2, dx1:dx2]  # Save this image if you need the cropped, transformed image
+
+        image_crop = imgcrop(transformed)  # Save this image if you need the cropped, transformed image
         if np.ndim(image_crop)==3:
             return_image = image_crop.copy()
         else:
             return_image = np.stack((image_crop,)*3, axis=-1)
+    else:
+        return_image = imgcrop(img, 0.4, 0.6, 0.2, 0.7)
     # cv2.imshow("Original", img)
     # cv2.imshow("Transformed", transformed)
     # cv2.imshow("Adjusted", adjusted)

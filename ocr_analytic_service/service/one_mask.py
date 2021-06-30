@@ -36,10 +36,6 @@ def displayimg(img):
 
     return cv2.imshow("image", cv2.resize(img, (800, 600)))
 
-
-
-
-
 def grey(img):
 
     return cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

@@ -74,6 +74,15 @@ def condense(f_list):
     return(list(set(flatten(c_list))))
 
 
+def rednumlist(numlist):
+    snumlist = [str(item) for item in numlist]
+    rednumlist = [item for item in snumlist if len(item)==6]
+    if len(rednumlist)!=0:
+        return [rednumlist[0]]
+    else:
+        return []
+
+
 # Indicating the location of pytesseract
 # pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
@@ -166,8 +175,9 @@ def main(nm):
             if(len(result)) > 0 and element == 'np':
                 final_list.append('C2NP')
     number_list, stripped = strip(mother_list)
-    ret_list = final_list+number_list
+    rednumber_list = rednumlist(number_list)
+    ret_list = final_list+rednumber_list
     # Average Confidence:
     avg_conf = (conf_GR+conf_O5+conf_O7+conf_CL+conf_FF+conf_IN+conf_CO+conf_CI)/8
-    logger.info('avg conf : %s' % avg_conf)
+    logger.info('avg conf %s' % avg_conf)
     return ret_list, avg_conf
