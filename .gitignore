@@ -131,3 +131,7 @@ dmypy.json
 .idea/
 .idea
 *.idea/
+
+# Ignore OCRv2.0
+ocrV2.0/
+*.pth
