@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def read_input_and_form_output(input_dict: list('dict_obj')) -> list('dict_obj'):
-    logger.info('Input dict: %s' % input_dict)
+    logger.info('Input dict for ROI Update: %s' % input_dict)
     out_put_dict = []
     try:
         for img_obj in json.loads(input_dict):
@@ -30,13 +30,19 @@ def read_input_and_form_output(input_dict: list('dict_obj')) -> list('dict_obj')
                 seg_out = img_segmenter(im)
                 try:
                     psn_out = dot_punched_data_parser(
-                        seg_out['PSN']['segment'])
+                        seg_out['ROI']['segment'])
                 except:
                     psn_out = {}
                     psn_out['ocr_value'] = None
                     psn_out['conf_value'] = 0
                     psn_out['conf_band'] = 'LOW'
-                prefix_out = prefix_data_parser(im)
+                try:
+                    prefix_out = prefix_data_parser(im)
+                except:
+                    prefix_out = {}
+                    prefix_out["ocr_value"] = None
+                    prefix_out["conf_value"] = 0
+                    prefix_out["conf_band"] = "LOW"
                 result_out = data_collector(seg_out, psn_out, prefix_out)
                 final_obj = img_obj.copy()
                 final_obj['ocr_value'] = result_out['ocrValue']

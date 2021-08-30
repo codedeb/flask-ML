@@ -9,10 +9,12 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 def img_segmenter(img):
-    class_map = {2: 'PSN', 4: 'PR'}
+    class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
     dct_out_segs = dict.fromkeys(list(class_map.values()))
     config_path = "ocr_analytic_service/service/configSeg_file.yaml"
-    model_weight_path = r"../shared-volume/model_final_segmentation.pth"
+    base_path = os.getenv("NAS_PATH")
+    model_weight_path = os.path.join(base_path, "/models/model_final_segmentation.pth")
+    # model_weight_path = r"/shared-volume/model_final_segmentation.pth"
     threshold = 0.3
 
     # Make prediction

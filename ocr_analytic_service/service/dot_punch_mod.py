@@ -13,8 +13,8 @@ logger = logging.getLogger(__name__)
 def dot_punched_data_parser(imgobj):
     config_path = "ocr_analytic_service/service/configDotPunch_file.yaml"
     base_path = os.getenv("NAS_PATH")
-    model_weight_path = os.path.join(base_path, "/model_final_dotpunch.pth")
-    # model_weight_path = r"../shared-volume/model_final_dotpunch.pth"
+    model_weight_path = os.path.join(base_path, "/models/model_final_dotpunch.pth")
+    # model_weight_path = r"/shared-volume/model_final_dotpunch.pth"
     threshold = 0.8
     file = open('ocr_analytic_service/service/listPickle', 'rb')
     data = pickle.load(file)
