@@ -24,7 +24,7 @@ COPY requirements.txt /
 RUN pip3 install -r /requirements.txt
 
 # Detectron2 prerequisites
-RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 trusted-host=download.pytorch.org -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 --trusted-host=download.pytorch.org -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 # Detectron2 - CPU copy
