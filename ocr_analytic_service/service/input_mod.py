@@ -21,9 +21,9 @@ def read_input_and_form_output(input_dict: list('dict_obj')) -> list('dict_obj')
     try:
         for img_obj in json.loads(input_dict):
             logger.info(img_obj)
-            #base_path = os.getenv("NAS_PATH")
-            # fl_nm = os.path.join(base_path, img_obj['imagePath'])
-            fl_nm = img_obj["imagePath"]
+            base_path = os.getenv("NAS_PATH")
+            fl_nm = os.path.join(base_path, img_obj['imagePath'])
+            # fl_nm = img_obj["imagePath"]
             logger.info('file name: %s' % fl_nm)
             try:
                 im = cv2.imread(fl_nm, cv2.IMREAD_UNCHANGED)
