@@ -32,6 +32,7 @@ RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory
 RUN git clone --depth 1 --branch v0.1 https://github.com/facebookresearch/detectron2.git
 RUN cd detectron2
 RUN pip3 install -U .
+RUN cd ..
 
 # Copy the code from local to docker contanier
 COPY . /ocr-wrapper-service
