@@ -30,7 +30,9 @@ RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory
 # Detectron2 - CPU copy
 # RUN python3 -m pip install detectron2==0.5+cpu --trusted-host=dl.fbaipublicfiles.com -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/index.html
 RUN git clone --depth 1 --branch v0.1 https://github.com/facebookresearch/detectron2.git
-RUN cd detectron2
+RUN ls
+RUN cd detectron2/
+RUN ls
 RUN pip3 install -U .
 RUN cd ..
 
