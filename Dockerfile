@@ -28,7 +28,7 @@ RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 --trusted-host=dow
 RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 # Detectron2 - CPU copy
-RUN python3 -m pip install detectron2 --trusted-host=dl.fbaipublicfiles.com -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/index.html
+RUN python3 -m pip install detectron2==0.5+cpu --trusted-host=dl.fbaipublicfiles.com -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/index.html
 
 # Copy the code from local to docker contanier
 COPY . /ocr-wrapper-service
