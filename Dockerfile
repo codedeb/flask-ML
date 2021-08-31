@@ -1,8 +1,8 @@
 # Using base image as slim-buster as it is 114MB when uncompressed with latest Python releases and benefits of Debian Buster
 FROM python:3.6-slim-buster
 
-# ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
-# ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
 
 COPY config/80proxy /etc/apt/apt.conf.d/80proxy
 
@@ -24,7 +24,7 @@ COPY requirements.txt /
 RUN pip3 install -r /requirements.txt
 
 # Detectron2 prerequisites
-RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 -f https://download.pytorch.org/whl/torch_stable.html
+# RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 # Detectron2 - CPU copy
