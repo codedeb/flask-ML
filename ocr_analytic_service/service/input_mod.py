@@ -15,7 +15,7 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 
-def read_input_and_form_output(input_dict: list('dict_obj')) -> list('dict_obj'):
+def read_input_and_form_output(input_dict):
     logger.info('Input dict for ROI Update: %s' % input_dict)
     out_put_dict = []
     try:
