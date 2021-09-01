@@ -9,6 +9,7 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 def img_segmenter(img):
+    logger.info('Image segementer')
     class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
     dct_out_segs = dict.fromkeys(list(class_map.values()))
     config_path = "ocr_analytic_service/service/configSeg_file.yaml"

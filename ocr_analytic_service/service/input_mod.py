@@ -19,7 +19,7 @@ def read_input_and_form_output(input_dict: list('dict_obj')) -> list('dict_obj')
     logger.info('Input dict for ROI Update: %s' % input_dict)
     out_put_dict = []
     try:
-        for img_obj in input_dict:
+        for img_obj in json.loads(input_dict):
             logger.info('img obj input: %s' % img_obj)
             base_path = os.getenv("NAS_PATH")
             logger.info('Base path: %s' % base_path)
@@ -28,6 +28,7 @@ def read_input_and_form_output(input_dict: list('dict_obj')) -> list('dict_obj')
             logger.info('file name: %s' % fl_nm)
             try:
                 im = cv2.imread(fl_nm, cv2.IMREAD_UNCHANGED)
+                logger.info('Image read: %s' % im)
                 seg_out = img_segmenter(im)
                 logger.info('Seg out: %s' % seg_out)
                 try:
