@@ -15,6 +15,7 @@ def img_segmenter(img):
     base_path = os.getenv("NAS_PATH")
     model_weight_path = os.path.join(base_path, "/models/model_final_segmentation.pth")
     # model_weight_path = r"/shared-volume/model_final_segmentation.pth"
+    logger.info('Segmentation model path: %s' % model_weight_path)
     threshold = 0.3
 
     # Make prediction
