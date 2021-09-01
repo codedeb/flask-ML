@@ -1,0 +1,24 @@
+{
+    "cluster": "uai3046767-cpl-dev",
+    "serviceName": "uai3046767-ocr3-service-dev",
+    "taskDefinition": "uai3046767-ocr-taskdef-dev",
+    "serviceRegistries": [ {
+			"registryArn": "arn:aws:servicediscovery:us-east-1:598619258634:service/srv-ltt7mk3cicmaalux"
+		}
+    ],
+    "launchType": "FARGATE",
+    "platformVersion": "LATEST",
+    "loadBalancers": [{
+        "containerName": "ocr-wrapper-service",
+        "containerPort": 8090,
+        "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:598619258634:targetgroup/uai30-CPLPL-1093H3RTPEEX5/b92fb9096fd6cd4e"
+    }],
+    "networkConfiguration": {
+       "awsvpcConfiguration": {
+          "assignPublicIp": "DISABLED",
+          "securityGroups": ["sg-0c4aa0211d98a9fb9"],
+          "subnets":["subnet-00a2cc8eb8b597505","subnet-076fbc33b8e7fc094"]
+       }
+    },
+    "desiredCount": 1
+}
