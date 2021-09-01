@@ -19,8 +19,8 @@ def read_input_and_form_output(input_dict: list('dict_obj')) -> list('dict_obj')
     logger.info('Input dict for ROI Update: %s' % input_dict)
     out_put_dict = []
     try:
-        for img_obj in json.loads(input_dict):
-            logger.info(img_obj)
+        for img_obj in input_dict:
+            logger.info('img obj input: %s' % img_obj)
             base_path = os.getenv("NAS_PATH")
             logger.info('Base path: %s' % base_path)
             fl_nm = os.path.join(base_path, img_obj['imagePath'])
