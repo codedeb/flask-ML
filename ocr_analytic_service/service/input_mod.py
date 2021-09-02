@@ -19,7 +19,7 @@ def read_input_and_form_output(input_dict):
     logger.info('Input dict for ROI Update: %s' % input_dict)
     out_put_dict = []
     try:
-        logger.info('Starting try loop 1')
+        logger.info('Starting try loop 1---')
         try:
             logger.info('Starting try and for loop')
             for img_obj in input_dict:
