@@ -19,20 +19,11 @@ def read_input_and_form_output(input_dict):
     logger.info('Input dict for ROI Update: %s' % input_dict)
     out_put_dict = []
     try:
-        logger.info('Starting try loop 1---')
-        try:
-            logger.info('Starting try and for loop')
-            for img_obj in input_dict:
-                logger.info('Starting for loop')
-                logger.info('image input without json load: %s' % img_obj)
-        except:
-            logger.info('execption within try and for loop without json load for input')
-
         logger.info('Starting try loop 2')
-        input_arr = json.loads(input_dict)
-        logger.info('image input arr: %s' % input_arr)
+        # input_arr = json.loads(input_dict)
+        # logger.info('image input arr: %s' % input_arr)
         logger.info('Starting for loop')
-        for img_obj in input_arr:
+        for img_obj in input_dict:
             logger.info('img obj input: %s' % img_obj)
             base_path = os.getenv("NAS_PATH")
             logger.info('Base path: %s' % base_path)
