@@ -12,9 +12,12 @@ logger = logging.getLogger(__name__)
 
 def resize_images(input_images):
     input_arr = json.loads(input_images)
+    logger.info('image input arr: %s' % input_arr)
     for image_path in input_arr:
-        image_path_modified = os.path.join(os.environ['NAS_PATH'],image_path)
-        logger.info('image : %s' % image_path_modified)
+        base_path = os.getenv("NAS_PATH")
+        logger.info('Base path in resize: %s' % base_path)
+        image_path_modified = os.path.join(base_path, image_path)
+        logger.info('image: %s' % image_path_modified)
         with Image.open(image_path_modified) as image:
             w = image.size[0]
             h = image.size[1]
