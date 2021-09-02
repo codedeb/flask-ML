@@ -17,7 +17,10 @@ def img_segmenter(img):
     config_path = "ocr_analytic_service/service/configSeg_file.yaml"
     logger.info('config_path: %s' % config_path)
     base_path = os.getenv("NAS_PATH")
-    model_weight_path = os.path.join(base_path, "/models/model_final_segmentation.pth")
+    logger.info('Base path: %s' % base_path)
+    model_weight_path_test = os.path.join(base_path, "/models/model_final_segmentation.pth")
+    logger.info('Segmentation model path test: %s' % model_weight_path_test)
+    model_weight_path = "/opt/shared/data/cpl/idm/models/model_final_segmentation.pth"
     # model_weight_path = r"/shared-volume/model_final_segmentation.pth"
     logger.info('Segmentation model path: %s' % model_weight_path)
     threshold = 0.3
