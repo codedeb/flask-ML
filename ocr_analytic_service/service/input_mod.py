@@ -26,7 +26,7 @@ def read_input_and_form_output(input_dict):
                 logger.info('Starting for loop')
                 logger.info('image input without json load: %s' % img_obj)
         except:
-            logger.info('execption within try and for loop without json load')
+            logger.info('execption within try and for loop without json load for input')
 
         logger.info('Starting try loop 2')
         input_arr = json.loads(input_dict)
