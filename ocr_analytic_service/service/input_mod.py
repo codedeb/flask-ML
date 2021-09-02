@@ -46,6 +46,7 @@ def read_input_and_form_output(input_dict):
                     psn_out['conf_value'] = 0
                     psn_out['conf_band'] = 'LOW'
                 try:
+                    logger.info('Calling prefix model')
                     prefix_out = prefix_data_parser(im)
                     logger.info('prefix out: %s' % prefix_out)
                 except:
