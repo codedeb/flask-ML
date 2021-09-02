@@ -16,13 +16,20 @@ def img_segmenter(img):
     logger.info('dct_out_segs: %s' % dct_out_segs)
     config_path = "ocr_analytic_service/service/configSeg_file.yaml"
     logger.info('config_path: %s' % config_path)
-    base_path = os.getenv("NAS_PATH")
-    logger.info('Base path: %s' % base_path)
-    model_weight_path_test = os.path.join(base_path, "/models/model_final_segmentation.pth")
-    logger.info('Segmentation model path test: %s' % model_weight_path_test)
+    
     model_weight_path = "/opt/shared/data/cpl/idm/models/model_final_segmentation.pth"
     # model_weight_path = r"/shared-volume/model_final_segmentation.pth"
     logger.info('Segmentation model path: %s' % model_weight_path)
+
+    try:
+        logger.info('Inside try')
+        base_path = os.getenv("NAS_PATH")
+        logger.info('Base path: %s' % base_path)
+        model_weight_path_test = os.path.join(base_path, "/models/model_final_segmentation.pth")
+        logger.info('Segmentation model path test: %s' % model_weight_path_test)
+    except:
+        logger.info('Exception for base path in segmentation')
+    
     threshold = 0.3
 
     # Make prediction
