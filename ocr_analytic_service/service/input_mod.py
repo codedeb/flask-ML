@@ -61,6 +61,7 @@ def read_input_and_form_output(input_dict):
                 final_obj['ocrValue'] = result_out['ocrValue']
                 final_obj['ocrConfidenceValue'] = result_out['confValue']
                 final_obj['ocrConfidenceBand'] = result_out['confBand']
+                final_obj['ocrAdditional'] = ''
                 out_put_dict.append(final_obj)
             except:
                 logger.info('exception for seg_out')
@@ -68,6 +69,7 @@ def read_input_and_form_output(input_dict):
                 final_obj['ocrValue'] = None
                 final_obj['ocrConfidenceValue'] = 0
                 final_obj['ocrConfidenceBand'] = 'LOW'
+                final_obj['ocrAdditional'] = ''
                 out_put_dict.append(final_obj)
         logger.info('Output dict: %s' % out_put_dict)
         return out_put_dict
