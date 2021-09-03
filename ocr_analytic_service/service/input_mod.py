@@ -58,16 +58,16 @@ def read_input_and_form_output(input_dict):
                 result_out = data_collector(seg_out, psn_out, prefix_out)
                 logger.info('data collector result: %s' % result_out)
                 final_obj = img_obj.copy()
-                final_obj['ocr_value'] = result_out['ocrValue']
-                final_obj['conf_value'] = result_out['confValue']
-                final_obj['conf_band'] = result_out['confBand']
+                final_obj['ocrValue'] = result_out['ocrValue']
+                final_obj['ocrConfidenceValue'] = result_out['confValue']
+                final_obj['ocrConfidenceBand'] = result_out['confBand']
                 out_put_dict.append(final_obj)
             except:
                 logger.info('exception for seg_out')
                 final_obj = img_obj.copy()
-                final_obj['ocr_value'] = None
-                final_obj['conf_value'] = 0
-                final_obj['conf_band'] = 'LOW'
+                final_obj['ocrValue'] = None
+                final_obj['ocrConfidenceValue'] = 0
+                final_obj['ocrConfidenceBand'] = 'LOW'
                 out_put_dict.append(final_obj)
         logger.info('Output dict: %s' % out_put_dict)
         return out_put_dict
