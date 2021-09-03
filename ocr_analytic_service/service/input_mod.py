@@ -33,8 +33,8 @@ def read_input_and_form_output(input_dict):
             for img_obj in input_dict:
                 logger.info('Starting for loop')
                 logger.info('image input without json load: %s' % img_obj)
-        except:
-            logger.info('execption within try and for loop without json load for input')
+        except Exception as e:
+            logger.info('exception within try and for loop without json load for input: %s' % e)
 
         logger.info('Starting try loop 2')
         # input_arr = json.loads(input_dict)
@@ -64,26 +64,28 @@ def read_input_and_form_output(input_dict):
                     logger.info('psn out: %s' % psn_out)
                 except:
                     logger.info('exception for psn_out')
-                    psn_out = {'ocr_value': None, 'conf_value': 0, 'conf_band': 'LOW'}
+                    psn_out = {'ocrValue': None, 'ocrConfidenceValue': 0, 'ocrConfidenceBand': 'LOW'}
                 try:
                     prefix_out = prefix_data_parser(im)
                     logger.info('prefix out: %s' % prefix_out)
                 except:
                     logger.info('exception for prefix_out')
-                    prefix_out = {"ocr_value": None, "conf_value": 0, "conf_band": "LOW"}
+                    prefix_out = {"ocrValue": None, "ocrConfidenceValue": 0, "ocrConfidenceBand": "LOW"}
                 result_out = data_collector(seg_out, psn_out, prefix_out)
                 logger.info('data collector result: %s' % result_out)
                 final_obj = img_obj.copy()
-                final_obj['ocr_value'] = result_out['ocrValue']
-                final_obj['conf_value'] = result_out['confValue']
-                final_obj['conf_band'] = result_out['confBand']
+                final_obj['ocrValue'] = result_out['ocrValue']
+                final_obj['ocrConfidenceValue'] = result_out['confValue']
+                final_obj['ocrConfidenceBand'] = result_out['confBand']
+                final_obj['ocrAdditional'] = '{}'
                 out_put_dict.append(final_obj)
             except Exception as e:
                 logger.info('exception for seg_out', e)
                 final_obj = img_obj.copy()
-                final_obj['ocr_value'] = None
-                final_obj['conf_value'] = 0
-                final_obj['conf_band'] = 'LOW'
+                final_obj['ocrValue'] = None
+                final_obj['ocrConfidenceValue'] = 0
+                final_obj['ocrConfidenceBand'] = 'LOW'
+                final_obj['ocrAdditional'] = '{}'
                 out_put_dict.append(final_obj)
         logger.info('Output dict: %s' % out_put_dict)
         return out_put_dict
