@@ -1,3 +1,4 @@
+import os
 from .inference_segmentation import clean_class
 from .model_artifacts import detector
 from .conf_band import confidence_band

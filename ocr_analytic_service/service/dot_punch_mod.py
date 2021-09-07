@@ -1,3 +1,4 @@
+import os
 from logging import exception
 import pickle
 from .inference_dotPunched import Inference
