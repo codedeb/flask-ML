@@ -15,8 +15,8 @@ def prefix_data_parser(imgobj):
     base_path = os.getenv("NAS_PATH")
     logger.info('Prefix model path in plp: %s' % os.path.join(base_path, "/models/model_final_prefix.pth"))
     # model_weight_path = os.path.join(base_path, "/models/model_final_prefix.pth")
-    # model_weight_path = "/opt/shared/data/cpl/idm/models/model_final_prefix.pth"
-    model_weight_path = r"/shared-volume/model_final_prefix.pth"
+    model_weight_path = "/opt/shared/data/cpl/idm/models/model_final_prefix.pth"
+    # model_weight_path = r"/shared-volume/model_final_prefix.pth"
     logger.info('Prefix model path: %s' % model_weight_path)
     threshold = 0.1
     prediction = detector(

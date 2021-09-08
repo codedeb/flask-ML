@@ -20,7 +20,8 @@ def read_input_and_form_output(input_dict):
     out_put_dict = []
     try:
         logger.info('Starting for loop')
-        for img_obj in json.loads(input_dict):
+        # for img_obj in json.loads(input_dict):
+        for img_obj in input_dict:
             logger.info('img obj input: %s' % img_obj)
             base_path = os.getenv("NAS_PATH")
             logger.info('Image path in plp: %s' % os.path.join(base_path, img_obj['imagePath']))
