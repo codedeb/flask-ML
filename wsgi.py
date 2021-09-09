@@ -59,7 +59,7 @@ def start_runner():
 if __name__  == "__main__":
     # ramq.run_consumer()
     start_runner()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)
 
 # gunicorn run_app:app
 # gunicorn -c python:devops.gunicorn_sample_flask_app_config wsgi:app
