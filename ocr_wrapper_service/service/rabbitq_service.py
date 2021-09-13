@@ -12,26 +12,32 @@ logger = logging.getLogger(__name__)
 
 
 def send_messages(output):
-    logger.info('Sending output to queue!')
-    hostname = os.environ['RABBITMQ_HOST_NAME']
-    port = os.environ['RABBITMQ_HOST_PORT']
-    username = os.environ['RABBITMQ_USERNAME']
-    password = os.environ['RABBITMQ_PASSWORD']
-    output_queue = os.environ['RABBITMQ_OUTPUT_QUEUE']
-    exchange = os.environ['RABBITMQ_EXCHANGE']
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port,
-                                                                credentials=pika.credentials.PlainCredentials(
-                                                                    username, password)))
-    channel = connection.channel()
+    try:
+        logger.info('Sending output to queue!')
+        hostname = os.environ['RABBITMQ_HOST_NAME']
+        port = os.environ['RABBITMQ_HOST_PORT']
+        username = os.environ['RABBITMQ_USERNAME']
+        password = os.environ['RABBITMQ_PASSWORD']
+        output_queue = os.environ['RABBITMQ_OUTPUT_QUEUE']
+        exchange = os.environ['RABBITMQ_EXCHANGE']
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port,
+                                                                    credentials=pika.credentials.PlainCredentials(
+                                                                        username, password)))
+        channel = connection.channel()
 
-    channel.queue_declare(queue=output_queue, durable=True)
+        channel.queue_declare(queue=output_queue, durable=True)
+        logger.info("Ouptut -------- %s" % output)
+        logger.info("Ouptut for queue -------- %s" % json.dumps(output))
 
-    channel.basic_publish(exchange=exchange, routing_key=output_queue, body=json.dumps(output),
-                        properties=pika.BasicProperties(
-                            delivery_mode=2,  # make message persistent
-                        ))
-    logger.info(" [x] Sent Output to Queue")
-    connection.close()
+        channel.basic_publish(exchange=exchange, routing_key=output_queue, body=json.dumps(output),
+                            properties=pika.BasicProperties(
+                                delivery_mode=2,  # make message persistent
+                            ))
+        logger.info(" [x] Sent Output to Queue")
+        connection.close()
+    except Exception as e:
+        logger.info("Exceptions for output queue %s" % e)
+        pass
     return True
     
 
