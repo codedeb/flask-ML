@@ -27,7 +27,6 @@ def send_messages(output):
 
         channel.queue_declare(queue=output_queue, durable=True)
         logger.info("Ouptut -------- %s" % output)
-        logger.info("Ouptut for queue -------- %s" % json.dumps(output))
 
         channel.basic_publish(exchange=exchange, routing_key=output_queue, body=output,
                             properties=pika.BasicProperties(
