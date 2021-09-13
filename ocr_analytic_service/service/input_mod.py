@@ -29,50 +29,59 @@ def read_input_and_form_output(input_dict):
             fl_nm = img_obj["imagePath"]
             logger.info('file name: %s' % fl_nm)
             try:
-                im = cv2.imread(fl_nm, cv2.IMREAD_UNCHANGED)
-                try:
-                    seg_out = img_segmenter(im)
-                    # logger.info('Seg out: %s' % seg_out)
-                except:
-                    logger.info('exception for seg_out')
-                    seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
-                    seg_out["ROI"] = {"confBand": "LOW", "confValue": 0, "segment": im}
-                    seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
-                    seg_out["PR"] = {"confBand": "LOW", "confValue": 0, "segment": im}
-                try:
-                    psn_out = dot_punched_data_parser(seg_out['ROI']['segment'])
-                    # logger.info('psn out: %s' % psn_out)
-                except:
-                    logger.info('exception for psn_out')
-                    psn_out = {}
-                    psn_out["ocrValue"] = "S_UNKN"
-                    psn_out["confValue"] = 0
-                    psn_out["confBand"] = 'LOW'
-                try:
-                    prefix_out = prefix_data_parser(im)
-                    # logger.info('prefix out: %s' % prefix_out)
-                except:
-                    logger.info('exception for prefix_out')
-                    prefix_out = {}
-                    prefix_out["ocrValue"] = "P_UNKN"
-                    prefix_out["confValue"] = 0
-                    prefix_out["confBand"] = "LOW"
+                im = cv2.imread(fl_nm)
+                logger.info('Input image: %s' % im)
+                if not(im == None):
+                    try:
+                        seg_out = img_segmenter(im)
+                        logger.info('Seg out: %s' % seg_out)
+                    except:
+                        logger.info('exception for seg_out')
+                        seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
+                        seg_out["ROI"] = {"confBand": "LOW", "confValue": 0, "segment": im}
+                        seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
+                        seg_out["PR"] = {"confBand": "LOW", "confValue": 0, "segment": im}
+                    try:
+                        psn_out = dot_punched_data_parser(seg_out['ROI']['segment'])
+                        logger.info('psn out: %s' % psn_out)
+                    except:
+                        logger.info('exception for psn_out')
+                        psn_out = {}
+                        psn_out["ocrValue"] = "S_UNKN"
+                        psn_out["confValue"] = 0.0
+                        psn_out["confBand"] = "LOW"
+                    try:
+                        prefix_out = prefix_data_parser(im)
+                        logger.info('prefix out: %s' % prefix_out)
+                    except:
+                        logger.info('exception for prefix_out')
+                        prefix_out = {}
+                        prefix_out["ocrValue"] = "P_UNKN"
+                        prefix_out["confValue"] = 0.0
+                        prefix_out["confBand"] = "LOW"
                 
-                result_out = data_collector(seg_out, psn_out, prefix_out)
-                logger.info('data collector result: %s' % result_out)
-                final_obj = img_obj.copy()
-                final_obj["ocrValue"] = result_out["ocrValue"]
-                final_obj["ocrConfidenceValue"] = result_out["confValue"]
-                final_obj["ocrConfidenceBand"] = result_out["confBand"]
-                final_obj["ocrAdditional"] = ''
-                out_put_dict.append(final_obj)
+                    result_out = data_collector(seg_out, psn_out, prefix_out)
+                    logger.info('data collector result: %s' % result_out)
+                    final_obj = img_obj.copy()
+                    final_obj["ocrValue"] = result_out["ocrValue"]
+                    final_obj["ocrConfidenceValue"] = result_out["confValue"]
+                    final_obj["ocrConfidenceBand"] = result_out["confBand"]
+                    final_obj["ocrAdditional"] = ""
+                    out_put_dict.append(final_obj)
+                else:
+                    final_obj = img_obj.copy()
+                    final_obj["ocrValue"] = "IMG_NOT_FOUND"
+                    final_obj["ocrConfidenceValue"] = 0.0
+                    final_obj["ocrConfidenceBand"] = "LOW"
+                    final_obj["ocrAdditional"] = "Failed to read image"
+                    out_put_dict.append(final_obj)
             except:
-                logger.info('exception for reading image')
+                logger.info('OCR Failed')
                 final_obj = img_obj.copy()
                 final_obj["ocrValue"] = "FAILED"
-                final_obj["ocrConfidenceValue"] = 0
-                final_obj["ocrConfidenceBand"] = 'LOW'
-                final_obj["ocrAdditional"] = 'Failed to read image'
+                final_obj["ocrConfidenceValue"] = 0.0
+                final_obj["ocrConfidenceBand"] = "LOW"
+                final_obj["ocrAdditional"] = "OCR Failed"
                 out_put_dict.append(final_obj)
         logger.info('Output dict: %s' % out_put_dict)
         return out_put_dict
