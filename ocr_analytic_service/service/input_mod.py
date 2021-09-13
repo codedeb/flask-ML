@@ -31,7 +31,7 @@ def read_input_and_form_output(input_dict):
             try:
                 im = cv2.imread(fl_nm)
                 logger.info('Input image: %s' % im)
-                if im:
+                if im is not None:
                     try:
                         seg_out = img_segmenter(im)
                         logger.info('Seg out: %s' % seg_out)
