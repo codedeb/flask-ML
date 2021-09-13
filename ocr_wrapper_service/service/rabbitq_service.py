@@ -29,7 +29,7 @@ def send_messages(output):
         logger.info("Ouptut -------- %s" % output)
         logger.info("Ouptut for queue -------- %s" % json.dumps(output))
 
-        channel.basic_publish(exchange=exchange, routing_key=output_queue, body=json.dumps(output),
+        channel.basic_publish(exchange=exchange, routing_key=output_queue, body=output,
                             properties=pika.BasicProperties(
                                 delivery_mode=2,  # make message persistent
                             ))
