@@ -35,6 +35,7 @@ def send_messages(output):
         connection.close()
     except Exception as e:
         logger.error('Failed in queue output : %s' % e)
+        continue
     return True
     
 
@@ -65,14 +66,15 @@ def process_messages():
 
         channel.basic_qos(prefetch_count=1)
         channel.basic_consume(queue=input_queue, on_message_callback=callback, auto_ack=True)
-
         channel.start_consuming()
-
     except pika.exceptions.ConnectionClosedByBroker:
         logger.error('Rabbitmq connection closed by broker!')
+        continue
     # Don't recover on channel errors
-    except pika.exceptions.AMQPChannelError:
-        logger.error('Rabbitmq channel error!')
+    except pika.exceptions.AMQPChannelError as err:
+        logger.error('Caught a channel error: {}, stopping... %s ' % err)
+        continue
     # Recover on all other connection errors
     except pika.exceptions.AMQPConnectionError:
-        logger.error('Rabbitmq connection error!')
+        logger.error('Connection was closed, retrying...')
+        continue
