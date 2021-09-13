@@ -13,8 +13,7 @@ logger = logging.getLogger(__name__)
 
 def send_messages(output):
     try:
-
-        logger.info('in send')
+        logger.info('Sending output to queue!')
         hostname = os.environ['RABBITMQ_HOST_NAME']
         port = os.environ['RABBITMQ_HOST_PORT']
         username = os.environ['RABBITMQ_USERNAME']
@@ -51,8 +50,6 @@ def process_messages():
                                                                     credentials=pika.credentials.PlainCredentials(
                                                                         username, password)))
         logger.info('Connected to rabbitmq successfully!')
-
-    
         channel = connection.channel()
         channel.queue_declare(queue=input_queue, durable=True)
         logger.info(' [*] Waiting for messages.')
