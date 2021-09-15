@@ -18,7 +18,6 @@ botocore~=1.19.63
 pika~=1.2.0
 imutils==0.5.4
 opencv-contrib-python==4.5.1.48
-pytesseract==0.3.7
 numpy~=1.16.4
 pandas==1.0.5
 Pillow~=8.2.0
@@ -27,3 +26,7 @@ cython==0.29.24
 pytz~=2021.1
 APScheduler~=3.7.0
 opencv-python~=4.4.0.46
+-f https://download.pytorch.org/whl/torch_stable.html
+torch==1.9.0+cu102
+-f https://download.pytorch.org/whl/torch_stable.html
+torchvision==0.10.0+cu102
