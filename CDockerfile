@@ -6,9 +6,9 @@ FROM $BASE_IMAGE
 
 #COPY config/80proxy /etc/apt/apt.conf.d/80proxy
 
-# RUN apt-get update -y \
-#     && apt-get clean \
-#     && apt-get autoremove
+RUN apt-get update -y \
+    && apt-get clean \
+    && apt-get autoremove
 
 RUN apt-get install -y python3-pip
 RUN python3 -m pip install --upgrade pip
