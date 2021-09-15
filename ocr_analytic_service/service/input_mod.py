@@ -20,8 +20,10 @@ try:
     s3_resource = boto3.resource('s3', region_name=os.getenv('REGION'))
 except:
     s3_resource = boto3.resource('s3', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-                              AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'), region_name=os.getenv('REGION'))
+                                 AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'),
+                                 region_name=os.getenv('REGION'))
     pass
+
 
 def read_input_and_form_output(input_dict):
     logger.info('Input dict for ROI Update: %s' % input_dict)
@@ -93,7 +95,6 @@ def read_input_and_form_output(input_dict):
         logger.info('No item found')
 
     return out_put_dict
-
 
 # input_dict = [{"imageId": 1, "imageOcrType": "PARTDRAWINGNUMBER", "imagePath": "./Raw_S1B_297719_dot_punched_IMG_2025.JPG",
 #                "positionNumber": 2, "componentId": 1234, "componentName": "S1B"}]

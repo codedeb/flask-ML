@@ -20,7 +20,7 @@ except:
 
 
 def receive_messages():
-    queue_url = "https://{}/{}".format(os.getenv('AWS_ACCOUNT_NUMBER'), os.getenv('INPUT_QUEUE'))
+    queue_url = "https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('AWS_ACCOUNT_NUMBER'), os.getenv('INPUT_QUEUE'))
     # sqs_client = boto3.client('sqs', config=Config(proxies={'https': 'cis-americas-pitc-cinciz.proxy.corporate.gtm.ge.com:80'})
     response = sqs_client.receive_message(
         QueueUrl=queue_url,

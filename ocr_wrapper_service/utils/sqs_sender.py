@@ -13,7 +13,7 @@ except:
 
 def send_sqs_messages(output):
     print('in send', output)
-    queue_url = "https://{}/{}".format(os.getenv('AWS_ACCOUNT_NUMBER'), os.getenv('OUTPUT_QUEUE'))
+    queue_url = "https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('AWS_ACCOUNT_NUMBER'), os.getenv('OUTPUT_QUEUE'))
     sqs_client.send_message(QueueUrl=queue_url,
                             MessageBody=json.dumps(output['body']))
     delete_sqs_messages(output['receipt_handle'])

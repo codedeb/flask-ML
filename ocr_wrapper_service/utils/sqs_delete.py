@@ -9,7 +9,7 @@ except:
     pass
 
 def delete_sqs_messages(receipt_handle):
-    queue_url = "https://{}/{}".format(os.getenv('AWS_ACCOUNT_NUMBER'), os.getenv('INPUT_QUEUE'))
+    queue_url = "https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('AWS_ACCOUNT_NUMBER'), os.getenv('INPUT_QUEUE'))
     sqs_client.delete_message(QueueUrl=queue_url,
                               ReceiptHandle=receipt_handle)
     return True
