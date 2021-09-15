@@ -39,13 +39,13 @@ WORKDIR ocr-wrapper-service
 
 EXPOSE 5000
 
-ENV RABBITMQ_HOST_NAME=rabbitmq \
-    RABBITMQ_HOST_PORT=5672 \
-    RABBITMQ_USERNAME=idm_user \
-    RABBITMQ_PASSWORD=idm@user \
-    RABBITMQ_EXCHANGE=idm.exchange \
-    RABBITMQ_INPUT_QUEUE=idm_ocr_input_queue \
-    RABBITMQ_OUTPUT_QUEUE=idm_ocr_output_queue \
+ENV AWS_ACCESS_KEY_ID=None \
+    AWS_SECRET_ACCESS_KEY=None \
+    REGION=us-east-1 \
+    INPUT_QUEUE=uai3046767-cpl-dev-idm-input \
+    OUTPUT_QUEUE=uai3046767-cpl-dev-idm-output \
+    AWS_ACCOUNT_NUMBER=598619258634 \
+    BUCKET_NAME=uai3046767-cpl-dev \
     NAS_PATH=/opt/shared/data/cpl/idm
 
 ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]
