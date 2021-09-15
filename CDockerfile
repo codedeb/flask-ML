@@ -1,10 +1,10 @@
 ARG BASE_IMAGE=598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:cisbaseubuntu
 FROM $BASE_IMAGE
 
-#ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
-#ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
 
-#COPY config/80proxy /etc/apt/apt.conf.d/80proxy
+COPY config/80proxy /etc/apt/apt.conf.d/80proxy
 
 RUN apt-get update -y \
     && apt-get clean \
