@@ -16,10 +16,14 @@ RUN python3 -m pip install --upgrade pip
 # gcc compiler and opencv prerequisites
 RUN apt-get -y install git build-essential libglib2.0-0 libsm6 libxext6 libxrender-dev libgl1-mesa-glx
 
+RUN ls
+
 COPY . /ocr-wrapper-service
 WORKDIR /ocr-wrapper-service
 
-RUN pip3 install -r requirements.txt
+RUN ls
+
+RUN pip3 install -r /ocr-wrapper-service/requirements.txt
 
 # Detectron2 prerequisites
 RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 --trusted-host=download.pytorch.org -f https://download.pytorch.org/whl/torch_stable.html
