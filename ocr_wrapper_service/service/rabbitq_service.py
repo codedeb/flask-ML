@@ -51,27 +51,37 @@ def process_messages():
     input_queue = os.environ['RABBITMQ_INPUT_QUEUE']
     try:
         logger.info("Checking Connection: ")
-        logger.info("test consumer tags: ", rabbitqConnection().consumer_tags)
-        rabbitqConnection().is_open
-        logger.info("Connection exists!")
-        # channel = rabbitqConnection().channel()
+        # logger.info("test consumer tags: ", rabbitqConnection().consumer_tags)
+        # rabbitqConnection().is_open
+        # logger.info("Connection exists!")
+        # # channel = rabbitqConnection().channel()
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port,
+                                                                        credentials=pika.credentials.PlainCredentials(
+                                                                            username, password)))
+        logger.info('Connected to rabbitmq successfully!') 
+        channel = connection.channel() 
+
+    except pika.exceptions.AMQPHeartbeatTimeout:
+        logger.info("Connection dropped!")
 
     except Exception as e:
         logger.info("Connection not present!")
-        channel = rabbitqConnection().channel()
-        channel.queue_declare(queue=input_queue, durable=True)
-        logger.info(' [*] Waiting for messages.')
 
-        def callback(ch, method, properties, body):
-            logger.info(" [x] Received %r" % body)
-            input_messages = body.decode('utf8')
-            print(input_messages)
-            output_messages = process(input_messages)
-            # if len(output_messages) > 0:
-            #     logger.info('length > 0')
-            send_messages(output_messages)
+    channel.queue_declare(queue=input_queue, durable=True)
+    logger.info(' [*] Waiting for messages.')
 
-        channel.basic_qos(prefetch_count=1)
-        channel.basic_consume(queue=input_queue, on_message_callback=callback, auto_ack=True)
-        channel.start_consuming()
+    def callback(ch, method, properties, body):
+        logger.info(" [x] Received %r" % body)
+        input_messages = body.decode('utf8')
+        print(input_messages)
+        output_messages = process(input_messages)
+        # if len(output_messages) > 0:
+        #     logger.info('length > 0')
+        send_messages(output_messages)
+        connection.close()
+
+    channel.basic_qos(prefetch_count=1)
+    channel.basic_consume(queue=input_queue, on_message_callback=callback, auto_ack=True)
+    channel.start_consuming()
+    
 
