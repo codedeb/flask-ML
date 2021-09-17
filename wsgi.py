@@ -12,7 +12,7 @@ import atexit
 
 from ocr_wrapper_service.app import create_app
 # from flask_rabmq import RabbitMQ
-from ocr_wrapper_service.service.rabbitq_service import abc
+from ocr_wrapper_service.service.rabbitq_service import process_messages
 # ramq = RabbitMQ()
 
 logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -32,13 +32,13 @@ app = create_app(os.getenv('APP_SETTING_MODULE'))
 def activate_job():
     def run_job():
         logger.info("Run recurring task")
-        abc()
+        process_messages()
     thread = threading.Thread(target=run_job)
     thread.start()
 
 def sqs_scheduler():
     print('Requesting to receive messages')
-    abc()
+    process_messages()
 
 scheduler = BackgroundScheduler(timezone=utc,daemon=True)
 scheduler.add_job(func=sqs_scheduler, trigger="interval", seconds=30)

@@ -5,6 +5,8 @@ import pika
 import logging
 from ocr_wrapper_service.service.analytic_service import process_images as process
 
+from ocr_wrapper_service.service.rabbitq_config import rabbitqConnection
+
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
@@ -38,49 +40,26 @@ def send_messages(output):
         logger.info("Exceptions for output queue: %s" % e)
         connection.close()
         pass
-    return True
-    
-
-class abc():
-    def __init__(self):
-        # self.process_messages()
-        logger.info("Testing abc")
-       
-        hostname = os.environ['RABBITMQ_HOST_NAME']
-        port = os.environ['RABBITMQ_HOST_PORT']
-        username = os.environ['RABBITMQ_USERNAME']
-        password = os.environ['RABBITMQ_PASSWORD']
-        input_queue = os.environ['RABBITMQ_INPUT_QUEUE']
-        self.queue_connect = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port,
-                                                                        credentials=pika.credentials.PlainCredentials(
-                                                                            username, password)))
-
-        logger.info("Calling process messages")
-        self.process_messages()
-                                                        
+    return True                                           
             
-    def process_messages(self):
-        logger.info("Inside process messages")
-        hostname = os.environ['RABBITMQ_HOST_NAME']
-        port = os.environ['RABBITMQ_HOST_PORT']
-        username = os.environ['RABBITMQ_USERNAME']
-        password = os.environ['RABBITMQ_PASSWORD']
-        input_queue = os.environ['RABBITMQ_INPUT_QUEUE']
-        try:
-            logger.info("Checking Connection: ")
-            self.queue_connect.is_open
-            logger.info("Connection exists!")
-            channel = self.queue_connect.channel()
-        except Exception as e:
-            logger.info("Connection not present!")
-            self.queue_connect = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port,
-                                                                        credentials=pika.credentials.PlainCredentials(
-                                                                            username, password)))
-            logger.info('Connected to rabbitmq successfully!')
-            channel = self.queue_connect.channel()
-            
-        
-        channel.queue_declare(queue=self.input_queue, durable=True)
+def process_messages():
+    logger.info("Inside process messages")
+    hostname = os.environ['RABBITMQ_HOST_NAME']
+    port = os.environ['RABBITMQ_HOST_PORT']
+    username = os.environ['RABBITMQ_USERNAME']
+    password = os.environ['RABBITMQ_PASSWORD']
+    input_queue = os.environ['RABBITMQ_INPUT_QUEUE']
+    try:
+        logger.info("Checking Connection: ")
+        logger.info("test consumer tags: ", rabbitqConnection().consumer_tags)
+        rabbitqConnection().is_open
+        logger.info("Connection exists!")
+        # channel = rabbitqConnection().channel()
+
+    except Exception as e:
+        logger.info("Connection not present!")
+        channel = rabbitqConnection().channel()
+        channel.queue_declare(queue=input_queue, durable=True)
         logger.info(' [*] Waiting for messages.')
 
         def callback(ch, method, properties, body):
@@ -95,4 +74,4 @@ class abc():
         channel.basic_qos(prefetch_count=1)
         channel.basic_consume(queue=input_queue, on_message_callback=callback, auto_ack=True)
         channel.start_consuming()
-   
+
