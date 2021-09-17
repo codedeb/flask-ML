@@ -12,12 +12,13 @@ logger = logging.getLogger(__name__)
 
 def prefix_data_parser(imgobj):
     config_path = "ocr_analytic_service/service/configPrefix_file.yaml"
+
     base_path = os.getenv("NAS_PATH")
-    logger.info('Prefix model path in plp: %s' % os.path.join(base_path, "/models/model_final_prefix.pth"))
-    # model_weight_path = os.path.join(base_path, "/models/model_final_prefix.pth")
-    model_weight_path = "/opt/shared/data/cpl/idm/models/model_final_prefix.pth"
+    model_weight_path = os.path.join(base_path, "models/model_final_prefix.pth")
+    # model_weight_path = "/opt/shared/data/cpl/idm/models/model_final_prefix.pth"
     # model_weight_path = r"/shared-volume/model_final_prefix.pth"
     logger.info('Prefix model path: %s' % model_weight_path)
+    
     threshold = 0.1
     prediction = detector(
         config_path, model_weight_path, threshold)
