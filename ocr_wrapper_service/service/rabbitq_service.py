@@ -5,8 +5,6 @@ import pika
 import logging
 from ocr_wrapper_service.service.analytic_service import process_images as process
 
-from ocr_wrapper_service.service.rabbitq_config import rabbitqConnection
-
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
@@ -50,11 +48,7 @@ def process_messages():
     password = os.environ['RABBITMQ_PASSWORD']
     input_queue = os.environ['RABBITMQ_INPUT_QUEUE']
     try:
-        logger.info("Checking Connection: ")
-        # logger.info("test consumer tags: ", rabbitqConnection().consumer_tags)
-        # rabbitqConnection().is_open
-        # logger.info("Connection exists!")
-        # # channel = rabbitqConnection().channel()
+        logger.info("Checking Connection:")
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port,
                                                                         credentials=pika.credentials.PlainCredentials(
                                                                             username, password)))
