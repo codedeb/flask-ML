@@ -16,4 +16,3 @@ def process_images(input_images):
     except Exception as e:
         logger.error('Failed in process images : %s' % e)
     return output
-

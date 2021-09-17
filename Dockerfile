@@ -35,7 +35,7 @@ RUN pip3 install -U detectron2/.
 
 # Copy the code from local to docker contanier
 COPY . /ocr-wrapper-service
-WORKDIR ocr-wrapper-service
+WORKDIR /ocr-wrapper-service
 
 EXPOSE 5000
 

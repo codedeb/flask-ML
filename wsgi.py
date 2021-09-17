@@ -5,6 +5,11 @@ import logging
 
 import requests
 
+from pytz import utc
+from apscheduler.schedulers.background import BackgroundScheduler
+import atexit
+
+
 from ocr_wrapper_service.app import create_app
 # from flask_rabmq import RabbitMQ
 from ocr_wrapper_service.service.rabbitq_service import process_messages
@@ -27,10 +32,20 @@ app = create_app(os.getenv('APP_SETTING_MODULE'))
 def activate_job():
     def run_job():
         logger.info("Run recurring task")
-        print("Run recurring task")
         process_messages()
     thread = threading.Thread(target=run_job)
     thread.start()
+
+def sqs_scheduler():
+    print('Requesting to receive messages')
+    process_messages()
+
+scheduler = BackgroundScheduler(timezone=utc,daemon=True)
+scheduler.add_job(func=sqs_scheduler, trigger="interval", seconds=30)
+scheduler.start()
+
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
 
 
 def start_runner():
@@ -38,12 +53,10 @@ def start_runner():
         not_started = True
         while not_started:
             logger.info('In start loop')
-            print('In start loop')
             try:
                 r = requests.get('http://127.0.0.1:5000/')
                 if r.status_code == 200:
                     logger.info('Server started, quiting start_loop')
-                    print('Server started, quiting start_loop')
                     not_started = False
                 logger.info(r.status_code)
 
