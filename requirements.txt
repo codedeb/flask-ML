@@ -25,8 +25,3 @@ cython==0.29.24
 
 pytz~=2021.1
 APScheduler~=3.7.0
-opencv-python~=4.4.0.46
--f https://download.pytorch.org/whl/torch_stable.html
-torch==1.9.0+cu102
--f https://download.pytorch.org/whl/torch_stable.html
-torchvision==0.10.0+cu102
