@@ -14,13 +14,14 @@ print('in consumer')
 try:
     sqs_client = boto3.client('sqs', region_name=os.getenv('REGION'))
 except:
-    sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-                              AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'), region_name=os.getenv('REGION'))
+    logging.error('not able to connect ot sqs')
+    # sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    #                           AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'), region_name=os.getenv('REGION'))
     pass
 
 
 def receive_messages():
-    queue_url = "https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('AWS_ACCOUNT_NUMBER'), os.getenv('INPUT_QUEUE'))
+    queue_url = "https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('ACCOUNT_NUMBER'), os.getenv('INPUT_QUEUE'))
     # sqs_client = boto3.client('sqs', config=Config(proxies={'https': 'cis-americas-pitc-cinciz.proxy.corporate.gtm.ge.com:80'})
     response = sqs_client.receive_message(
         QueueUrl=queue_url,

@@ -16,10 +16,10 @@ RUN python3 -m pip install --upgrade pip
 # gcc compiler and opencv prerequisites
 RUN apt-get -y install git build-essential libglib2.0-0 libsm6 libxext6 libxrender-dev libgl1-mesa-glx
 
-COPY . /ocr-wrapper-service
-WORKDIR /ocr-wrapper-service
+COPY . /gpcloud/ocr-wrapper-service
+WORKDIR /gpcloud/ocr-wrapper-service
 
-RUN pip3 install -r /ocr-wrapper-service/requirements.txt
+RUN pip3 install -r /gpcloud/ocr-wrapper-service/requirements.txt
 
 # Detectron2 prerequisites
 # RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 --trusted-host=download.pytorch.org -f https://download.pytorch.org/whl/torch_stable.html
@@ -31,17 +31,9 @@ RUN pip3 install -U detectron2/.
 
 EXPOSE 5000
 
-ENV AWS_ACCESS_KEY_ID=None \
-    AWS_SECRET_ACCESS_KEY=None \
-    REGION=us-east-1 \
-    INPUT_QUEUE=uai3046767-cpl-dev-idm-input \
-    OUTPUT_QUEUE=uai3046767-cpl-dev-idm-output \
+ENV REGION=us-east-1 \
     AWS_ACCOUNT_NUMBER=598619258634 \
-    BUCKET_NAME=uai3046767-cpl-dev \
-    NAS_PATH=/opt/shared/data/cpl/idm
+    BUCKET_NAME=uai3046767-cpl-dev
 
-ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]s
+ENTRYPOINT ["python3", "/gpcloud/ocr-wrapper-service/wsgi.py"]
 
-# $ docker --version
-# $ docker build -t sample-cicd:v1 .
-# $ docker run -p sample-cicd:v1
