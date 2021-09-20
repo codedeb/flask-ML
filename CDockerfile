@@ -16,13 +16,17 @@ RUN python3 -m pip install --upgrade pip
 # gcc compiler and opencv prerequisites
 RUN apt-get -y install git build-essential libglib2.0-0 libsm6 libxext6 libxrender-dev libgl1-mesa-glx
 
-COPY . /gpcloud/ocr-wrapper-service
-WORKDIR /gpcloud/ocr-wrapper-service
+COPY . /ocr-wrapper-service
+WORKDIR /ocr-wrapper-service
 
-RUN pip3 install -r /gpcloud/ocr-wrapper-service/requirements.txt
+RUN pip install virtualenv
+RUN virtualenv venv
+ENV PATH="venv/bin:$PATH"
+
+RUN pip3 install -r /ocr-wrapper-service/requirements.txt
 
 # Detectron2 prerequisites
-# RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 --trusted-host=download.pytorch.org -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 --trusted-host=download.pytorch.org -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 # Detectron2 - CPU copy
@@ -35,5 +39,5 @@ ENV REGION=us-east-1 \
     AWS_ACCOUNT_NUMBER=598619258634 \
     BUCKET_NAME=uai3046767-cpl-dev
 
-ENTRYPOINT ["python3", "/gpcloud/ocr-wrapper-service/wsgi.py"]
+ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]
 
