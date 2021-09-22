@@ -19,7 +19,7 @@ RUN apt-get -y install git build-essential libglib2.0-0 libsm6 libxext6 libxrend
 COPY . /ocr-wrapper-service
 WORKDIR /ocr-wrapper-service
 
-RUN pip install virtualenv
+RUN pip3 install virtualenv
 RUN virtualenv venv
 ENV PATH="venv/bin:$PATH"
 
