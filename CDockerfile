@@ -7,12 +7,11 @@ FROM $BASE_IMAGE
 #COPY config/80proxy /etc/apt/apt.conf.d/80proxy
 
 RUN apt-get update -y \
-    && python3 \
     && apt-get clean \
     && apt-get autoremove
 
 RUN apt-get install -y python3-pip
-#RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade pip
 
 # gcc compiler and opencv prerequisites
 RUN apt-get -y install git build-essential libglib2.0-0 libsm6 libxext6 libxrender-dev libgl1-mesa-glx
