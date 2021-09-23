@@ -54,6 +54,9 @@ def img_segmenter(img):
         if class_map[index] == 'PSN':
             multwd = 0.1
             multht = 0.1
+        elif class_map[index] == 'ROI':
+            multwd = 0.2
+            multht = 0.2
         else:
             multwd = 0
             multht = 0
