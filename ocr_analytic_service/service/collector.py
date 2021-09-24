@@ -11,7 +11,7 @@ def data_collector(seg_out, psn_out, prefix_out):
         psn_out['confBand'] = 'MEDIUM'
     '''END OF SPECIAL CONDITIONS'''
 
-    list_conf_band = [seg_out['PSN']['confBand'], psn_out['confBand'], prefix_out['confBand']]
+    list_conf_band = [seg_out['ROI']['confBand'], psn_out['confBand'], prefix_out['confBand']]
     res_conf_band = overall_band(list_conf_band)
     res_conf = seg_out['ROI']['confValue']*psn_out['confValue']*prefix_out['confValue']
     res_conf = np.round(res_conf,2)

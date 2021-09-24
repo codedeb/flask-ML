@@ -56,7 +56,7 @@ def img_segmenter(img):
             multht = 0.1
         elif class_map[index] == 'ROI':
             multwd = 0.2
-            multht = 0.2
+            multht = 0.3
         else:
             multwd = 0
             multht = 0
