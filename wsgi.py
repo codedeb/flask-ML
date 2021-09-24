@@ -41,7 +41,7 @@ def sqs_scheduler():
     process_messages()
 
 scheduler = BackgroundScheduler(timezone=utc,daemon=True)
-scheduler.add_job(func=sqs_scheduler, trigger="interval", seconds=60)
+scheduler.add_job(func=sqs_scheduler, trigger="interval", seconds=30)
 scheduler.start()
 
 # Shut down the scheduler when exiting the app
