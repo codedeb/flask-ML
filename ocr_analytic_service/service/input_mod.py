@@ -20,8 +20,8 @@ def read_input_and_form_output(input_dict):
     out_put_dict = []
     try:
         logger.info('Starting for loop')
-        for img_obj in json.loads(input_dict):
-        # for img_obj in input_dict:
+        # for img_obj in json.loads(input_dict): //local testing
+        for img_obj in input_dict:
             logger.info('img obj input: %s' % img_obj)
             base_path = os.getenv("NAS_PATH")
             logger.info('NAS PATH: %s' % base_path)
@@ -89,8 +89,3 @@ def read_input_and_form_output(input_dict):
         logger.info('No item found')
 
     return out_put_dict
-
-
-# input_dict = [{"imageId": 1, "imageOcrType": "PARTDRAWINGNUMBER", "imagePath": "./Raw_S1B_297719_dot_punched_IMG_2025.JPG",
-#                "positionNumber": 2, "componentId": 1234, "componentName": "S1B"}]
-# print(read_input_and_form_output(input_dict))
