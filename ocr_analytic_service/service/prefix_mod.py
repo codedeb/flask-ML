@@ -1,6 +1,7 @@
 import os
 from .model_artifacts import detector
-from .inference_prefix import getPrefix
+# from .inference_prefix import getPrefix
+from . import inference_prefix
 from .conf_band import confidence_band
 
 import logging
@@ -24,7 +25,8 @@ def prefix_data_parser(imgobj):
 
     threshold = 0.1
     prediction = detector(config_path, model_weight_path, threshold)
-    lbl, scr, lowChar, lowProb, scoreList = getPrefix(imgobj, prediction)
+    inference_prefix.class_names = []
+    lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prediction)
     conf, conf_band = confidence_band(scoreList, 4)
     prefix_out = {}
     prefix_out['ocrValue'] = lbl
