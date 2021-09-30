@@ -11,6 +11,8 @@ logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, 
 logger = logging.getLogger(__name__)
 app = create_app(os.getenv('APP_SETTING_MODULE'))
 
+for k, v in sorted(os.environ.items()):
+    print(k+':', v)
 
 def sqs_scheduler():
     logger.info('Requesting to receive messages...')
