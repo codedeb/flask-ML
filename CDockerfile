@@ -44,8 +44,7 @@ ENV REGION=us-east-1 \
     SECURITY_GROUPS="sg-0c4aa0211d98a9fb9" \
     TASK_DEFINITION_NAME=uai3046767-ocr-taskdef-dev \
     INPUT_QUEUE="uai3046767-cpl-dev-idm-input" \
-    OUTPUT_QUEUE="uai3046767-cpl-dev-idm-output" \
-    BUCKET_NAME="uai3046767-cpl-dev"
+    OUTPUT_QUEUE="uai3046767-cpl-dev-idm-output"
 
 ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]
 
