@@ -13,7 +13,7 @@ app = create_app(os.getenv('APP_SETTING_MODULE'))
 
 
 def sqs_scheduler():
-    print('Requesting to receive messages')
+    logger.info('Requesting to receive messages...')
     receive_messages()
 
 
@@ -25,6 +25,7 @@ scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == "__main__":
+    logger.info('Starting app main...')
     app.run(host="0.0.0.0", port=5000, debug=True)
 
 # gunicorn run_app:app
