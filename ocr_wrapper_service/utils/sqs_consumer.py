@@ -10,25 +10,27 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-print('in consumer')
 try:
+    logger.info('Sqs client...')
     sqs_client = boto3.client('sqs', region_name=os.getenv('REGION'))
 except:
-    logging.error('not able to connect ot sqs')
+    logging.error('not able to connect to sqs')
     # sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
     #                           AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'), region_name=os.getenv('REGION'))
     pass
 
 
 def receive_messages():
+    logger.info('Connecting to sqs...')
     queue_url = "https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('ACCOUNT_NUMBER'), os.getenv('INPUT_QUEUE'))
     # sqs_client = boto3.client('sqs', config=Config(proxies={'https': 'cis-americas-pitc-cinciz.proxy.corporate.gtm.ge.com:80'})
+    logger.info('sqs url: %s' % queue_url)
     response = sqs_client.receive_message(
         QueueUrl=queue_url,
         MaxNumberOfMessages=10,
         WaitTimeSeconds=1
     )
-    print('raw messages', response)
+    logger.info('raw messages %s' % response)
     if 'Messages' in response:
         for message in response['Messages']:
             input = {}
