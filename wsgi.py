@@ -11,6 +11,8 @@ logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, 
 logger = logging.getLogger(__name__)
 app = create_app(os.getenv('APP_SETTING_MODULE'))
 
+for k, v in sorted(os.environ.items()):
+    print(k+':', v)
 
 def sqs_scheduler():
     logger.info('Requesting to receive messages...')
@@ -26,7 +28,7 @@ atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == "__main__":
     logger.info('Starting app main...')
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/server.crt","platform/ssl/server.key"))
 
 # gunicorn run_app:app
 # gunicorn -c python:devops.gunicorn_sample_flask_app_config wsgi:app
