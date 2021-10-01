@@ -20,11 +20,24 @@
 			"command": [],
 			"environment": [
 				{
-					"INPUT_QUEUE": "uai3046767-cpl-dev-idm-input",
-					"OUTPUT_QUEUE": "uai3046767-cpl-dev-idm-output",
-					"ACCOUNT_NUMBER": "598619258634",
-					"BUCKET_NAME": "uai3046767-cpl-dev",
-					"REGION": "us-east-1"
+					"Name": "INPUT_QUEUE",
+					"Value": "uai3046767-cpl-dev-idm-input"
+				},
+				{
+					"Name": "OUTPUT_QUEUE",
+					"Value": "uai3046767-cpl-dev-idm-output"
+				},
+				{
+					"Name": "ACCOUNT_NUMBER",
+					"Value": "598619258634"
+				},
+				{
+					"Name": "BUCKET_NAME",
+					"Value": "uai3046767-cpl-dev"
+				},
+				{
+					"Name": "REGION",
+					"Value": "us-east-1"
 				}
 			],
 			"mountPoints": [],
