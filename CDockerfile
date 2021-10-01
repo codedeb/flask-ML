@@ -36,11 +36,7 @@ RUN pip3 install -U detectron2/.
 
 EXPOSE 8090
 
-ENV REGION=us-east-1 \
-    BUCKET_NAME=uai3046767-cpl-dev \
-    ACCOUNT_NUMBER=598619258634 \
-    INPUT_QUEUE=uai3046767-cpl-dev-idm-input \
-    OUTPUT_QUEUE=uai3046767-cpl-dev-idm-output
+ENV REGION=us-east-1
 
 ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]
 
