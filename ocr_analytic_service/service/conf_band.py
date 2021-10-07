@@ -10,6 +10,7 @@ import numpy as np
 def confidence_band(scores_list, lgt):
     if len(scores_list) > 0:
         # conf = round(sum(scores_list) / len(scores_list), 3)
+        scores_list = [float(item) for item in scores_list]
         conf = np.prod(scores_list)
         if len(scores_list) != lgt:
             conf_band = "LOW"

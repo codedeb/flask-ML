@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 def process_images(input):
     # logger.info('data', input_images)
     try:
-        logger.info('sending images to process')
+        logger.info('Sending images to process!')
         output = {'receipt_handle': input['receipt_handle']}
         output_messages = read_input_and_form_output(input['body'])
         output['body'] = output_messages

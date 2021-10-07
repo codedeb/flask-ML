@@ -32,11 +32,6 @@ def read_input_and_form_output(input_dict):
         logger.info('Starting for loop')
         for img_obj in input_dict:
             logger.info('img obj input: %s' % img_obj)
-            # base_path = os.getenv("NAS_PATH")
-            # logger.info('Base path: %s' % base_path)
-            # fl_nm = os.path.join(base_path, img_obj['imagePath'])
-            # fl_nm = img_obj["imagePath"]
-            # logger.info('file name: %s' % fl_nm)
             try:
                 bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
                 img = bucket.Object(img_obj['imagePath']).get().get('Body')
@@ -65,7 +60,8 @@ def read_input_and_form_output(input_dict):
                         psn_out["confValue"] = 0.0
                         psn_out["confBand"] = "LOW"
                     try:
-                        prefix_out = prefix_data_parser(im)
+                        # prefix_out = prefix_data_parser(im)
+                        prefix_out = prefix_data_parser(seg_out['ROI']['segment'])
                         logger.info('prefix out: %s' % prefix_out)
                     except:
                         logger.info('exception for prefix_out')

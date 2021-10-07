@@ -8,9 +8,10 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 try:
+    logger.debug('Connecting to SQS for deleting msgs...')
     sqs_client = boto3.client('sqs', region_name=os.getenv('REGION'))
 except:
-    logging.error('not able to connect ot sqs')
+    logging.error('Error while connecting to SQS for deleting msgs!')
     # sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
     #                           AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'), region_name=os.getenv('REGION'))
     pass
