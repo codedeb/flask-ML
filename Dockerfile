@@ -47,6 +47,7 @@ ENV AWS_ACCESS_KEY_ID=None  \
     AWS_ACCOUNT_NUMBER=598619258634 \
     ACCOUNT_NUMBER=598619258634 \
     BUCKET_NAME=uai3046767-cpl-dev \
-    NAS_PATH=/opt/shared/data/cpl/idm
+    NAS_PATH=/opt/shared/data/cpl/idm \
+    MODEL_PATH=/opt/shared/data/cpl/idm
 
 ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]
