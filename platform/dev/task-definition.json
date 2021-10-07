@@ -42,6 +42,10 @@
 				{
 					"name": "MODEL_PATH",
 					"value": "/IDM"
+				},
+				{
+					"name": "IMAGE_FOLDER_PATH",
+					"value": "IDM/dev"
 				}
 			],
 			"mountPoints": [],
