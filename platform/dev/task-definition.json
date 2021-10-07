@@ -1,48 +1,72 @@
 {
-  "containerDefinitions": [
-    {
-      "name": "ocr-wrapper-service",
-      "image": "598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:ocr-wrapper-service",
-      "cpu": 0,
-      "links": [],
-      "portMappings": [
-        {
-          "containerPort": 8090,
-          "hostPort": 8090,
-          "protocol": "tcp"
-        }
-      ],
-      "essential": true,
-      "entryPoint": ["python3", "wsgi.py"],
-      "command": [],
-      "environment": [],
-      "mountPoints": [],
-      "volumesFrom": [],
-      "dnsServers": [],
-      "dnsSearchDomains": [],
-      "extraHosts": [],
-      "dockerSecurityOptions": [],
-      "dockerLabels": {},
-      "ulimits": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "uai3046767/cpl/dev/ocr-wrapper-service",
-          "awslogs-region": "us-east-1",
-          "awslogs-stream-prefix": "ocr-wrapper-service"
-        }
-      }
-    }
-  ],
-  "family": "uai3046767-ocr-taskdef-dev",
-  "taskRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-dev",
-  "executionRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-dev",
-  "networkMode": "awsvpc",
-  "volumes": [],
-  "placementConstraints": [],
-  "requiresCompatibilities": [
-    "FARGATE"
-  ],
-  "cpu": "4096",
-  "memory": "8192" 
+	"containerDefinitions": [
+		{
+			"name": "ocr-wrapper-service",
+			"image": "598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:ocr-wrapper-service",
+			"cpu": 0,
+			"links": [],
+			"portMappings": [
+				{
+					"containerPort": 8090,
+					"hostPort": 8090,
+					"protocol": "tcp"
+				}
+			],
+			"essential": true,
+			"entryPoint": [
+				"python3",
+				"wsgi.py"
+			],
+			"command": [],
+			"environment": [
+				{
+					"name": "INPUT_QUEUE",
+					"value": "uai3046767-cpl-dev-idm-input"
+				},
+				{
+					"name": "OUTPUT_QUEUE",
+					"value": "uai3046767-cpl-dev-idm-output"
+				},
+				{
+					"name": "ACCOUNT_NUMBER",
+					"value": "598619258634"
+				},
+				{
+					"name": "BUCKET_NAME",
+					"value": "uai3046767-cpl-dev"
+				},
+				{
+					"name": "REGION",
+					"value": "us-east-1"
+				}
+			],
+			"mountPoints": [],
+			"volumesFrom": [],
+			"dnsServers": [],
+			"dnsSearchDomains": [],
+			"extraHosts": [],
+			"dockerSecurityOptions": [],
+			"dockerLabels": {},
+			"ulimits": [],
+			"logConfiguration": {
+				"logDriver": "awslogs",
+				"options": {
+					"awslogs-group": "uai3046767/cpl/dev/ocr-wrapper-service",
+					"awslogs-region": "us-east-1",
+					"awslogs-stream-prefix": "ocr-wrapper-service"
+				}
+			}
+		}
+	],
+	"family": "uai3046767-ocr-taskdef-dev",
+	"taskRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-dev",
+	"executionRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-dev",
+	"networkMode": "awsvpc",
+	"volumes": [],
+	"placementConstraints": [],
+	"requiresCompatibilities": [
+		"FARGATE"
+	],
+	"cpu": "4096",
+	"memory": "8192"
 }

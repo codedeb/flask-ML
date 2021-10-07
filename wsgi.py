@@ -35,11 +35,9 @@ if __name__ == "__main__":
     modelLoadStatus = load_models()
     if(modelLoadStatus):
         logger.info('Starting app main!')
-        app.run(host="0.0.0.0", port=5000, debug=False)
+        app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/server.crt","platform/ssl/server.key"))
     else:
         logger.info('Error while starting app!')
-    
-    
 
 # gunicorn run_app:app
 # gunicorn -c python:devops.gunicorn_sample_flask_app_config wsgi:app

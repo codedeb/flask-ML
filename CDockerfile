@@ -1,17 +1,11 @@
 ARG BASE_IMAGE=598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:cisbaseubuntu
 FROM $BASE_IMAGE
 
-#ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
-#ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
-
-#COPY config/80proxy /etc/apt/apt.conf.d/80proxy
-
 RUN apt-get update -y \
     && apt-get clean \
     && apt-get autoremove
 
 RUN apt-get install -y python3-pip
-
 RUN python3 -m pip install --trusted-host pypi.python.org --upgrade pip
 
 # gcc compiler and opencv prerequisites
@@ -20,14 +14,9 @@ RUN apt-get -y install git build-essential libglib2.0-0 libsm6 libxext6 libxrend
 COPY . /ocr-wrapper-service
 WORKDIR /ocr-wrapper-service
 
-#RUN pip3 install virtualenv
-#RUN virtualenv venv
-#ENV PATH="venv/bin:$PATH"
-
 RUN pip3 install -r /ocr-wrapper-service/requirements.txt
 
 # Detectron2 prerequisites
-# RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 --trusted-host=download.pytorch.org -f https://download.pytorch.org/whl/torch_stable.html
 RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 # Detectron2 - CPU copy
@@ -36,15 +25,4 @@ RUN pip3 install -U detectron2/.
 
 EXPOSE 8090
 
-ENV REGION=us-east-1 \
-    AWS_ACCOUNT_NUMBER=598619258634 \
-    BUCKET_NAME=uai3046767-cpl-dev \
-    ACCOUNT_NUMBER="598619258634" \
-    SUBNETS="subnet-00a2cc8eb8b597505,subnet-076fbc33b8e7fc094" \
-    SECURITY_GROUPS="sg-0c4aa0211d98a9fb9" \
-    TASK_DEFINITION_NAME=uai3046767-ocr-taskdef-dev \
-    INPUT_QUEUE="uai3046767-cpl-dev-idm-input" \
-    OUTPUT_QUEUE="uai3046767-cpl-dev-idm-output"
-
 ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]
-
