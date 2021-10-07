@@ -34,7 +34,8 @@ def read_input_and_form_output(input_dict):
             logger.info('img obj input: %s' % img_obj)
             try:
                 bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
-                img = bucket.Object(img_obj['imagePath']).get().get('Body')
+                image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
+                img = bucket.Object(image_folder_path).get().get('Body')
                 image = np.asarray(bytearray(img.read()), dtype="uint8")
                 im = cv2.imdecode(image, cv2.IMREAD_COLOR)
                 # cv2.imwrite('/idm/input/abc.jpg',im)
