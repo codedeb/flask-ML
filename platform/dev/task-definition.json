@@ -38,6 +38,10 @@
 				{
 					"name": "REGION",
 					"value": "us-east-1"
+				},
+				{
+					"name": "MODEL_PATH",
+					"value": "/IDM"
 				}
 			],
 			"mountPoints": [],
