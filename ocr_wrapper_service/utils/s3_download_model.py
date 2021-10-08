@@ -22,7 +22,7 @@ def load_models():
         
         logger.info('Listing objects for bucket: %s' % os.getenv('BUCKET_NAME'))
         # Retrieve the objects deom specific IDM model folder
-        objects = s3.list_objects(Bucket='uai3046767-cpl-dev', MaxKeys=10, Prefix='IDM/model/model')
+        objects = s3.list_objects(Bucket=os.getenv('BUCKET_NAME'), MaxKeys=10, Prefix='IDM/model/model')
         logger.info('S3 objects: %s' % objects)
 
         # Path where model will be downloaded
@@ -40,7 +40,7 @@ def load_models():
             modelDownloaded = os.path.join(model_path, filename)
             logger.info('file to be donloaded as: %s' %  modelDownloaded)
             # Download file
-            s3.download_file('uai3046767-cpl-dev', object['Key'], modelDownloaded)
+            s3.download_file(os.getenv('BUCKET_NAME'), object['Key'], modelDownloaded)
         return True
     except:
         logger.error('Error while loading models from s3!')

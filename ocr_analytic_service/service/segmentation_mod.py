@@ -10,6 +10,7 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 def img_segmenter(img):
+    logger.info('Image Segmenter')
     img_ht = img.shape[0]
     img_wd = img.shape[1]
     class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
@@ -17,8 +18,9 @@ def img_segmenter(img):
     dct_out_box = dict.fromkeys(list(class_map.values()))
 
     config_path = "ocr_analytic_service/service/configSeg_file.yaml"
-    base_path = os.getenv("NAS_PATH")
-    model_weight_path = os.path.join(base_path, 'models/model_final_segmentation.pth')
+    base_path = os.getenv("MODEL_PATH")
+    logger.info('Seg model base path: %s' % base_path)
+    model_weight_path = os.path.join(base_path, 'model/model_final_segmentation.pth')
     logger.info('Seg model path in plp: %s' % model_weight_path)
 
     threshold = 0.3

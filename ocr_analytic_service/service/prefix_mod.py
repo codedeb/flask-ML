@@ -14,8 +14,8 @@ def prefix_data_parser(imgobj):
     logger.info('Prefix predictor')
 
     config_path = "ocr_analytic_service/service/configPrefix_file.yaml"
-    base_path = os.getenv("NAS_PATH")
-    model_weight_path = os.path.join(base_path, "models/model_final_prefix.pth")
+    base_path = os.getenv("MODEL_PATH")
+    model_weight_path = os.path.join(base_path, "model/model_final_prefix.pth")
     logger.info('Prefix model path: %s' % model_weight_path)
 
     threshold = 0.1
