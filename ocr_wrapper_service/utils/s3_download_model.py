@@ -26,7 +26,7 @@ def load_models():
         logger.info('S3 objects: %s' % objects)
 
         # Path where model will be downloaded
-        base_path = os.getenv("MODEL_PATH")
+        base_path = os.getenv('MODEL_PATH')
         model_path = os.path.join(base_path, 'model')
         logger.info('model_path: %s' %  model_path)
 

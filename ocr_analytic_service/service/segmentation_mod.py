@@ -18,7 +18,7 @@ def img_segmenter(img):
     dct_out_box = dict.fromkeys(list(class_map.values()))
 
     config_path = "ocr_analytic_service/service/configSeg_file.yaml"
-    base_path = os.getenv("MODEL_PATH")
+    base_path = os.getenv('MODEL_PATH')
     logger.info('Seg model base path: %s' % base_path)
     model_weight_path = os.path.join(base_path, 'model/model_final_segmentation.pth')
     logger.info('Seg model path in plp: %s' % model_weight_path)
