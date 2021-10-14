@@ -3,6 +3,7 @@ from .model_artifacts import detector
 # from .inference_prefix import getPrefix
 from . import inference_prefix
 from .conf_band import confidence_band
+from . import recoverPrefix
 
 import logging
 
@@ -14,8 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 def prefix_data_parser(imgobj):
-    logger.info('Prefix predictor')
-
     config_path = "ocr_analytic_service/service/configPrefix_file.yaml"
     base_path = os.getenv("NAS_PATH")
     model_weight_path = os.path.join(base_path, "models/model_final_prefix.pth")
@@ -25,9 +24,18 @@ def prefix_data_parser(imgobj):
 
     threshold = 0.1
     prediction = detector(config_path, model_weight_path, threshold)
+    logger.info('Prefix detector prediction')
+
     inference_prefix.class_names = []
     lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prediction)
+    logger.info('Prefix get prefix output')
     conf, conf_band = confidence_band(scoreList, 4)
+    # if lbl == None:
+    #     logger.info('Prefix region not found!')
+    #     correctPrefix = ''
+    # else:
+    #     correctPrefix = recoverPrefix.getCorrectPrfix(lbl)
+    #     logger.info('Correct Prefix: %s' % correctPrefix)
     prefix_out = {}
     prefix_out['ocrValue'] = lbl
     prefix_out['confValue'] = conf

@@ -21,8 +21,8 @@ def read_input_and_form_output(input_dict):
     try:
         logger.info('Starting for loop')
         # local testing
-        # for img_obj in json.loads(input_dict): 
-        for img_obj in input_dict:
+        for img_obj in json.loads(input_dict): 
+        # for img_obj in input_dict:
             logger.info('img obj input: %s' % img_obj)
             base_path = os.getenv("NAS_PATH")
             logger.info('NAS PATH: %s' % base_path)
@@ -34,7 +34,7 @@ def read_input_and_form_output(input_dict):
                 if im is not None:
                     try:
                         seg_out = img_segmenter(im)
-                        logger.info('Seg out: %s' % seg_out)
+                        logger.info('Seg out')
                     except:
                         logger.info('exception for seg_out')
                         seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
@@ -43,6 +43,7 @@ def read_input_and_form_output(input_dict):
                         seg_out["PR"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                     try:
                         psn_out = dot_punched_data_parser(seg_out['ROI']['segment'])
+                        # cv2.imwrite('/shared-volume/file.jpg', seg_out['ROI']['segment'])
                         logger.info('psn out: %s' % psn_out)
                     except:
                         logger.info('exception for psn_out')
@@ -52,10 +53,12 @@ def read_input_and_form_output(input_dict):
                         psn_out["confBand"] = "LOW"
                     try:
                         # prefix_out = prefix_data_parser(im)
+                        # prefix_out = prefix_data_parser(seg_out['ROI']['segment'])
+                       
                         prefix_out = prefix_data_parser(seg_out['ROI']['segment'])
                         logger.info('prefix out: %s' % prefix_out)
-                    except:
-                        logger.info('exception for prefix_out')
+                    except Exception as e:
+                        logger.info('exception for prefix_out %s' % e)
                         prefix_out = {}
                         prefix_out["ocrValue"] = "P_UNKN"
                         prefix_out["confValue"] = 0.0

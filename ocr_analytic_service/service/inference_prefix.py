@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 
 x_lowTolRange = 0.68#0.85 #How far away the first character of PR can be away from PR box; need larger tolerance as it is 1st
 x_highTolRange = 1.1#1.15 #how far away the last character is to be from PR need lesser tolerance as we assume PR box to be larger on width side
@@ -372,7 +373,20 @@ def clean_class(classes_list, scores_list, boxes_list, class_names):
 
 
 def getPrefix(im, predictor, key='PR'):
+     #Siva-->Kashsih: Change for pre-processing fileter -- Start
+    # bgr = im
+    # lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB)
+    # l, a, b = cv2.split(lab)
+    # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(7, 7))
+    # l = clahe.apply(l)
+    # lab = cv2.merge((l, a, b))
+    # bgr = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+    # im = bgr #CLAHE filtered image
+    # Siva-->Kashsih: Change for pre-processing fileter -- End
+    # cv2.imwrite('/shared-volume/inputfile.jpg', im)
+    print('get prefix test1 ')
     outputs = predictor(im)
+    print('get prefix test2 ' + outputs)
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
     scores = outputs['instances'].scores
@@ -381,9 +395,11 @@ def getPrefix(im, predictor, key='PR'):
     scores_list = scores.tolist()
     boxes_list = boxes.tensor.tolist()
     results = Results(classes_list, boxes_list, scores_list)
+    print('results prefix: ')
 
     clean_box_list, clean_classes_list = clean_class(classes_list, scores_list, boxes_list, list(range(len(class_map))))
     labelDict = get_named_strings(names, results)
+    print('label dict prefix: ')
 
     if labelDict == None:
         print('The '+ str(names) + 'not found; Returning empty String')
