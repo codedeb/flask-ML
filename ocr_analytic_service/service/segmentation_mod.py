@@ -96,7 +96,7 @@ def img_segmenter(img):
         else:
             out_obj = {}
             out_obj['segment'] = img
-            out_obj['confValue'] = 0
+            out_obj['confValue'] = 0.0
             out_obj['confBand'] = "LOW"
             out_obj['box'] = None
             dct_out[seg] = out_obj
