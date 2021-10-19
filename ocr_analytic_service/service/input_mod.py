@@ -16,27 +16,24 @@ logger = logging.getLogger(__name__)
 
 
 def read_input_and_form_output(input_dict):
-    logger.info('Input dict for ROI Update: %s' % input_dict)
+    logger.info('Input for analytics: %s' % input_dict)
     out_put_dict = []
     try:
-        logger.info('Starting for loop')
         # local testing
         # for img_obj in json.loads(input_dict): 
         for img_obj in input_dict:
-            logger.info('img obj input: %s' % img_obj)
             base_path = os.getenv("NAS_PATH")
-            logger.info('NAS PATH: %s' % base_path)
             fl_nm = os.path.join(base_path, img_obj['imagePath'])
-            logger.info('file name: %s' % fl_nm)
+            logger.info('File: %s' % fl_nm)
             try:
                 im = cv2.imread(fl_nm)
                 # logger.info('Input image: %s' % im)
                 if im is not None:
                     try:
                         seg_out = img_segmenter(im)
-                        logger.info('Seg out: %s' % seg_out)
+                        logger.info('Segmented successfully!')
                     except:
-                        logger.info('exception for seg_out')
+                        logger.info('Exception occurred while segmentation!')
                         seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
                         seg_out["ROI"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                         seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
@@ -45,24 +42,22 @@ def read_input_and_form_output(input_dict):
                         psn_out = dot_punched_data_parser(seg_out['ROI']['segment'])
                         logger.info('psn out: %s' % psn_out)
                     except:
-                        logger.info('exception for psn_out')
+                        logger.info('Exception occurred while parsing PSN!')
                         psn_out = {}
                         psn_out["ocrValue"] = "S_UNKN"
                         psn_out["confValue"] = 0.0
                         psn_out["confBand"] = "LOW"
                     try:
-                        # prefix_out = prefix_data_parser(im)
                         prefix_out = prefix_data_parser(seg_out['ROI']['segment'])
                         logger.info('prefix out: %s' % prefix_out)
                     except:
-                        logger.info('exception for prefix_out')
+                        logger.info('Exception occurred while parsing prefix!')
                         prefix_out = {}
                         prefix_out["ocrValue"] = "P_UNKN"
                         prefix_out["confValue"] = 0.0
                         prefix_out["confBand"] = "LOW"
                 
                     result_out = data_collector(seg_out, psn_out, prefix_out)
-                    logger.info('data collector result: %s' % result_out)
                     final_obj = img_obj.copy()
                     final_obj["ocrValue"] = result_out["ocrValue"]
                     final_obj["ocrConfidenceValue"] = result_out["confValue"]
@@ -70,6 +65,7 @@ def read_input_and_form_output(input_dict):
                     final_obj["ocrAdditional"] = ""
                     out_put_dict.append(final_obj)
                 else:
+                    logger.info('Failed to read image!')
                     final_obj = img_obj.copy()
                     final_obj["ocrValue"] = "IMG_NOT_FOUND"
                     final_obj["ocrConfidenceValue"] = 0.0
@@ -84,7 +80,6 @@ def read_input_and_form_output(input_dict):
                 final_obj["ocrConfidenceBand"] = "LOW"
                 final_obj["ocrAdditional"] = "OCR Failed"
                 out_put_dict.append(final_obj)
-        logger.info('Output dict: %s' % out_put_dict)
         return out_put_dict
     except:
         logger.info('No item found')

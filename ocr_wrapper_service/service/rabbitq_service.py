@@ -41,7 +41,6 @@ def send_messages(output):
     return True                                           
             
 def process_messages():
-    logger.info("Inside process messages")
     hostname = os.environ['RABBITMQ_HOST_NAME']
     port = os.environ['RABBITMQ_HOST_PORT']
     username = os.environ['RABBITMQ_USERNAME']
@@ -67,7 +66,6 @@ def process_messages():
     def callback(ch, method, properties, body):
         logger.info(" [x] Received %r" % body)
         input_messages = body.decode('utf8')
-        logger.info(" [x] Input message %r" % input_messages)
         output_messages = process(input_messages)
         # if len(output_messages) > 0:
         #     logger.info('length > 0')
