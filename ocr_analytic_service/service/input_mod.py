@@ -20,8 +20,8 @@ def read_input_and_form_output(input_dict):
     out_put_dict = []
     try:
         # local testing
-        for img_obj in json.loads(input_dict): 
-        # for img_obj in input_dict:
+        # for img_obj in json.loads(input_dict): 
+        for img_obj in input_dict:
             base_path = os.getenv("NAS_PATH")
             fl_nm = os.path.join(base_path, img_obj['imagePath'])
             logger.info('File: %s' % fl_nm)
