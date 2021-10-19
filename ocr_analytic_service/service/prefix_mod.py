@@ -23,23 +23,23 @@ def prefix_data_parser(imgobj):
     logger.info('Prefix model path: %s' % model_weight_path)
 
     threshold = 0.1
-    prediction = detector(config_path, model_weight_path, threshold)
-    logger.info('Prefix detector prediction')
+    try:
+        prediction = detector(config_path, model_weight_path, threshold)
+        inference_prefix.class_names = []
+        lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prediction)
+        logger.info('Prefix Initial output %s' % lbl)
+        conf, conf_band = confidence_band(scoreList, 4)
+        if lbl == None:
+            logger.info('Prefix region not found!')
+        else:
+            correctPrefix, probDist = recoverPrefix.getCorrectPrfix(lbl)
+            logger.info('Prefix Correct output: %s' % correctPrefix)
+        prefix_out = {}
+        prefix_out['ocrValue'] = lbl
+        prefix_out['confValue'] = conf
+        prefix_out['confBand'] = conf_band
 
-    inference_prefix.class_names = []
-    lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prediction)
-    logger.info('Prefix get prefix output')
-    conf, conf_band = confidence_band(scoreList, 4)
-    # if lbl == None:
-    #     logger.info('Prefix region not found!')
-    #     correctPrefix = ''
-    # else:
-    #     correctPrefix = recoverPrefix.getCorrectPrfix(lbl)
-    #     logger.info('Correct Prefix: %s' % correctPrefix)
-    prefix_out = {}
-    prefix_out['ocrValue'] = lbl
-    prefix_out['confValue'] = conf
-    prefix_out['confBand'] = conf_band
-
-    logger.info('Prefix model output: %s' % prefix_out)
+        logger.info('Prefix model output: %s' % prefix_out)
+    except Exception as e:
+        logger.info('Prefix model exception: %s' % e)
     return prefix_out

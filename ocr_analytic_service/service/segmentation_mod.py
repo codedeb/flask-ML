@@ -19,11 +19,8 @@ def img_segmenter(img):
     config_path = "ocr_analytic_service/service/configSeg_file.yaml"
     base_path = os.getenv("NAS_PATH")
     model_weight_path = os.path.join(base_path, 'models/model_final_segmentation.pth')
-    logger.info('Seg model path in plp: %s' % model_weight_path)
+    logger.info('Segmentation model path: %s' % model_weight_path)
 
-    # model_weight_path = "/opt/shared/data/cpl/idm/models/model_final_segmentation.pth"
-    # model_weight_path = r"/shared-volume/model_final_segmentation.pth"
-    # logger.info('Segmentation model path: %s' % model_weight_path)
     threshold = 0.3
 
     # Make prediction
@@ -94,17 +91,13 @@ def img_segmenter(img):
             out_obj['segment'] = dct_out_segs[seg]
             out_obj['confValue'] = dct_out_conf[seg]
             out_obj['confBand'] = dct_out_confband[seg]
-
             out_obj['box'] = dct_out_box[seg]
-
             dct_out[seg] = out_obj
         else:
             out_obj = {}
             out_obj['segment'] = img
             out_obj['confValue'] = 0
             out_obj['confBand'] = "LOW"
-            
             out_obj['box'] = None
-
             dct_out[seg] = out_obj
     return dct_out

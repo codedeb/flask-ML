@@ -8,11 +8,10 @@ logger = logging.getLogger(__name__)
 
 
 def process_images(input_images):
-    # logger.info('data', input_images)
     try:
-        logger.info('sending images to process')
+        logger.info('Processing Images for analytics')
         output = read_input_and_form_output(json.loads(input_images))
-        logger.info('analytic output: %s' % output)
+        logger.info('Analytic output: %s' % output)
     except Exception as e:
-        logger.error('Failed in process images : %s' % e)
+        logger.error('Failed while process images : %s' % e)
     return output

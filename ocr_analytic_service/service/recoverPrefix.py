@@ -1,4 +1,10 @@
 import jellyfish as jf
+import logging
+
+logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 #Siva: ***Important **** Code cleanup using try catch and logging for maintaining and updating the code
 
@@ -11,6 +17,7 @@ import jellyfish as jf
 #Learning.
 
 #Siva: Create and init AplhaNum character list
+# To Do: 35 to be as config len(alphanums) - 1
 alphaNums = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 class ConfusionProb():
     # Probability of character being mistaken for another; At preset simple assumption is that it is equal for all
@@ -69,7 +76,7 @@ class ConfusionProb():
 
 #Siva: List of valid prefixes
 #In final version these need to be read from a filw whihc is created maintained outside of the app
-lPrefixes =['C2NP','K2LP','K2LM','K3WP','K3FM','K1BP','K1AP','K3FP','K2DP']
+lPrefixes =['C2NP','K2LP','K2LM','K3WP','K3FM','K1BP','K1AP','K3FP','K2DP','K1AM']
 
 #Siva: Return the distance from source word to destination word for a given matrix of confusion distance
 def getwordDistance(wf,wt,charConfDistance):
@@ -104,17 +111,20 @@ def getClosest(word,lWords,maxDistance):
 #Need to convert this to Object and expose only following as the public function
 
 def getCorrectPrfix(pfx): #Give closest from Ground truth and its distance from source word
+    logger.info('Correct prefix Input:%s' % pfx)
     if pfx == '':
-        print('Null Prefix received; Can\'t process')
+        logger.info('Null Prefix received; Cant process')
         return('',0.0)
     if pfx in lPrefixes:
+        logger.info('list: %s' % lPrefixes)
         return pfx,0.0
 
     # Siva: Max number of operations of 'insert, delete, swap, that need to be done to go from source string
     # to destination String
 
     correct,distance = getClosest(pfx,lPrefixes,maxDistance)
-    print(correct,distance)
+    logger.debug('Correct Prefix: %s ' % correct)
+    logger.debug('Distance: %s ' % distance)
     w2d = {} #Man, this naming is getting on my nerves; Need better naming
     overallProb = 1
     overallDistance = maxDistance
@@ -126,8 +136,9 @@ def getCorrectPrfix(pfx): #Give closest from Ground truth and its distance from 
         if w2d[w] < overallDistance:
             overallDistance = w2d[w]
             ans = w
-    print(w2d,'Least Weighted:',overallDistance)
-    print(ans,overallDistance)
+    # logger.info(w2d,'Least Weighted:',overallDistance)
+    # logger.info(ans,overallDistance)
+    logger.debug('overallDistance: %s ' % overallDistance)
     return(ans,overallDistance)
 #***Set the confusion object and update the frequency based probabilities
 maxDistance = 1000
@@ -144,9 +155,7 @@ confusionProb.updateCellProb('P', 'L', 2, 100)
 confusionProb.updateCellProb('B', 'L', 1, 100)
 
 #Input word for testing
-inpword = 'K2LX'
-
-
-#for wrd in lPrefixes:
+# inpword = '2NP'
+# for wrd in lPrefixes:
 #    print('***',wrd,getCorrectPrfix(wrd))
-#print('***',inpword,getCorrectPrfix(inpword))
+# print('***',inpword,getCorrectPrfix(inpword))
