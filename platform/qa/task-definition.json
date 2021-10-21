@@ -2,7 +2,7 @@
 	"containerDefinitions": [
 		{
 			"name": "ocr-wrapper-service",
-			"image": "598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:ocr-wrapper-service",
+			"image": "598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-qa:ocr-wrapper-service",
 			"cpu": 0,
 			"links": [],
 			"portMappings": [
@@ -21,11 +21,11 @@
 			"environment": [
 				{
 					"name": "INPUT_QUEUE",
-					"value": "uai3046767-cpl-dev-idm-input"
+					"value": "uai3046767-cpl-qa-idm-input"
 				},
 				{
 					"name": "OUTPUT_QUEUE",
-					"value": "uai3046767-cpl-dev-idm-output"
+					"value": "uai3046767-cpl-qa-idm-output"
 				},
 				{
 					"name": "ACCOUNT_NUMBER",
@@ -45,7 +45,7 @@
 				},
 				{
 					"name": "IMAGE_FOLDER_PATH",
-					"value": "IDM/dev"
+					"value": "IDM/qa"
 				}
 			],
 			"mountPoints": [],
@@ -59,7 +59,7 @@
 			"logConfiguration": {
 				"logDriver": "awslogs",
 				"options": {
-					"awslogs-group": "uai3046767/cpl/dev/ocr-wrapper-service",
+					"awslogs-group": "uai3046767/cpl/qa/ocr-wrapper-service",
 					"awslogs-region": "us-east-1",
 					"awslogs-stream-prefix": "ocr-wrapper-service"
 				}
@@ -67,8 +67,8 @@
 		}
 	],
 	"family": "uai3046767-ocr-taskdef-qa",
-	"taskRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-dev",
-	"executionRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-dev",
+	"taskRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-qa",
+	"executionRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-qa",
 	"networkMode": "awsvpc",
 	"volumes": [],
 	"placementConstraints": [],
