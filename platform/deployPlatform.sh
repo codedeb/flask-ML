@@ -9,7 +9,7 @@ REPO_DIR="$CURRENT_DIR/."
 if [ "$1" = "dev" ]; then
   source $CURRENT_DIR/dev/deploy-variables.sh
 elif [ "$1" = "qa" ]; then
-  source $CURRENT_DIR/stg/deploy-variables.sh
+  source $CURRENT_DIR/qa/deploy-variables.sh
 elif [ "$1" = "prod" ]; then
   source $CURRENT_DIR/prd/deploy-variables.sh
 else
@@ -20,6 +20,20 @@ fi
 # If we are doing a Jenkins build, log in to ECR
 if [ ! -n "${JENKINS_HOME+1}" ]; then
   $(aws ecr get-login --no-include-email --region us-east-1 --no-verify-ssl)
+fi
+
+#############################
+### create log group
+#############################
+LOG_GROUP=$(aws logs describe-log-groups --log-group uai3046767/cpl/$ENV/ocr-wrapper-service --region=us-east-1 --output text)
+echo "LOG_GROUP : $LOG_GROUP"
+if [[ -z $LOG_GROUP || $LOG_GROUP == 'None' || $LOG_GROUP == '' ]]; then
+	LOG_COMMAND="aws logs create-log-group --log-group-name uai3046767/cpl/$ENV/cpl-ui --region us-east-1"
+	echo "Running SERVICE_COMMAND: $LOG_COMMAND"
+	if ! $LOG_COMMAND; then
+		echo "Error, exiting deploy script due to an error while creating log group..."
+		exit 1
+	fi
 fi
 
 ###########################################################
@@ -89,7 +103,7 @@ fi
 ### CREATE SERVICE IF NOT AVAILABLE
 ###########################################################
 SERVICE_FILENAME="$CURRENT_DIR/$ENV/ocr-service.json"
-SERVICE_ARN=$(aws ecs describe-services --cluster uai3046767-cpl-$ENV --services uai3046767-ocr3-service-$ENV --region us-east-1  --query 'services[0].serviceArn' --output text)
+SERVICE_ARN=$(aws ecs describe-services --cluster uai3046767-cpl-$ENV --services uai3046767-ocr-service-$ENV --region us-east-1  --query 'services[0].serviceArn' --output text)
 echo "SERVICE_ARN : $SERVICE_ARN"
 if [[ -z $SERVICE_ARN || $SERVICE_ARN == 'None' ]]; then
 	SERVICE_COMMAND="aws ecs create-service --cli-input-json file://$SERVICE_FILENAME --region us-east-1"
@@ -104,7 +118,7 @@ fi
 ### DEPLOY NEW TASK DEFINITION TO ECS/FARGATE
 ###########################################################
 CLUSTER="uai3046767-cpl-$ENV"
-SERVICE_NAME="uai3046767-ocr3-service-$ENV"
+SERVICE_NAME="uai3046767-ocr-service-$ENV"
 DEPLOY_COMMAND="aws ecs update-service \
   --cluster $CLUSTER \
   --service $SERVICE_NAME \
