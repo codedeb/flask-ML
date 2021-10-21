@@ -66,7 +66,7 @@
 			}
 		}
 	],
-	"family": "uai3046767-ocr-taskdef-dev",
+	"family": "uai3046767-ocr-taskdef-qa",
 	"taskRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-dev",
 	"executionRoleArn": "arn:aws:iam::598619258634:role/app/uai3046767/cpl-ecs-tasks-ocr-dev",
 	"networkMode": "awsvpc",
