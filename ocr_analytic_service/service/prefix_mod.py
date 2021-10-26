@@ -35,7 +35,7 @@ def prefix_data_parser(imgobj):
             correctPrefix, probDist = recoverPrefix.getCorrectPrfix(lbl)
             logger.info('Prefix Correct output: %s' % correctPrefix)
         prefix_out = {}
-        prefix_out['ocrValue'] = lbl
+        prefix_out['ocrValue'] = correctPrefix
         prefix_out['confValue'] = conf
         prefix_out['confBand'] = conf_band
 
