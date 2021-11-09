@@ -42,7 +42,8 @@ fi
 CLUSTER="uai3046767-cpl-$ENV"
 echo "Creating IDM directory for $CLUSTER"
 
-IDM_BUCKET = "aws s3 ls s3://uai3046767-cpl-$ENV/IDM/image"
+IDM_BUCKET="aws s3 ls s3://uai3046767-cpl-$ENV/IDM/image"
+echo "--------IDM bucket result: $IDM_BUCKET"
 IDM_DIRECTORY="uai3046767-cpl-$ENV/IDM/image"
 if [[ -z $IDM_BUCKET || $IDM_BUCKET == 'None' ]]; 
 then
@@ -58,7 +59,7 @@ fi
 ###########################################################
 ### CREATE MODEL FOLDER TO UPLOAD MODELS
 ###########################################################
-MODEL_BUCKET = "aws s3 ls s3://uai3046767-cpl-$ENV/IDM/model"
+MODEL_BUCKET="aws s3 ls s3://uai3046767-cpl-$ENV/IDM/model"
 MODEL_DIRECTORY="uai3046767-cpl-$ENV/IDM/model"
 if [[ -z $MODEL_BUCKET || $MODEL_BUCKET == 'None' ]]; 
 then
