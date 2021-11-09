@@ -48,7 +48,7 @@ if [[ -z $IDM_BUCKET || $IDM_BUCKET == 'None' ]];
 then
   echo "IDM folder doesn't exist. Creating now..."
   # Creating folder cmnd
-  IDM_DIRECTORY_CREATE="aws s3api put-object --bucket uai3046767-cpl-$ENV --key IDM/"
+  IDM_DIRECTORY_CREATE="aws s3api put-object --bucket uai3046767-cpl-$ENV --key IDM/image"
 	echo "Running IDM_DIRECTORY_CREATE: $IDM_DIRECTORY_CREATE"
   echo "$IDM_DIRECTORY created!"
 else
