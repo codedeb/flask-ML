@@ -132,3 +132,35 @@ if ! $DEPLOY_COMMAND; then
   echo "Error, exiting deploy script..."
   exit 1
 fi
+
+###########################################################
+### CREATE IDM FOLDER TO UPLOAD MODELS
+###########################################################
+CLUSTER="uai3046767-cpl-$ENV"
+echo "Creating IDM directory for $CLUSTER"
+
+IDM_BUCKET = "aws s3 ls s3://uai3046767-cpl-$ENV/IDM"
+IDM_DIRECTORY="uai3046767-cpl-$ENV/IDM"
+if [[ -z $IDM_BUCKET || $IDM_BUCKET == 'None' ]]; 
+then
+  echo "IDM folder doesn't exist. Creating now..."
+  # Creating folder cmnd
+  IDM_DIRECTORY_CREATE="aws s3api put-object --bucket uai3046767-cpl-$ENV --key IDM/"
+	echo "Running IDM_DIRECTORY_CREATE: $IDM_DIRECTORY_CREATE"
+  echo "$IDM_DIRECTORY created!"
+else
+    echo "$IDM_DIRECTORY exists!"
+fi
+
+
+MODEL_BUCKET = "aws s3 ls s3://uai3046767-cpl-$ENV/IDM/model"
+MODEL_DIRECTORY="uai3046767-cpl-$ENV/IDM/model"
+if [[ -z $MODEL_BUCKET || $MODEL_BUCKET == 'None' ]]; 
+then
+  echo "Model folder doesn't exist. Creating now..."
+  MODEL_DIRECTORY_CREATE="aws s3api put-object --bucket uai3046767-cpl-$ENV --key IDM/model"
+	echo "Running MODEL_DIRECTORY_CREATE: $MODEL_DIRECTORY_CREATE"
+  echo "$MODEL_DIRECTORY created!"
+else
+    echo "$MODEL_DIRECTORY exists!"
+fi
