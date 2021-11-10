@@ -370,7 +370,7 @@ def clean_class(classes_list, scores_list, boxes_list, class_names):
 
 
 def getPrefix(im, predictor, key='PR'):
-     #Siva-->Kashsih: Change for pre-processing fileter -- Start
+    #Change for pre-processing fileter -- Start
     # bgr = im
     # lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB)
     # l, a, b = cv2.split(lab)
@@ -379,7 +379,7 @@ def getPrefix(im, predictor, key='PR'):
     # lab = cv2.merge((l, a, b))
     # bgr = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
     # im = bgr #CLAHE filtered image
-    # Siva-->Kashsih: Change for pre-processing fileter -- End
+    # Change for pre-processing fileter -- End
     # cv2.imwrite('/shared-volume/inputfile.jpg', im)
     outputs = predictor(im)
     classes = outputs['instances'].pred_classes
