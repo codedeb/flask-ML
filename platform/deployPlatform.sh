@@ -53,7 +53,7 @@ then
 	echo "Running IDM_DIRECTORY_CREATE: $IDM_DIRECTORY_CREATE"
   echo "$IDM_DIRECTORY created!"
 else
-    echo "$IDM_DIRECTORY exists!"
+    	echo "$IDM_DIRECTORY exists!"
 fi
 
 ###########################################################
@@ -61,14 +61,14 @@ fi
 ###########################################################
 MODEL_BUCKET=$(aws s3 ls s3://uai3046767-cpl-$ENV/IDM/model)
 MODEL_DIRECTORY="uai3046767-cpl-$ENV/IDM/model"
-if [[ -z $MODEL_BUCKET || $MODEL_BUCKET == 'None' ]]; 
+if [[ -z $MODEL_BUCKET || $MODEL_BUCKET == 'None' || $MODEL_BUCKET == '' ]]; 
 then
   echo "Model folder doesn't exist. Creating now..."
   MODEL_DIRECTORY_CREATE=$(aws s3api put-object --bucket uai3046767-cpl-$ENV --key IDM/model)
 	echo "Running MODEL_DIRECTORY_CREATE: $MODEL_DIRECTORY_CREATE"
-  echo "$MODEL_DIRECTORY created!"
+  	echo "$MODEL_DIRECTORY created!"
 else
-    echo "$MODEL_DIRECTORY exists!"
+    	echo "$MODEL_DIRECTORY exists!"
 fi
 
 ###########################################################
