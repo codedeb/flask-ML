@@ -32,13 +32,12 @@ def load_models():
 
         # downloading files 
         for object in objects['Contents']:
-            logger.info('s3 object: %s' %  object)
             path, filename = os.path.split(object['Key'])
             logger.info('file to be downloaded: %s' %  filename)
             # Create directory if doesnt exist
             os.makedirs(model_path, exist_ok=True)
             modelDownloaded = os.path.join(model_path, filename)
-            logger.info('file to be donloaded as: %s' %  modelDownloaded)
+            logger.info('file downloaded in container path: %s' %  modelDownloaded)
             # Download file
             s3.download_file(os.getenv('BUCKET_NAME'), object['Key'], modelDownloaded)
         return True

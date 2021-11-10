@@ -40,22 +40,22 @@ def read_input_and_form_output(input_dict):
                 im = cv2.imdecode(image, cv2.IMREAD_COLOR)
                 # cv2.imwrite('/idm/input/abc.jpg',im)
                 # im = cv2.imread(fl_nm, cv2.IMREAD_UNCHANGED)
-                logger.info('Image read: %s' % im)
+                # logger.info('Image read: %s' % im)
                 if im is not None:
                     try:
                         seg_out = img_segmenter(im)
-                        logger.info('Seg out: %s' % seg_out)
+                        logger.info('Segmentation successful!')
                     except:
-                        logger.info('exception for seg_out')
+                        logger.info('Segmentation failure!')
                         seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
                         seg_out["ROI"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                         seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                         seg_out["PR"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                     try:
                         psn_out = dot_punched_data_parser(seg_out['ROI']['segment'])
-                        logger.info('psn out: %s' % psn_out)
+                        logger.info('dot punch output: %s' % psn_out)
                     except:
-                        logger.info('exception for psn_out')
+                        logger.info('Dot punch failure!')
                         psn_out = {}
                         psn_out["ocrValue"] = "S_UNKN"
                         psn_out["confValue"] = 0.0
@@ -63,9 +63,9 @@ def read_input_and_form_output(input_dict):
                     try:
                         # prefix_out = prefix_data_parser(im)
                         prefix_out = prefix_data_parser(seg_out['ROI']['segment'])
-                        logger.info('prefix out: %s' % prefix_out)
+                        logger.info('prefix output: %s' % prefix_out)
                     except:
-                        logger.info('exception for prefix_out')
+                        logger.info('Prefix failure!')
                         prefix_out = {}
                         prefix_out["ocrValue"] = "P_UNKN"
                         prefix_out["confValue"] = 0.0
