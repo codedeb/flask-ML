@@ -1,4 +1,6 @@
 import numpy as np
+import cv2
+
 
 x_lowTolRange = 0.68#0.85 #How far away the first character of PR can be away from PR box; need larger tolerance as it is 1st
 x_highTolRange = 1.1#1.15 #how far away the last character is to be from PR need lesser tolerance as we assume PR box to be larger on width side
@@ -145,11 +147,7 @@ class resultLet:
             return overlappingBoxes,wordGap, isResultMulitpleBoxes
 
 
-class_map = {0: '0', 1: '0_DP', 2: '1', 3: '1_DP', 4: '2', 5: '2_DP', 6: '3', 7: '3_DP', 8: '4',
-             9: '4_DP', 10: '5', 11: '5_DP', 12: '6', 13: '6_DP', 14: '7', 15: '7_DP', 16: '8',
-             17: '8_DP', 18: '9', 19: '9_DP', 20: 'A', 21: 'B', 22: 'BL', 23: 'C', 24: 'D', 25: 'E',
-             26: 'G', 27: 'H', 28: 'K', 29: 'M', 30: 'N', 31: 'P', 32: 'PR', 33: 'PSN', 34: 'ROI',
-             35: 'ROI-SN', 36: 'T', 37: 'TL', 38: 'W'}
+class_map = {0: '0', 1: '0_', 2: '0_DP', 3: '1', 4: '1_DP', 5: '2', 6: '2_DP', 7: '3', 8: '3_DP', 9: '4', 10: '4_DP', 11: '5', 12: '5_DP', 13: '6', 14: '6_DP', 15: '7', 16: '7_DP', 17: '8', 18: '8_DP', 19: '9', 20: '9_DP', 21: 'A', 22: 'B', 23: 'BL', 24: 'C', 25: 'D', 26: 'E', 27: 'F', 28: 'G', 29: 'H', 30: 'I', 31: 'K', 32: 'L', 33: 'M', 34: 'N', 35: 'P', 36: 'PR', 37: 'PSN', 38: 'R', 39: 'ROI', 40: 'ROI-SN', 41: 'S', 42: 'T', 43: 'TL', 44: 'V', 45: 'W', 46: 'p'}
 class_names = []
 cn = list(class_map.values())
 
@@ -166,7 +164,7 @@ class Results:
         self.results.sort(key=lambda x: x.euclidDistance)
 
     def getClosesToOrigin(self):
-        return(results[0])
+        return(self.results[0])
     def getLinesNwords(self):
         if len(self.lines) < 1:
             self.createLinesNwords()
@@ -372,6 +370,17 @@ def clean_class(classes_list, scores_list, boxes_list, class_names):
 
 
 def getPrefix(im, predictor, key='PR'):
+    #Change for pre-processing fileter -- Start
+    # bgr = im
+    # lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB)
+    # l, a, b = cv2.split(lab)
+    # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(7, 7))
+    # l = clahe.apply(l)
+    # lab = cv2.merge((l, a, b))
+    # bgr = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+    # im = bgr #CLAHE filtered image
+    # Change for pre-processing fileter -- End
+    # cv2.imwrite('/shared-volume/inputfile.jpg', im)
     outputs = predictor(im)
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes

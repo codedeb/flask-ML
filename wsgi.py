@@ -33,11 +33,13 @@ atexit.register(lambda: scheduler.shutdown())
 if __name__ == "__main__":
     logger.info('Loading Models...')
     modelLoadStatus = load_models()
-    if(modelLoadStatus):
-        logger.info('Starting app main!')
-        app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/server.crt","platform/ssl/server.key"))
-    else:
-        logger.info('Error while starting app!')
+    logger.info('Starting app main!')
+    app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/server.crt","platform/ssl/server.key"))
+    # if(modelLoadStatus):
+    #     logger.info('Starting app main!')
+    #     app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/server.crt","platform/ssl/server.key"))
+    # else:
+    #     logger.info('Error while starting app!')
 
 # gunicorn run_app:app
 # gunicorn -c python:devops.gunicorn_sample_flask_app_config wsgi:app
