@@ -15,8 +15,9 @@ def dot_punched_data_parser(imgobj):
     # config_path = "ocr_analytic_service/service/configDotPunch_file.yaml"
     config_path = "ocr_analytic_service/service/configDotPunch_file_psn.yaml"
 
-    base_path = os.getenv("NAS_PATH")
-    model_weight_path = os.path.join(base_path, "models/model_final_dotpunch.pth")
+    base_path = os.getenv('MODEL_PATH')
+    logger.info('Dot punch model base path: %s' % base_path)
+    model_weight_path = os.path.join(base_path, "model/model_final_dotpunch.pth")
     # model_weight_path = r"/shared-volume/model_final_dotpunch.pth"
     logger.info('Dot punch model path: %s' % model_weight_path)
 
