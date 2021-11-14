@@ -75,6 +75,6 @@
 	"requiresCompatibilities": [
 		"FARGATE"
 	],
-	"cpu": "4096",
+	"cpu": "4",
 	"memory": "8192"
 }
