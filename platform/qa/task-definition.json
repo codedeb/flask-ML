@@ -3,7 +3,6 @@
 		{
 			"name": "ocr-wrapper-service",
 			"image": "598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-qa:ocr-wrapper-service",
-			"cpu": 0,
 			"links": [],
 			"portMappings": [
 				{
