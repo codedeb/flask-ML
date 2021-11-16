@@ -160,6 +160,7 @@ DEPLOY_COMMAND="aws ecs update-service \
   --network-configuration awsvpcConfiguration={subnets=[$SUBNETS],securityGroups=[$SECURITY_GROUPS],assignPublicIp=DISABLED}
   --task-definition $TASK_DEFINITION_ARN \
   --force-new-deployment \
+  --desired-count $DESIRED_COUNT \
   --region us-east-1"
 echo "Running DEPLOY_COMMAND: $DEPLOY_COMMAND"
 
