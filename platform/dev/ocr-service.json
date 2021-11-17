@@ -1,6 +1,6 @@
 {
     "cluster": "uai3046767-cpl-dev",
-    "serviceName": "uai3046767-ocr3-service-dev",
+    "serviceName": "uai3046767-ocr-service-dev",
     "taskDefinition": "uai3046767-ocr-taskdef-dev",
     "serviceRegistries": [ {
 			"registryArn": "arn:aws:servicediscovery:us-east-1:598619258634:service/srv-ltt7mk3cicmaalux"

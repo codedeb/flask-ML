@@ -138,7 +138,7 @@ fi
 ### CREATE SERVICE IF NOT AVAILABLE
 ###########################################################
 SERVICE_FILENAME="$CURRENT_DIR/$ENV/ocr-service.json"
-SERVICE_ARN=$(aws ecs describe-services --cluster uai3046767-cpl-$ENV --services uai3046767-ocr3-service-$ENV --region us-east-1  --query 'services[0].serviceArn' --output text)
+SERVICE_ARN=$(aws ecs describe-services --cluster uai3046767-cpl-$ENV --services uai3046767-ocr-service-$ENV --region us-east-1  --query 'services[0].serviceArn' --output text)
 echo "SERVICE_ARN : $SERVICE_ARN"
 if [[ -z $SERVICE_ARN || $SERVICE_ARN == 'None' ]]; then
 	SERVICE_COMMAND="aws ecs create-service --cli-input-json file://$SERVICE_FILENAME --region us-east-1"
@@ -153,7 +153,7 @@ fi
 ### DEPLOY NEW TASK DEFINITION TO ECS/FARGATE
 ###########################################################
 CLUSTER="uai3046767-cpl-$ENV"
-SERVICE_NAME="uai3046767-ocr3-service-$ENV"
+SERVICE_NAME="uai3046767-ocr-service-$ENV"
 DEPLOY_COMMAND="aws ecs update-service \
   --cluster $CLUSTER \
   --service $SERVICE_NAME \
