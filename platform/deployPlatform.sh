@@ -10,10 +10,10 @@ if [ "$1" = "dev" ]; then
   source $CURRENT_DIR/dev/deploy-variables.sh
 elif [ "$1" = "qa" ]; then
   source $CURRENT_DIR/qa/deploy-variables.sh
-elif [ "$1" = "prod" ]; then
+elif [ "$1" = "prd" ]; then
   source $CURRENT_DIR/prd/deploy-variables.sh
 else
-  echo "Usage: $0 dev/qa/prod"
+  echo "Usage: $0 dev/qa/prd"
   exit 1
 fi
 
@@ -29,9 +29,15 @@ LOG_GROUP=$(aws logs describe-log-groups --log-group uai3046767/cpl/$ENV/ocr-wra
 echo "LOG_GROUP : $LOG_GROUP"
 if [[ -z $LOG_GROUP || $LOG_GROUP == 'None' || $LOG_GROUP == '' ]]; then
 	LOG_COMMAND="aws logs create-log-group --log-group-name uai3046767/cpl/$ENV/ocr-wrapper-service --region us-east-1"
+	LOG_STREAM_COMMAND="aws logs create-log-stream --log-group-name uai3046767/cpl/$ENV/ocr-wrapper-service --log-stream-name ocr-wrapper-service --region us-east-1"
 	echo "Running SERVICE_COMMAND: $LOG_COMMAND"
 	if ! $LOG_COMMAND; then
 		echo "Error, exiting deploy script due to an error while creating log group..."
+		exit 1
+	fi
+	echo "Running LOG_STREAM_COMMAND: $LOG_STREAM_COMMAND"
+	if ! $LOG_STREAM_COMMAND; then
+		echo "Error, exiting deploy script due to an error while creating log stream group..."
 		exit 1
 	fi
 fi
