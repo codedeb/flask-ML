@@ -81,8 +81,8 @@ fi
 ### LOG IN TO PRISMA CLOUD
 ###########################################################
 # Need to capture the output here
-PRISMA_USERNAME=$(aws secretsmanager get-secret-value --secret-id /uai3046767/cpl/dev/Common --region us-east-1 --no-verify-ssl --query "SecretString" | jq -r fromjson.PrismaAccessKeyID)
-PRISMA_PASSWORD=$(aws secretsmanager get-secret-value --secret-id /uai3046767/cpl/dev/Common --region us-east-1 --no-verify-ssl --query "SecretString" | jq -r fromjson.PrismaSecretKey)
+PRISMA_USERNAME=$(aws secretsmanager get-secret-value --secret-id /uai3046767/cpl/$ENV/Common --region us-east-1 --no-verify-ssl --query "SecretString" | jq -r fromjson.PrismaAccessKeyID)
+PRISMA_PASSWORD=$(aws secretsmanager get-secret-value --secret-id /uai3046767/cpl/$ENV/Common --region us-east-1 --no-verify-ssl --query "SecretString" | jq -r fromjson.PrismaSecretKey)
 TOKEN=$(curl -k -X POST \
   https://us-east1.cloud.twistlock.com/us-2-158286731/api/v1/authenticate \
   -H "Content-Type: application/json" \
