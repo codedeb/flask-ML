@@ -16,7 +16,7 @@ try:
     sqs_client = boto3.client('sqs', region_name=os.getenv('REGION'))
 except:
     logger.error('Error while connecting to SQS for consuming msgs!')
-    # sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'), aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'), region_name=os.getenv('REGION'))
+    sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'), aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'), region_name=os.getenv('REGION'))
     pass
 
 
