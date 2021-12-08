@@ -1,10 +1,10 @@
 # Using base image as slim-buster as it is 114MB when uncompressed with latest Python releases and benefits of Debian Buster
 FROM python:3.6-slim-buster
 
-# ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
-# ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
 
-# COPY config/80proxy /etc/apt/apt.conf.d/80proxy
+COPY config/80proxy /etc/apt/apt.conf.d/80proxy
 
 RUN apt-get update -y \
     && apt-get clean \
@@ -41,13 +41,14 @@ EXPOSE 5000
 
 ENV AWS_ACCESS_KEY_ID=None  \
     AWS_SECRET_ACCESS_KEY=None \
+    AWS_SESSION_TOKEN=None \
     REGION=us-east-1 \
     INPUT_QUEUE=uai3046767-cpl-dev-idm-input \
     OUTPUT_QUEUE=uai3046767-cpl-dev-idm-output \
-    AWS_ACCOUNT_NUMBER=598619258634 \
     ACCOUNT_NUMBER=598619258634 \
     BUCKET_NAME=uai3046767-cpl-dev \
-    NAS_PATH=/opt/shared/data/cpl/idm \
-    MODEL_PATH=/opt/shared/data/cpl/idm
+    MODEL_PATH=/IDM \
+    IMAGE_FOLDER_PATH=IDM/dev \
+    DUMP_IMAGES=IDM/dev/dump_images
 
 ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]

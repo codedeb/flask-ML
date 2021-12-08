@@ -44,7 +44,10 @@ def read_input_and_form_output(input_dict):
                 if im is not None:
                     try:
                         seg_out = img_segmenter(im)
-                        logger.info('Segmentation successful!')
+                        logger.info('Segmentation successful! %s' % seg_out )
+                        seg_dump_file = os.path.join(os.getenv('DUMP_IMAGES'), "seg_" + img_obj['imagePath'])
+                        cv2.imwrite(seg_dump_file, seg_out['ROI']['segment'])
+                        s3_resource.upload_file(seg_dump_file,os.getenv('BUCKET_NAME'),os.getenv('DUMP_IMAGES')+ "/seg_" + img_obj['imagePath'])
                     except:
                         logger.info('Segmentation failure!')
                         seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
