@@ -45,9 +45,11 @@ def read_input_and_form_output(input_dict):
                     try:
                         seg_out = img_segmenter(im)
                         logger.info('Segmentation successful! %s' % seg_out )
-                        seg_dump_file = os.path.join(os.getenv('DUMP_IMAGES'), "seg_" + img_obj['imagePath'])
-                        cv2.imwrite(seg_dump_file, seg_out['ROI']['segment'])
-                        s3_resource.upload_file(seg_dump_file,os.getenv('BUCKET_NAME'),os.getenv('DUMP_IMAGES')+ "/seg_" + img_obj['imagePath'])
+                        seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), img_obj['imagePath'])
+                        logger.info('seg_dump_file_path %s' % seg_dump_file_path)
+                        imwriteStatus = cv2.imwrite(seg_dump_file_path, seg_out['ROI']['segment'])
+                        logger.info('imwriteStatus %s' % imwriteStatus)
+                        s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), 'testImage.jpg')
                     except Exception as e:
                         logger.info('Segmentation failure! %s' % e)
                         seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
