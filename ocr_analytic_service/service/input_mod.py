@@ -26,12 +26,10 @@ except:
 
 
 def read_input_and_form_output(input_dict):
-    logger.info('Input dict for ROI Update: %s' % input_dict)
+    logger.info('Analytics Input: %s' % input_dict)
     out_put_dict = []
     try:
-        logger.info('Starting for loop')
         for img_obj in input_dict:
-            logger.info('img obj input: %s' % img_obj)
             try:
                 bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
                 image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
@@ -44,13 +42,14 @@ def read_input_and_form_output(input_dict):
                 if im is not None:
                     try:
                         seg_out = img_segmenter(im)
-                        logger.info('Segmentation successful! %s' % seg_out )
-                        seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), img_obj['imagePath'])
-                        logger.info('seg_dump_file_path %s' % seg_dump_file_path)
-                        os.makedirs("IDM/dev/dump_images/242/PARTSOUT", exist_ok=True)
-                        imwriteStatus = cv2.imwrite(seg_dump_file_path, seg_out['ROI']['segment'])
-                        logger.info('imwriteStatus %s' % imwriteStatus)
-                        s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), 'testImage.jpg')
+                        logger.info('Segmentation successful!')
+                        # logger.info('Segmentation result: %s' % seg_out )
+                        # seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), img_obj['imagePath'])
+                        # logger.info('seg_dump_file_path %s' % seg_dump_file_path)
+                        # os.makedirs("IDM/dev/dump_images/242/PARTSOUT", exist_ok=True)
+                        # imwriteStatus = cv2.imwrite(seg_dump_file_path, seg_out['ROI']['segment'])
+                        # logger.info('imwriteStatus %s' % imwriteStatus)
+                        # s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), 'testImage.jpg')
                     except Exception as e:
                         logger.info('Segmentation failure! %s' % e)
                         seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
@@ -59,7 +58,7 @@ def read_input_and_form_output(input_dict):
                         seg_out["PR"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                     try:
                         psn_out = dot_punched_data_parser(seg_out['ROI']['segment'])
-                        logger.info('dot punch output: %s' % psn_out)
+                        logger.info('dotpunch prediction: %s' % psn_out)
                     except:
                         logger.info('Dot punch failure!')
                         psn_out = {}
@@ -69,16 +68,14 @@ def read_input_and_form_output(input_dict):
                     try:
                         # prefix_out = prefix_data_parser(im)
                         prefix_out = prefix_data_parser(seg_out['ROI']['segment'])
-                        logger.info('prefix output: %s' % prefix_out)
+                        logger.info('prefix prediction: %s' % prefix_out)
                     except:
                         logger.info('Prefix failure!')
                         prefix_out = {}
                         prefix_out["ocrValue"] = "P_UNKN"
                         prefix_out["confValue"] = 0.0
                         prefix_out["confBand"] = "LOW"
-
                     result_out = data_collector(seg_out, psn_out, prefix_out)
-                    logger.info('data collector result: %s' % result_out)
                     final_obj = img_obj.copy()
                     final_obj["ocrValue"] = result_out["ocrValue"]
                     final_obj["ocrConfidenceValue"] = result_out["confValue"]
@@ -87,7 +84,7 @@ def read_input_and_form_output(input_dict):
                     out_put_dict.append(final_obj)
                 else:
                     final_obj = img_obj.copy()
-                    final_obj["ocrValue"] = "IMG_NOT_FOUND"
+                    final_obj["ocrValue"] = "FAILED"
                     final_obj["ocrConfidenceValue"] = 0.0
                     final_obj["ocrConfidenceBand"] = "LOW"
                     final_obj["ocrAdditional"] = "Failed to read image"
@@ -100,9 +97,9 @@ def read_input_and_form_output(input_dict):
                 final_obj["ocrConfidenceBand"] = "LOW"
                 final_obj["ocrAdditional"] = "OCR Failed"
                 out_put_dict.append(final_obj)
-        logger.info('Output dict: %s' % out_put_dict)
+        logger.info('Analytics Output: %s' % out_put_dict)
         return out_put_dict
-    except:
-        logger.info('No item found')
+    except Exception as e:
+        logger.info('Error while detecting OCR: %s' % e)
 
     return out_put_dict

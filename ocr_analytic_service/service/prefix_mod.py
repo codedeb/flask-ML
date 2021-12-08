@@ -21,19 +21,19 @@ def prefix_data_parser(imgobj):
         prediction = detector(config_path, model_weight_path, threshold)
         inference_prefix.class_names = []
         lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prediction)
-        logger.info('Prefix Initial output %s' % lbl)
+        logger.info('Prefix Inference result: %s' % lbl)
         conf, conf_band = confidence_band(scoreList, 4)
-        if lbl == None:
+        prefix_out = {}
+        if lbl == None or lbl == '':
+            prefix_out['ocrValue'] = lbl
             logger.info('Prefix region not found!')
         else:
             correctPrefix, probDist = recoverPrefix.getCorrectPrfix(lbl)
-            logger.info('Prefix Correct output: %s' % correctPrefix)
-        prefix_out = {}
-        prefix_out['ocrValue'] = correctPrefix
+            logger.info('Prefix Recovery result: %s' % correctPrefix)
+            prefix_out['ocrValue'] = correctPrefix
+        
         prefix_out['confValue'] = conf
         prefix_out['confBand'] = conf_band
-
-        logger.info('Prefix model output: %s' % prefix_out)
     except Exception as e:
-        logger.info('Prefix model exception: %s' % e)
+        logger.info('Error while predicting prefix: %s' % e)
     return prefix_out
