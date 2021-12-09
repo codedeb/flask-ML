@@ -48,12 +48,13 @@ def read_input_and_form_output(input_dict):
                         logger.info('Segmentation successful!')
                         try:
                             logger.info('Segmentation result: %s' % seg_out )
-                            seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), img_obj['imagePath'])
+                            path, filename = os.path.split(img_obj['imagePath'])
+                            seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), filename)
                             logger.info('seg_dump_file_path %s' % seg_dump_file_path)
                             os.makedirs("IDM/dev/dump_images/242/PARTSOUT", exist_ok=True)
                             imwriteStatus = cv2.imwrite(seg_dump_file_path, seg_out['ROI']['segment'])
                             logger.info('imwriteStatus %s' % imwriteStatus)
-                            s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), 'testImage.jpg')
+                            s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), 'Seg_out_image.jpg')
                         except Exception as e:
                             logger.info('Dumping Segmented Images failure! %s' % e)
                     except:
@@ -73,7 +74,7 @@ def read_input_and_form_output(input_dict):
                         psn_out["confBand"] = "LOW"
                     try:
                         # prefix_out = prefix_data_parser(im)
-                        prefix_out = prefix_data_parser(seg_out['ROI']['segment'])
+                        prefix_out = prefix_data_parser(seg_out['ROI']['segment'], filename)
                         logger.info('prefix prediction: %s' % prefix_out)
                     except:
                         logger.info('Prefix failure!')

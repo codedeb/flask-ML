@@ -1,5 +1,22 @@
 import numpy as np
 import cv2
+import os
+import logging
+import boto3
+
+logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S',
+                    level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+try:
+    s3_resource = boto3.resource('s3', region_name=os.getenv('REGION'))
+except:
+    s3_resource = boto3.resource('s3', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+                                 AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'),
+                                 region_name=os.getenv('REGION'))
+    pass
 
 
 x_lowTolRange = 0.68#0.85 #How far away the first character of PR can be away from PR box; need larger tolerance as it is 1st
@@ -369,7 +386,7 @@ def clean_class(classes_list, scores_list, boxes_list, class_names):
     return clean_box_list, clean_classes_list
 
 
-def getPrefix(im, predictor, key='PR'):
+def getPrefix(im, predictor, filename, key='PR'):
     #Change for pre-processing fileter -- Start
     # bgr = im
     # lab = cv2.cvtColor(bgr, cv2.COLOR_BGR2LAB)
@@ -381,6 +398,14 @@ def getPrefix(im, predictor, key='PR'):
     # im = bgr #CLAHE filtered image
     # Change for pre-processing fileter -- End
     # cv2.imwrite('/shared-volume/inputfile.jpg', im)
+    seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), "prefix")
+    logger.info('seg_dump_file_path %s' % seg_dump_file_path)
+    os.makedirs(seg_dump_file_path, exist_ok=True)
+    imwriteStatus = cv2.imwrite(seg_dump_file_path, im)
+    logger.info('imwriteStatus %s' % imwriteStatus)
+    image_path = 'IDM/dev/dump_images/prefix_input' + filename
+    s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), image_path)
+
     outputs = predictor(im)
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
