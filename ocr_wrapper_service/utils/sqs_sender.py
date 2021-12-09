@@ -20,8 +20,14 @@ except:
 
 
 def send_sqs_messages(output):
-    logger.debug('Send ouput to sqs: %s' % output)
-    queue_url = "https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('ACCOUNT_NUMBER'), os.getenv('OUTPUT_QUEUE'))
-    sqs_client.send_message(QueueUrl=queue_url, MessageBody=json.dumps(output['body']))
-    delete_sqs_messages(output['receipt_handle'])
-    return True
+    try:
+        logger.debug('Send ouput to sqs: %s' % output)
+        queue_url = "https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('ACCOUNT_NUMBER'), os.getenv('OUTPUT_QUEUE'))
+        sqs_client.send_message(QueueUrl=queue_url, MessageBody=json.dumps(output['body']))
+        delete_sqs_messages(output['receipt_handle'])
+        return True
+    except Exception as e:
+        logger.info('Error while publishing to SQS!')
+        logger.debug('Error while publishing to SQS! %s' % e)
+        return False
+
