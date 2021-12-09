@@ -34,7 +34,7 @@ except Exception as e:
 atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == "__main__":
-    cProfile.run('main()')
+    # cProfile.run('main()')
     logger.info('Loading Models...')
     modelLoadStatus = load_models()
     logger.info('Starting app server!')
