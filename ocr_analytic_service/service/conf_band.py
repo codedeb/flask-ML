@@ -14,7 +14,7 @@ def confidence_band(scores_list, lgt):
         conf = np.prod(scores_list)
         if len(scores_list) != lgt:
             conf_band = "LOW"
-            conf = 0
+            conf = 0.0
         elif conf > 0.9:
             conf_band = "HIGH"
         elif conf >= 0.6 and conf <= 0.9:
@@ -24,7 +24,7 @@ def confidence_band(scores_list, lgt):
 
     else:
         if len(scores_list) == 0:
-            conf = 0
+            conf = 0.0
             conf_band = "LOW"
     return conf, conf_band
 
