@@ -51,7 +51,7 @@ def read_input_and_form_output(input_dict):
                             path, filename = os.path.split(img_obj['imagePath'])
                             seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), filename)
                             logger.info('seg_dump_file_path %s' % seg_dump_file_path)
-                            os.makedirs("IDM/dev/dump_images/242/PARTSOUT", exist_ok=True)
+                            os.makedirs("IDM/dev/dump_images/seg_out", exist_ok=True)
                             imwriteStatus = cv2.imwrite(seg_dump_file_path, seg_out['ROI']['segment'])
                             logger.info('imwriteStatus %s' % imwriteStatus)
                             s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), 'Seg_out_image.jpg')
