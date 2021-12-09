@@ -399,10 +399,10 @@ def getPrefix(im, predictor, filename, key='PR'):
     # Change for pre-processing fileter -- End
     # cv2.imwrite('/shared-volume/inputfile.jpg', im)
     try:
-        file_prefix = 'prefix' + filename
+        file_prefix = 'prefix/' + filename
         prefix_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), file_prefix)
         logger.info('seg_dump_file_path %s' % prefix_dump_file_path)
-        os.makedirs(prefix_dump_file_path, exist_ok=True)
+        os.makedirs("IDM/dev/dump_images/prefix", exist_ok=True)
         imwriteStatus = cv2.imwrite(prefix_dump_file_path, im)
         logger.info('imwriteStatus %s' % imwriteStatus)
         image_path = 'IDM/dev/dump_images/prefix_input' + filename
