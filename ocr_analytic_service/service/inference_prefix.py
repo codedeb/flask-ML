@@ -398,13 +398,17 @@ def getPrefix(im, predictor, filename, key='PR'):
     # im = bgr #CLAHE filtered image
     # Change for pre-processing fileter -- End
     # cv2.imwrite('/shared-volume/inputfile.jpg', im)
-    seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), "prefix")
-    logger.info('seg_dump_file_path %s' % seg_dump_file_path)
-    os.makedirs(seg_dump_file_path, exist_ok=True)
-    imwriteStatus = cv2.imwrite(seg_dump_file_path, im)
-    logger.info('imwriteStatus %s' % imwriteStatus)
-    image_path = 'IDM/dev/dump_images/prefix_input' + filename
-    s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), image_path)
+    try:
+        file_prefix = 'prefix' + filename
+        prefix_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), file_prefix)
+        logger.info('seg_dump_file_path %s' % prefix_dump_file_path)
+        os.makedirs(prefix_dump_file_path, exist_ok=True)
+        imwriteStatus = cv2.imwrite(prefix_dump_file_path, im)
+        logger.info('imwriteStatus %s' % imwriteStatus)
+        image_path = 'IDM/dev/dump_images/prefix_input' + filename
+        s3_resource.meta.client.upload_file(prefix_dump_file_path, os.getenv('BUCKET_NAME'), image_path)
+    except Exception as e: 
+        logger.info('Dumping Prefix input Images failure! %s' % e)
 
     outputs = predictor(im)
     classes = outputs['instances'].pred_classes
