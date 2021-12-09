@@ -28,8 +28,8 @@ except:
 
 def read_input_and_form_output(input_dict):
     logger.info('Analytics Input: %s' % input_dict)
-    logger.info('System memory usage in bytes:' % psutil.virtual_memory())
-    logger.info('SYstem CPU utilization in percent:' % psutil.cpu_percent(1))
+    # logger.info('System memory usage in bytes:' % psutil.virtual_memory())
+    # logger.info('SYstem CPU utilization in percent:' % psutil.cpu_percent(1))
     out_put_dict = []
     try:
         for img_obj in input_dict:
