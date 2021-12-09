@@ -19,16 +19,15 @@ except:
 def load_models():
     try:
         logger.info('Connecting to s3...')
-        
-        logger.info('Listing objects for bucket: %s' % os.getenv('BUCKET_NAME'))
+        logger.debug('Listing objects for bucket: %s' % os.getenv('BUCKET_NAME'))
         # Retrieve the objects deom specific IDM model folder
         objects = s3.list_objects(Bucket=os.getenv('BUCKET_NAME'), MaxKeys=10, Prefix='IDM/model/model')
-        logger.info('S3 objects: %s' % objects)
+        logger.debug('S3 objects: %s' % objects)
 
         # Path where model will be downloaded
         base_path = os.getenv('MODEL_PATH')
         model_path = os.path.join(base_path, 'model')
-        logger.info('model_path: %s' %  model_path)
+        logger.debug('model_path: %s' %  model_path)
 
         # downloading files 
         for object in objects['Contents']:
@@ -41,6 +40,7 @@ def load_models():
             # Download file
             s3.download_file(os.getenv('BUCKET_NAME'), object['Key'], modelDownloaded)
         return True
-    except:
-        logger.error('Error while loading models from s3!')
+    except Exception as e:
+        logger.info('Error while loading models from s3!')
+        logger.debug('Error while loading models from s3! %s' % e)
         return False

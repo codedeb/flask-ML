@@ -10,6 +10,7 @@ from typing import List
 import logging
 import boto3
 import numpy as np
+import psutil
 
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
@@ -27,6 +28,8 @@ except:
 
 def read_input_and_form_output(input_dict):
     logger.info('Analytics Input: %s' % input_dict)
+    logger.info('System memory usage in bytes:' % psutil.virtual_memory())
+    logger.info('SYstem CPU utilization in percent:' % psutil.cpu_percent(1))
     out_put_dict = []
     try:
         for img_obj in input_dict:
@@ -43,15 +46,18 @@ def read_input_and_form_output(input_dict):
                     try:
                         seg_out = img_segmenter(im)
                         logger.info('Segmentation successful!')
-                        logger.info('Segmentation result: %s' % seg_out )
-                        seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), img_obj['imagePath'])
-                        logger.info('seg_dump_file_path %s' % seg_dump_file_path)
-                        os.makedirs("IDM/dev/dump_images/242/PARTSOUT", exist_ok=True)
-                        imwriteStatus = cv2.imwrite(seg_dump_file_path, seg_out['ROI']['segment'])
-                        logger.info('imwriteStatus %s' % imwriteStatus)
-                        s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), 'testImage.jpg')
-                    except Exception as e:
-                        logger.info('Segmentation failure! %s' % e)
+                        try:
+                            logger.info('Segmentation result: %s' % seg_out )
+                            seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), img_obj['imagePath'])
+                            logger.info('seg_dump_file_path %s' % seg_dump_file_path)
+                            os.makedirs("IDM/dev/dump_images/242/PARTSOUT", exist_ok=True)
+                            imwriteStatus = cv2.imwrite(seg_dump_file_path, seg_out['ROI']['segment'])
+                            logger.info('imwriteStatus %s' % imwriteStatus)
+                            s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), 'testImage.jpg')
+                        except Exception as e:
+                            logger.info('Dumping Segmented Images failure! %s' % e)
+                    except:
+                        logger.info('Segmentation failure!')
                         seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
                         seg_out["ROI"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                         seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
@@ -100,6 +106,7 @@ def read_input_and_form_output(input_dict):
         logger.info('Analytics Output: %s' % out_put_dict)
         return out_put_dict
     except Exception as e:
-        logger.info('Error while detecting OCR: %s' % e)
+        logger.info('Error while detecting OCR!')
+        logger.debug('Error while detecting OCR! %s' % e)
 
     return out_put_dict

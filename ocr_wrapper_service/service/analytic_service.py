@@ -1,6 +1,8 @@
 import json
 import logging
 from ocr_analytic_service.service.input_mod import read_input_and_form_output
+from ocr_wrapper_service.utils.sqs_sender import send_sqs_messages
+
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
@@ -16,6 +18,8 @@ def process_images(input):
         output['body'] = output_messages
         logger.info('analytic output: %s' % output)
     except Exception as e:
-        logger.error('Failed in process images : %s' % e)
+        logger.info('Failed processing images!')
+        logger.debug('Failed processing images! %s' % e)
+    send_sqs_messages(output)
     return output
 
