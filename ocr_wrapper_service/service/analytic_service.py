@@ -16,7 +16,7 @@ def process_images(input):
         output = {'receipt_handle': input['receipt_handle']}
         output_messages = read_input_and_form_output(input['body'])
         output['body'] = output_messages
-        logger.info('analytic output: %s' % output)
+        logger.info('OCR output: %s' % output)
     except Exception as e:
         logger.info('Failed processing images!')
         logger.debug('Failed processing images! %s' % e)

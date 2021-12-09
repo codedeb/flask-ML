@@ -11,7 +11,7 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 
-def prefix_data_parser(imgobj):
+def prefix_data_parser(imgobj, filename):
     config_path = "ocr_analytic_service/service/configPrefix_file.yaml"
     base_path = os.getenv('MODEL_PATH')
     model_weight_path = os.path.join(base_path, "model/model_final_prefix.pth")
@@ -20,7 +20,7 @@ def prefix_data_parser(imgobj):
     try:
         prediction = detector(config_path, model_weight_path, threshold)
         inference_prefix.class_names = []
-        lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prediction)
+        lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prediction, filename)
         logger.info('Prefix Inference result: %s' % lbl)
         conf, conf_band = confidence_band(scoreList, 4)
         prefix_out = {}
