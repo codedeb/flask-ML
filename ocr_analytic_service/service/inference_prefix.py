@@ -401,7 +401,7 @@ def getPrefix(im, predictor, filename, key='PR'):
     try:
         file_prefix = 'prefix/' + filename
         prefix_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), file_prefix)
-        logger.info('seg_dump_file_path %s' % prefix_dump_file_path)
+        logger.info('prefix_dump_file_path %s' % prefix_dump_file_path)
         os.makedirs("IDM/dev/dump_images/prefix", exist_ok=True)
         imwriteStatus = cv2.imwrite(prefix_dump_file_path, im)
         logger.info('imwriteStatus %s' % imwriteStatus)
