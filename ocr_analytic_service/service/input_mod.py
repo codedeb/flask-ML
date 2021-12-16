@@ -54,7 +54,7 @@ def read_input_and_form_output(input_dict):
                             logger.info('Segmented Images will be dumped at: %s' % seg_dump_file_path)
                             os.makedirs("IDM/dev/dump_images/seg", exist_ok=True)
                             imwriteStatus = cv2.imwrite(seg_dump_file_path, im)
-                            image_path = 'IDM/dev/dump_images/prefix_input' + filename
+                            image_path = 'IDM/dev/dump_images/seg_out' + filename
                             s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), image_path)
                         except Exception as e:
                             logger.info('Dumping Segmented Images failure! %s' % e)
