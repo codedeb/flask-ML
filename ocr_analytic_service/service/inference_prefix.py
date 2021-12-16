@@ -164,6 +164,7 @@ class resultLet:
             return overlappingBoxes,wordGap, isResultMulitpleBoxes
 
 
+# Class map and config and model needs to be sync
 class_map = {0: '0', 1: '0_', 2: '0_DP', 3: '1', 4: '1_DP', 5: '2', 6: '2_DP', 7: '3', 8: '3_DP', 9: '4', 10: '4_DP', 11: '5', 12: '5_DP', 13: '6', 14: '6_DP', 15: '7', 16: '7_DP', 17: '8', 18: '8_DP', 19: '9', 20: '9_DP', 21: 'A', 22: 'B', 23: 'BL', 24: 'C', 25: 'D', 26: 'E', 27: 'F', 28: 'G', 29: 'H', 30: 'I', 31: 'K', 32: 'L', 33: 'M', 34: 'N', 35: 'P', 36: 'PR', 37: 'PSN', 38: 'R', 39: 'ROI', 40: 'ROI-SN', 41: 'S', 42: 'T', 43: 'TL', 44: 'V', 45: 'W', 46: 'p'}
 class_names = []
 cn = list(class_map.values())
@@ -401,10 +402,9 @@ def getPrefix(im, predictor, filename, key='PR'):
     try:
         file_prefix = 'prefix/' + filename
         prefix_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), file_prefix)
-        logger.info('prefix_dump_file_path %s' % prefix_dump_file_path)
+        logger.info('Prefix Input Images will be dumped at:  %s' % prefix_dump_file_path)
         os.makedirs("IDM/dev/dump_images/prefix", exist_ok=True)
         imwriteStatus = cv2.imwrite(prefix_dump_file_path, im)
-        logger.info('imwriteStatus %s' % imwriteStatus)
         image_path = 'IDM/dev/dump_images/prefix_input' + filename
         s3_resource.meta.client.upload_file(prefix_dump_file_path, os.getenv('BUCKET_NAME'), image_path)
     except Exception as e: 

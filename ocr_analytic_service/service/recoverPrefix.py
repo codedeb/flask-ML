@@ -76,7 +76,7 @@ class ConfusionProb():
 
 #Siva: List of valid prefixes
 #In final version these need to be read from a filw whihc is created maintained outside of the app
-lPrefixes =['C2NP','K2LP','K2LM','K3WP','K3FM','K1BP','K1AP','K3FP','K2DP','K1AM']
+lPrefixes =['C2NP','K2LP','K2MM','K2LM','K3WP','K3FM','K1BP','K1AP','K3FP','K2DP','K1JP','K3JP','K1AM','K2NM']
 
 #Siva: Return the distance from source word to destination word for a given matrix of confusion distance
 def getwordDistance(wf,wt,charConfDistance):
