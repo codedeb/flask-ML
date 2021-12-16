@@ -21,6 +21,7 @@ def prefix_data_parser(imgobj, filename):
         prediction = detector(config_path, model_weight_path, threshold)
         inference_prefix.class_names = []
         lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prediction, filename)
+        # to do: sync the version for model and config within inference
         logger.info('Prefix Inference result: %s' % lbl)
         conf, conf_band = confidence_band(scoreList, 4)
         prefix_out = {}
