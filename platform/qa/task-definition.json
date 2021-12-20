@@ -44,7 +44,7 @@
 				},
 				{
 					"name": "IMAGE_FOLDER_PATH",
-					"value": "IDM/qa"
+					"value": "IDM/image"
 				}
 			],
 			"mountPoints": [],

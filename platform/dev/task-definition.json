@@ -44,11 +44,11 @@
 				},
 				{
 					"name": "IMAGE_FOLDER_PATH",
-					"value": "IDM/dev"
+					"value": "IDM/image"
 				},
 				{
 					"name": "DUMP_IMAGES",
-					"value": "IDM/dev/dump_images"
+					"value": "IDM/image/dump_images"
 				}
 			],
 			"mountPoints": [],
