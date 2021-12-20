@@ -38,7 +38,7 @@ if __name__ == "__main__":
     logger.info('Loading Models...')
     modelLoadStatus = load_models()
     logger.info('Starting app server!')
-    app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/server.crt","platform/ssl/server.key"))
+    app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/ocrwrapper.crt","platform/ssl/ocrwrapper.key"))
     # if(modelLoadStatus):
     #     logger.info('Starting app main!')
     #     app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/server.crt","platform/ssl/server.key"))
