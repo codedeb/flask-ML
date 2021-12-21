@@ -39,6 +39,7 @@ def read_input_and_form_output(input_dict):
                 img = bucket.Object(image_folder_path).get().get('Body')
                 image = np.asarray(bytearray(img.read()), dtype="uint8")
                 im = cv2.imdecode(image, cv2.IMREAD_COLOR)
+                path, filename = os.path.split(img_obj['imagePath'])
                 # cv2.imwrite('/idm/input/abc.jpg',im)
                 # im = cv2.imread(fl_nm, cv2.IMREAD_UNCHANGED)
                 # logger.info('Image read: %s' % im)
@@ -49,7 +50,6 @@ def read_input_and_form_output(input_dict):
                         # Uncomment if need to dump segmented images for debugging
                         # try:
                         #     logger.info('Segmentation result: %s' % seg_out )
-                        #     path, filename = os.path.split(img_obj['imagePath'])
                         #     file_seg = 'seg/' + filename
                         #     seg_dump_file_path = os.path.join(os.getenv('DUMP_IMAGES'), file_seg)
                         #     logger.info('Segmented Images will be dumped at: %s' % seg_dump_file_path)
@@ -78,8 +78,8 @@ def read_input_and_form_output(input_dict):
                         # prefix_out = prefix_data_parser(im)
                         prefix_out = prefix_data_parser(seg_out['ROI']['segment'], filename)
                         logger.info('prefix prediction: %s' % prefix_out)
-                    except:
-                        logger.info('Prefix failure!')
+                    except Exception as e:
+                        logger.info('Prefix failure! %s' % e)
                         prefix_out = {}
                         prefix_out["ocrValue"] = "P_UNKN"
                         prefix_out["confValue"] = 0.0
