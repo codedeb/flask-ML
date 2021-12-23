@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 def prefix_data_parser(imgobj, filename):
     config_path = "ocr_analytic_service/service/configPrefix_file.yaml"
     base_path = os.getenv('MODEL_PATH')
-    model_weight_path = os.path.join(base_path, "model/ocr_model_psn_v1.0.0/model_prefix_v1.1.0.pth")
+    model_weight_path = os.path.join(base_path, "model/model_prefix_v1.1.0.pth")
 
     threshold = 0.1
     try:
