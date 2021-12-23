@@ -24,7 +24,7 @@ def sqs_scheduler():
     
 try:
     scheduler = BackgroundScheduler(timezone=utc,daemon=True)
-    scheduler.add_job(func=sqs_scheduler, trigger="interval", seconds=60)
+    scheduler.add_job(func=sqs_scheduler, trigger="interval", seconds=30)
     scheduler.start()
 except Exception as e:
     logger.info('Error while starting scheduler!')

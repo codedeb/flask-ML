@@ -18,7 +18,7 @@ def img_segmenter(img):
 
     config_path = "ocr_analytic_service/service/configSeg_file.yaml"
     base_path = os.getenv('MODEL_PATH')
-    model_weight_path = os.path.join(base_path, 'model/ocr_model_psn_v1.0.0/model_segmentation_v1.1.0.pth')
+    model_weight_path = os.path.join(base_path, 'model/model_segmentation_v1.1.0.pth')
     
     threshold = 0.3
 
