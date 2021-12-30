@@ -30,7 +30,7 @@ def receive_messages():
         response = sqs_client.receive_message(
             QueueUrl=queue_url,
             MaxNumberOfMessages=10,
-            WaitTimeSeconds=1
+            WaitTimeSeconds=20
         )
         logger.debug('raw messages %s' % response)
         if 'Messages' in response:

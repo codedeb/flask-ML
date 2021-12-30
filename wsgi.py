@@ -8,9 +8,17 @@ from ocr_wrapper_service.utils.s3_download_model import load_models
 from ocr_wrapper_service.utils.sqs_consumer import receive_messages
 from ocr_wrapper_service.app import create_app
 from ocr_analytic_service.service.input_mod import read_input_and_form_output
+from ocr_wrapper_service.constants import Logger_Constants
+from ocr_wrapper_service.constants import Flask_Constants
+from ocr_wrapper_service.constants import Scheduler_Constants
+from ocr_wrapper_service.utils.base_logger import log_initializer
 
+"""
 logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
+"""
+
+logger=log_initializer()
 
 app = create_app(os.getenv('APP_SETTING_MODULE'))
 modelLoadStatus = False
@@ -24,7 +32,7 @@ def sqs_scheduler():
     
 try:
     scheduler = BackgroundScheduler(timezone=utc,daemon=True)
-    scheduler.add_job(func=sqs_scheduler, trigger="interval", seconds=30)
+    scheduler.add_job(func=sqs_scheduler, trigger=Scheduler_Constants.trigger, seconds=Scheduler_Constants.seconds)
     scheduler.start()
 except Exception as e:
     logger.info('Error while starting scheduler!')
@@ -38,7 +46,7 @@ if __name__ == "__main__":
     logger.info('Loading Models...')
     modelLoadStatus = load_models()
     logger.info('Starting app server!')
-    app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/ocrwrapper.crt","platform/ssl/ocrwrapper.key"))
+    app.run(host=Flask_Constants.host, port=Flask_Constants.port, ssl_context=(Flask_Constants.cert_path,Flask_Constants.rsa_private_key_path))
     # if(modelLoadStatus):
     #     logger.info('Starting app main!')
     #     app.run(host="0.0.0.0", port=8090, ssl_context=("platform/ssl/server.crt","platform/ssl/server.key"))
