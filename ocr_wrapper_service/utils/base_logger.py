@@ -1,7 +1,7 @@
 import logging
 from logging import Formatter
 from logging import Filter
-from constants import Logger_Constants
+from ocr_wrapper_service.constants import Logger_Constants
 
 class SkipScheduleFilter(logging.Filter):
     def filter(self,record):
