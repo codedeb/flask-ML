@@ -12,6 +12,7 @@ from ocr_wrapper_service.constants import Logger_Constants
 from ocr_wrapper_service.constants import Flask_Constants
 from ocr_wrapper_service.constants import Scheduler_Constants
 from ocr_wrapper_service.utils.base_logger import log_initializer
+from base_logger import SkipScheduleFilter
 
 """
 logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -19,6 +20,8 @@ logger = logging.getLogger(__name__)
 """
 
 logger=log_initializer()
+my_filter=SkipScheduleFilter()
+logging.getLogger("apscheduler.scheduler").addFilter(my_filter)
 
 app = create_app(os.getenv('APP_SETTING_MODULE'))
 modelLoadStatus = False
