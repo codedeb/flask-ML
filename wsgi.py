@@ -26,11 +26,13 @@ my_filter=SkipScheduleFilter()
 logging.getLogger("apscheduler.scheduler").addFilter(my_filter)
 
 app = create_app(os.getenv('APP_SETTING_MODULE'))
+global modelLoadStatus
 modelLoadStatus = False
 
 s3_client_object=s3_client()
 
 def sqs_scheduler():
+    global modelLoadStatus
     if modelLoadStatus:
         logger.info('Requesting to receive messages...')
         receive_messages()
