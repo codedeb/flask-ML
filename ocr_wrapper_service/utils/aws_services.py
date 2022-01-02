@@ -1,4 +1,5 @@
 import boto3
+import os
 import logging
 import json
 from ocr_wrapper_service.constants import S3Constants
