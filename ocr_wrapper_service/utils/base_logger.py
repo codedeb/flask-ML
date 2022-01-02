@@ -1,7 +1,7 @@
 import logging
 from logging import Formatter
 from logging import Filter
-from ocr_wrapper_service.constants import Logger_Constants
+from ocr_wrapper_service.constants import LoggerConstants
 
 class SkipScheduleFilter(logging.Filter):
     def filter(self,record):
@@ -28,8 +28,8 @@ def log_initializer():
     """
     #log_file_format = "[%(levelname)s] - %(asctime)s - %(name)s - : %(message)s in %(pathname)s:%(lineno)d"
     logger = logging.getLogger()
-    console_format = Logger_Constants.console_format
-    date_format = Logger_Constants.date_format
+    console_format = LoggerConstants.console_format
+    date_format = LoggerConstants.date_format
     formatter=logging.Formatter(console_format,date_format)
     logger.setLevel(logging.INFO)
     console_handler = logging.StreamHandler()
