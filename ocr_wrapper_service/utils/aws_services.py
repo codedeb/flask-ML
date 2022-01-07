@@ -54,6 +54,9 @@ def s3_model_download(s3):
             else:
                 logger.info(f"No of available models in S3 : {models_available} , Required no of models : {S3Constants.model_count} ")
                 return False
+        else:
+            logger.info("Model files are not available")
+            return False
 
         #Verify whether filename regex matches
         models_available={}
