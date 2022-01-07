@@ -5,6 +5,7 @@ import json
 from ocr_wrapper_service.constants import S3Constants
 from ocr_wrapper_service.constants import SQSConstants
 from ocr_wrapper_service.constants import LocalDirectoryConstants
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +43,42 @@ def s3_model_download(s3):
         # Path where model will be downloaded
         base_path = LocalDirectoryConstants.model_path
         model_path = os.path.join(base_path, 'model')
-        logger.debug('model_path: %s' %  model_path)
+        logger.info('model_path: %s' %  model_path)
+
+        #Checking whether all the models are available in S3.
+        if objects.get('Contents'):
+            models_available=len(objects.get('Contents'))
+            if models_available==S3Constants.model_count:
+                logger.info("All the models are available in S3")
+
+            else:
+                logger.info(f"No of available models in S3 : {models_available} , Required no of models : {S3Constants.model_count} ")
+                return False
+
+        #Verify whether filename regex matches
+        models_available={}
+        models_flag = False
+        for object in objects['Contents']:
+            model_name=object["Key"].split("/")[-1]
+            for regex_model_name in S3Constants.model_names:
+                regex_result = re.search(regex_model_name, model_name)
+                if regex_result:
+                    models_available[model_name] = True
+                    models_flag = True
+                else:
+                    if not models_available.get(model_name):
+                        models_available[model_name] = False
+                        models_flag = False
+
+        if not models_flag:
+            logger.info("Models filenames are not matching")
+            logger.info(f"Models Flag : {models_flag}")
+            logger.info(json.dumps(models_available))
+            return False
+        else:
+            logger.info("Models filenames are matching")
+            logger.info(f"Models Flag : {models_flag}")
+            logger.info(json.dumps(models_available))
 
         # downloading files
         for object in objects['Contents']:
