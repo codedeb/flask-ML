@@ -24,6 +24,8 @@ class S3Constants():
     bucket_name=os.getenv("BUCKET_NAME")
     max_keys=10
     model_path="IDM/model/ocr_model_psn_v1.0.0/model"
+    model_count=3
+    model_names=["^model_dotpunch_v.*.pth$","^model_prefix_v.*.pth$","^model_segmentation_v.*.pth$"]
 
 class LocalDirectoryConstants():
     model_path=os.getenv('MODEL_PATH')
