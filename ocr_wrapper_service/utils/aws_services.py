@@ -36,7 +36,8 @@ def s3_model_download(s3):
         # Retrieve the objects deom specific IDM model folder
         logger.info(f"Listing Objects from Bucket : {S3Constants.bucket_name} and Path : {S3Constants.model_path}")
         objects = s3.list_objects(Bucket=S3Constants.bucket_name, MaxKeys=10, Prefix=S3Constants.model_path)
-        logger.debug('S3 objects: %s' % objects)
+        logger.info('S3 objects: %s' % objects)
+        logger.info(objects)
 
         # Path where model will be downloaded
         base_path = LocalDirectoryConstants.model_path
