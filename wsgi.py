@@ -43,9 +43,8 @@ def sqs_scheduler():
         modelLoadStatus = s3_model_download(s3_client_object)
         #sleep if models are not available
         if not modelLoadStatus:
-            logger.info(f"Models are not available in sleep for : {S3Constants.retry_sleep}")
-            pass
-            #sleep(S3Constants.retry_sleep)
+            logger.info(f"Models are not available in sleep for : {S3Constants.retry_sleep} seconds")
+            sleep(S3Constants.retry_sleep)
     
 try:
     scheduler = BackgroundScheduler(timezone=utc,daemon=True)
