@@ -54,7 +54,7 @@ def s3_model_download(s3):
         if objects.get('Contents'):
             models_available=len(objects.get('Contents'))
             if models_available==S3Constants.model_count:
-                logger.info("All the models are available in S3")
+                logger.info(f"No of available models in S3 : {models_available} , Required no of models : {S3Constants.model_count} ")
 
             else:
                 logger.info(f"No of available models in S3 : {models_available} , Required no of models : {S3Constants.model_count} ")
