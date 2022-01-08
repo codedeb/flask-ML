@@ -4,17 +4,19 @@ from pytz import utc
 import cProfile
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
-from ocr_wrapper_service.utils.s3_download_model import load_models
+#from ocr_wrapper_service.utils.s3_download_model import load_models
 from ocr_wrapper_service.utils.sqs_consumer import receive_messages
 from ocr_wrapper_service.app import create_app
 from ocr_analytic_service.service.input_mod import read_input_and_form_output
 from ocr_wrapper_service.constants import LoggerConstants
 from ocr_wrapper_service.constants import FlaskConstants
 from ocr_wrapper_service.constants import SchedulerConstants
+from ocr_wrapper_service.constants import S3Constants
 from ocr_wrapper_service.utils.base_logger import log_initializer
 from ocr_wrapper_service.utils.base_logger import SkipScheduleFilter
 from ocr_wrapper_service.utils.aws_services import s3_client
 from ocr_wrapper_service.utils.aws_services import s3_model_download
+from time import sleep
 
 """
 logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -39,6 +41,9 @@ def sqs_scheduler():
     else:
         logger.info("Downloading models from S3")
         modelLoadStatus = s3_model_download(s3_client_object)
+        #sleep if models are not available
+        if not modelLoadStatus:
+            sleep(S3Constants.retry_sleep)
     
 try:
     scheduler = BackgroundScheduler(timezone=utc,daemon=True)

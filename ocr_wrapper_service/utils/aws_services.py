@@ -32,6 +32,11 @@ def sqs_client():
     return sqs_client
 
 def s3_model_download(s3):
+    """
+    Used for downloading of models from specific S3 location
+    :param s3: s3 client for connection
+    :return: bool : True or False
+    """
     try:
         logger.debug('Listing objects for bucket: %s' % S3Constants.bucket_name)
         # Retrieve the objects deom specific IDM model folder
@@ -66,11 +71,11 @@ def s3_model_download(s3):
             for regex_model_name in S3Constants.model_names:
                 regex_result = re.search(regex_model_name, model_name)
                 if regex_result:
-                    models_available[model_name] = True
+                    models_available[regex_model_name] = True
                     models_flag = True
                 else:
-                    if not models_available.get(model_name):
-                        models_available[model_name] = False
+                    if not models_available.get(regex_model_name):
+                        models_available[regex_model_name] = False
                         models_flag = False
 
         if not models_flag:

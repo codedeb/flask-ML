@@ -26,6 +26,7 @@ class S3Constants():
     model_path="IDM/model/ocr_model_psn_v1.0.0/model"
     model_count=3
     model_names=["^model_dotpunch_v.*.pth$","^model_prefix_v.*.pth$","^model_segmentation_v.*.pth$"]
+    retry_sleep=300
 
 class LocalDirectoryConstants():
     model_path=os.getenv('MODEL_PATH')
