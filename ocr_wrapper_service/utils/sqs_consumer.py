@@ -32,7 +32,7 @@ def receive_messages():
             MaxNumberOfMessages=10,
             WaitTimeSeconds=20
         )
-        logger.debug('raw messages %s' % response)
+        logger.info('raw messages %s' % response)
         if 'Messages' in response:
             for message in response['Messages']:
                 input = {}
