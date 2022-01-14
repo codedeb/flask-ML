@@ -11,20 +11,32 @@ logger = logging.getLogger(__name__)
 
 def s3_client():
     try:
-        logger.info('Connecting to s3...')
-        s3 = boto3.client('s3', region_name=os.getenv('REGION'))
+        logger.info('Initializing s3 client')
+        s3 = boto3.client('s3', region_name=S3Constants.region)
     except:
         logger.error('Connecting with s3 with access credentials...')
         s3 = boto3.client('s3', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'), aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'), aws_session_token=os.getenv('AWS_SESSION_TOKEN'), region_name=os.getenv('REGION'))
         pass
     return s3
 
+def s3_resource():
+    try:
+        logger.info('Initializing s3 resource')
+        s3_resource = boto3.resource('s3', region_name=S3Constants.region)
+    except:
+        s3_resource = boto3.resource('s3', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+                                     AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'),
+                                     region_name=os.getenv('REGION'))
+        pass
+
+    return s3_resource
+
 def sqs_client():
     try:
-        logger.info('Connecting to SQS consumer...')
-        sqs_client = boto3.client('sqs', region_name=os.getenv('REGION'))
-    except:
-        logger.error('Error while connecting to SQS for consuming msgs!')
+        logger.info('initializing SQS Client')
+        sqs_client = boto3.client('sqs', region_name=SQSConstants.region)
+    except Exception as e:
+        logger.error(f"Error while connecting to SQS queue {e}")
         sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
                                   aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
                                   region_name=os.getenv('REGION'))
@@ -102,4 +114,64 @@ def s3_model_download(s3):
     except Exception as e:
         logger.info('Error while loading models from s3! %s' % e)
         logger.debug('Error while loading models from s3! %s' % e)
+        return False
+
+def sqs_receive_message(sqs_client,queue_url):
+    """
+
+    :param sqs_client:
+    :param queue_url:
+    :return:
+    """
+    try:
+        logger.info(f"Polling SQS URL: {queue_url}")
+        response = sqs_client.receive_message(
+            QueueUrl=queue_url,
+            MaxNumberOfMessages=SQSConstants.max_number_of_messages,
+            WaitTimeSeconds=SQSConstants.wait_time_seconds
+        )
+        logger.info("Received Messages")
+        logger.info(json.dumps(response))
+        if "Messages" in response and response['ResponseMetadata']['HTTPStatusCode']==200:
+            return True,response
+        else:
+            return False,response
+    except Exception as e:
+        logger.info("Recieved Exception in sqs_receive_message")
+        logger.info(e)
+        return False,False
+
+def sqs_delete_message(sqs_client,queue_url,reciept_handle):
+    try:
+        logger.info(f"Deleting Message SQS URL: {queue_url}")
+        response=sqs_client.delete_message(QueueUrl=queue_url, ReceiptHandle=reciept_handle)
+        logger.info(json.dumps(response))
+        if response['ResponseMetadata']['HTTPStatusCode']==200:
+            return True,response
+        else:
+            logger.info("retrying to delete message")
+            for i in range(0,3):
+                response = sqs_client.delete_message(QueueUrl=queue_url, ReceiptHandle=reciept_handle)
+                if response['ResponseMetadata']['HTTPStatusCode'] == 200:
+                    return True, response
+            return False, response
+    except Exception as e:
+        logger.info("Recieved Exception in sqs_delete_message")
+        logger.info(e)
+        return False
+
+def sqs_send_message(sqs_client,queue_url,message):
+    try:
+        logger.info(f"Sending Message SQS URL: {queue_url}")
+        logger.info(json.dumps(message))
+        response=sqs_client.send_message(QueueUrl=queue_url, MessageBody=json.dumps(message))
+        logger.info(json.dumps(response))
+        if response['ResponseMetadata']['HTTPStatusCode']==200:
+            return True,response
+        else:
+            return False, response
+        return response
+    except Exception as e:
+        logger.info("Recieved Exception in sqs_send_message")
+        logger.info(e)
         return False

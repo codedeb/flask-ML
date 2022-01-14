@@ -11,11 +11,11 @@ import logging
 import boto3
 import numpy as np
 import psutil
-
+"""
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
-logger = logging.getLogger(__name__)
+
 
 try:
     s3_resource = boto3.resource('s3', region_name=os.getenv('REGION'))
@@ -24,9 +24,10 @@ except:
                                  AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'),
                                  region_name=os.getenv('REGION'))
     pass
+"""
+logger = logging.getLogger(__name__)
 
-
-def read_input_and_form_output(input_dict):
+def read_input_and_form_output(s3_resource,input_dict):
     logger.info('Analytics Input: %s' % input_dict)
     # logger.info('System memory usage in bytes:' % psutil.virtual_memory())
     # logger.info('SYstem CPU utilization in percent:' % psutil.cpu_percent(1))

@@ -19,9 +19,11 @@ class SQSConstants():
     output_queue="https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('ACCOUNT_NUMBER'), os.getenv('OUTPUT_QUEUE'))
     max_number_of_messages=10
     wait_time_seconds=20
+    region = os.getenv("REGION")
 
 class S3Constants():
     bucket_name=os.getenv("BUCKET_NAME")
+    region=os.getenv("REGION")
     max_keys=10
     model_path="IDM/model/ocr_model_psn_v1.0.0/model"
     model_count=3
