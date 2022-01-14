@@ -28,12 +28,11 @@ def process_image(s3_client,input_payload):
         output = {'receipt_handle': input_payload['receipt_handle']}
         output_messages = read_input_and_form_output(s3_client,input_payload['body'])
         output['body'] = output_messages
-        logger.info("OCR output : ")
-        logger.info(json.dumps(output))
+        logger.info(f"OCR output : \n {json.dumps(output)}")
         return True,output
     except Exception as e:
-        logger.info('Failed processing images!')
-        logger.debug('Failed processing images! %s' % e)
+        #logger.info('Failed processing images!')
+        logger.error(f"Failed processing images! {e}")
         output = {}
         return False,output
 
@@ -43,6 +42,7 @@ def process_messages(sqs_client,s3_client,sqs_response):
     for message in sqs_response.get('Messages'):
         input_payload = {}
         input_payload['receipt_handle'] = message['ReceiptHandle']
+        logger.info(f"Message : \n {json.dumps(message)}")
         if 'Body' in message:
             body = json.loads(message['Body'])
             input_payload['body'] = body
