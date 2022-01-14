@@ -1,6 +1,6 @@
 import os
 class LoggerConstants():
-    console_format="[%(levelname)s] - %(asctime)s - %(name)s - line number - %(lineno)d: %(message)s"
+    console_format="[%(levelname)s]%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d %(message)s"
     date_format="%Y-%m-%d %H:%M:%S"
 
 class FlaskConstants():

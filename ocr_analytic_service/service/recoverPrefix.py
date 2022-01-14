@@ -1,9 +1,10 @@
 import jellyfish as jf
 import logging
-
+"""
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
+"""
 logger = logging.getLogger(__name__)
 
 #Siva: ***Important **** Code cleanup using try catch and logging for maintaining and updating the code

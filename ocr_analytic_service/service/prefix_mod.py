@@ -4,10 +4,11 @@ from . import inference_prefix
 from .conf_band import confidence_band
 from . import recoverPrefix
 import logging
-
+"""
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
+"""
 logger = logging.getLogger(__name__)
 
 

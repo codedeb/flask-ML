@@ -2,10 +2,11 @@ import json
 import logging
 from ocr_analytic_service.service.input_mod import read_input_and_form_output
 from ocr_wrapper_service.utils.sqs_sender import send_sqs_messages
-
+"""
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
+"""
 logger = logging.getLogger(__name__)
 
 
