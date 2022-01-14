@@ -3,10 +3,11 @@ import logging
 import sys
 import os
 from PIL import Image
-
+"""
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
+"""
 logger = logging.getLogger(__name__)
 
 

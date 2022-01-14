@@ -3,10 +3,11 @@ import cv2
 import os
 import logging
 import boto3
-
+"""
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
+
 logger = logging.getLogger(__name__)
 
 
@@ -17,7 +18,8 @@ except:
                                  AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'),
                                  region_name=os.getenv('REGION'))
     pass
-
+"""
+logger = logging.getLogger(__name__)
 
 x_lowTolRange = 0.68#0.85 #How far away the first character of PR can be away from PR box; need larger tolerance as it is 1st
 x_highTolRange = 1.1#1.15 #how far away the last character is to be from PR need lesser tolerance as we assume PR box to be larger on width side
