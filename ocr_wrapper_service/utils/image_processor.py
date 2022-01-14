@@ -4,9 +4,9 @@ import json
 from ocr_wrapper_service.constants import S3Constants
 from ocr_wrapper_service.constants import SQSConstants
 from ocr_wrapper_service.constants import LocalDirectoryConstants
-from aws_services import sqs_receive_message
-from aws_services import sqs_send_message
-from aws_services import sqs_delete_message
+from ocr_wrapper_service.utils.aws_services import sqs_receive_message
+from ocr_wrapper_service.utils.aws_services import sqs_send_message
+from ocr_wrapper_service.utils.aws_services import sqs_delete_message
 from ocr_analytic_service.service.input_mod import read_input_and_form_output
 
 logger = logging.getLogger(__name__)
