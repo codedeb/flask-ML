@@ -5,7 +5,7 @@ import cProfile
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 #from ocr_wrapper_service.utils.s3_download_model import load_models
-from ocr_wrapper_service.utils.sqs_consumer import receive_messages
+#from ocr_wrapper_service.utils.sqs_consumer import receive_messages
 from ocr_wrapper_service.app import create_app
 from ocr_analytic_service.service.input_mod import read_input_and_form_output
 from ocr_wrapper_service.constants import LoggerConstants
@@ -15,6 +15,9 @@ from ocr_wrapper_service.constants import S3Constants
 from ocr_wrapper_service.utils.base_logger import log_initializer
 from ocr_wrapper_service.utils.base_logger import SkipScheduleFilter
 from ocr_wrapper_service.utils.aws_services import s3_client
+from ocr_wrapper_service.utils.aws_services import sqs_client
+from ocr_wrapper_service.utils.aws_services import s3_resource
+from ocr_wrapper_service.utils.image_processor import wrapper_service
 from ocr_wrapper_service.utils.aws_services import s3_model_download
 from time import sleep
 
@@ -32,12 +35,16 @@ global modelLoadStatus
 modelLoadStatus = False
 
 s3_client_object=s3_client()
+sqs_client_object=sqs_client()
+s3_resource_object=s3_resource()
 
 def sqs_scheduler():
     global modelLoadStatus
     if modelLoadStatus:
-        logger.info('Requesting to receive messages...')
-        receive_messages()
+        #logger.info('Requesting to receive messages...')
+        #receive_messages()
+        logger.info("Inside Scheduler Function")
+        wrapper_service(sqs_client_object,s3_resource_object)
     else:
         logger.info("Downloading models from S3")
         modelLoadStatus = s3_model_download(s3_client_object)
