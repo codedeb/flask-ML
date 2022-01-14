@@ -1,6 +1,10 @@
 import boto3
 import json
 import logging
+import os
+logger = logging.getLogger(__name__)
+"""
+#uncomment when required to run old code
 from ocr_wrapper_service.utils.sqs_delete import delete_sqs_messages
 import os
 
@@ -18,6 +22,12 @@ except:
                               AWS_SECRET_ACCESS_KEY=os.getenv('aws_secret_access_key'), region_name=os.getenv('REGION'))
     pass
 
+"""
+#comment when required to run old code
+def delete_sqs_messages(input):
+    pass
+sqs_client=""
+#comment till here
 
 def send_sqs_messages(output):
     try:
