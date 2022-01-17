@@ -11,16 +11,16 @@ Jinja2==2.11.2
 MarkupSafe==1.1.1
 requests==2.25.0
 python-dotenv==0.17.1
-urllib3==1.26.2
+urllib3==1.26.5
 scikit-learn==0.23.1
 Werkzeug==0.16.1
 botocore~=1.19.63
 pika~=1.2.0
 imutils==0.5.4
 opencv-contrib-python==4.5.1.48
-numpy==1.18.1
+numpy==1.19.0
 pandas==1.0.5
-Pillow~=8.2.0
+Pillow~=8.3.2
 cython==0.29.24
 psutil==5.8.0
 
