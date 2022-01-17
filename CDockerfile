@@ -1,5 +1,8 @@
 ARG BASE_IMAGE=598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:cisbaseubuntu
-FROM $BASE_IMAGE
+#FROM $BASE_IMAGE
+FROM 598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:ubuntu1804
+
+USER root
 
 RUN apt-get update -y \
     && apt-get clean \
