@@ -6,8 +6,8 @@ import logging
 from ocr_wrapper_service.constants import ModelDetails
 
 global segmentation_predictor
-global segmentation_predictor_status
-segmentation_predictor_status=False
+global segmentation_predictor_available
+segmentation_predictor_available=False
 
 """
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 def img_segmenter(img,predictor):
     global segmentation_predictor
-    global segmentation_predictor_status
+    global segmentation_predictor_available
     img_ht = img.shape[0]
     img_wd = img.shape[1]
     class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
@@ -33,10 +33,10 @@ def img_segmenter(img,predictor):
 
     # Make prediction
     #predictor = detector(config_path, model_weight_path, threshold)
-    if not segmentation_predictor_status:
+    if not segmentation_predictor_available:
         logger.info("Initialising Segmentation Predictor")
         segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
-        segmentation_predictor_status=True
+        segmentation_predictor_available=True
     #outputs = predictor(img)
     outputs = segmentation_predictor(img)
     classes = outputs['instances'].pred_classes

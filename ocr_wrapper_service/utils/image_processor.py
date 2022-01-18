@@ -29,7 +29,7 @@ def process_image(s3_client,input_payload,segmentation_predictor,dot_punch_predi
         output = {'receipt_handle': input_payload['receipt_handle']}
         output_messages = read_input_and_form_output(s3_client,input_payload['body'],segmentation_predictor,dot_punch_predictor,prefix_predictor)
         output['body'] = output_messages
-        logger.info(f"OCR output : \n {json.dumps(output)}")
+        logger.info(f"OCR output :  {json.dumps(output)}")
         return True,output
     except Exception as e:
         #logger.info('Failed processing images!')
@@ -43,7 +43,7 @@ def process_messages(sqs_client,s3_client,sqs_response,segmentation_predictor,do
     for message in sqs_response.get('Messages'):
         input_payload = {}
         input_payload['receipt_handle'] = message['ReceiptHandle']
-        logger.info(f"Message : \n {json.dumps(message)}")
+        logger.info(f"Message :  {json.dumps(message)}")
         if 'Body' in message:
             body = json.loads(message['Body'])
             input_payload['body'] = body
