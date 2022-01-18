@@ -36,7 +36,6 @@ class LocalDirectoryConstants():
 class ModelDetails():
     config_base_path="ocr_analytic_service/service/"
     model_base_path = os.getenv('MODEL_PATH')+"model/"
-    model_weight_path = os.path.join(base_path, 'model/model_segmentation_v1.1.0.pth')
     segmentation_config_path=config_base_path+"configSeg_file.yaml"
     segmentation_model_path=model_base_path+"model_segmentation_v1.1.0.pth"
     segmentation_threshold=0.3
