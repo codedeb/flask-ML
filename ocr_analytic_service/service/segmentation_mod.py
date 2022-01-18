@@ -3,6 +3,12 @@ from .inference_segmentation import clean_class
 from .model_artifacts import detector
 from .conf_band import confidence_band
 import logging
+from ocr_wrapper_service.constants import ModelDetails
+
+global segmentation_predictor
+global segmentation_predictor_available
+segmentation_predictor_available=False
+
 """
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
@@ -11,6 +17,8 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 def img_segmenter(img,predictor):
+    global segmentation_predictor
+    global segmentation_predictor_available
     img_ht = img.shape[0]
     img_wd = img.shape[1]
     class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
@@ -25,7 +33,12 @@ def img_segmenter(img,predictor):
 
     # Make prediction
     #predictor = detector(config_path, model_weight_path, threshold)
-    outputs = predictor(img)
+    if not segmentation_predictor_available:
+        logger.info("Initialising Segmentation Predictor")
+        segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
+        segmentation_predictor_available=True
+    #outputs = predictor(img)
+    outputs = segmentation_predictor(img)
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
     scores = outputs['instances'].scores

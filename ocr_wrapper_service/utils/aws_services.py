@@ -131,7 +131,7 @@ def sqs_receive_message(sqs_client,queue_url):
             MaxNumberOfMessages=SQSConstants.max_number_of_messages,
             WaitTimeSeconds=SQSConstants.wait_time_seconds
         )
-        logger.info(f"Received Messages :\n {json.dumps(response)}")
+        logger.info(f"Received Messages : {json.dumps(response)}")
         if "Messages" in response and response['ResponseMetadata']['HTTPStatusCode']==200:
             return True,response
         else:
@@ -160,9 +160,9 @@ def sqs_delete_message(sqs_client,queue_url,receipt_handle):
 
 def sqs_send_message(sqs_client,queue_url,message):
     try:
-        logger.info(f"Sending Message SQS URL: {queue_url} \n Message : \n {json.dumps(message)}")
+        logger.info(f"Sending Message SQS URL: {queue_url}  Message : {json.dumps(message)}")
         response=sqs_client.send_message(QueueUrl=queue_url, MessageBody=json.dumps(message))
-        logger.info(f"Send Message Response : \n {json.dumps(response)}")
+        logger.info(f"Send Message Response :  {json.dumps(response)}")
         if response['ResponseMetadata']['HTTPStatusCode']==200:
             return True,response
         else:
