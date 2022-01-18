@@ -69,8 +69,9 @@ def read_input_and_form_output(s3_resource,input_dict,predictor_object):
                     try:
                         psn_out = dot_punched_data_parser(seg_out['ROI']['segment'],predictor_object["dotpunch"])
                         logger.info('dotpunch prediction: %s' % psn_out)
-                    except:
+                    except Exception as e:
                         logger.info('Dot punch failure!')
+                        logger.info(e)
                         psn_out = {}
                         psn_out["ocrValue"] = "S_UNKN"
                         psn_out["confValue"] = 0.0
