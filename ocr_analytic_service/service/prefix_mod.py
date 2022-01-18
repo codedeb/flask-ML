@@ -8,7 +8,7 @@ from ocr_wrapper_service.constants import ModelDetails
 
 global prefix_predictor
 global prefix_predictor_status
-prefix_predictor=False
+prefix_predictor_status=False
 
 """
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',

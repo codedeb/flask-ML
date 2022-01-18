@@ -34,7 +34,7 @@ def dot_punched_data_parser(imgobj,prediction):
     data = pickle.load(file)
     #prediction = detector(config_path, model_weight_path, threshold)
     if not dot_punch_predictor_status:
-        logger.info("Initialising Segmentation Predictor")
+        logger.info("Initialising Dot Punch Predictor")
         dot_punch_predictor = detector(ModelDetails.dot_punch_config_path, ModelDetails.dot_punch_model_path,ModelDetails.dot_punch_threshold)
         dot_punch_predictor_status=True
     try:
