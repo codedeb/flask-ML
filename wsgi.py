@@ -34,7 +34,7 @@ logging.getLogger("apscheduler.scheduler").addFilter(my_filter)
 app = create_app(os.getenv('APP_SETTING_MODULE'))
 global modelLoadStatus
 modelLoadStatus = False
-
+predictor_load_status=False
 s3_client_object=s3_client()
 sqs_client_object=sqs_client()
 s3_resource_object=s3_resource()
@@ -42,6 +42,9 @@ s3_resource_object=s3_resource()
 def sqs_scheduler():
     global modelLoadStatus
     if modelLoadStatus:
+        if not predictor_load_status:
+            predictor_object = load_predictors()
+            predictor_load_status=True
         #logger.info('Requesting to receive messages...')
         #receive_messages()
         logger.info("Inside Scheduler Function")
@@ -53,8 +56,6 @@ def sqs_scheduler():
         if not modelLoadStatus:
             logger.info(f"Models are not available in sleep for : {S3Constants.retry_sleep} seconds")
             sleep(S3Constants.retry_sleep)
-        else:
-            predictor_object=load_predictors()
 
 
 
