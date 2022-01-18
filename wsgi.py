@@ -33,6 +33,7 @@ logging.getLogger("apscheduler.scheduler").addFilter(my_filter)
 
 app = create_app(os.getenv('APP_SETTING_MODULE'))
 global modelLoadStatus
+global predictor_load_status
 modelLoadStatus = False
 predictor_load_status=False
 s3_client_object=s3_client()
@@ -41,6 +42,7 @@ s3_resource_object=s3_resource()
 
 def sqs_scheduler():
     global modelLoadStatus
+    global predictor_load_status
     if modelLoadStatus:
         if not predictor_load_status:
             predictor_object = load_predictors()
