@@ -11,8 +11,8 @@ ENV PIP_CONFIG_FILE pip.conf
 
 RUN apt-get update && apt-get upgrade -y
 
-RUN apt-get install -y python3-pip
-RUN python3 -m pip install --upgrade pip -v
+#RUN apt-get install -y python3-pip
+#RUN python3 -m pip install --upgrade pip -v
 
 RUN pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U
 
