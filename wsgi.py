@@ -19,6 +19,7 @@ from ocr_wrapper_service.utils.aws_services import sqs_client
 from ocr_wrapper_service.utils.aws_services import s3_resource
 from ocr_wrapper_service.utils.image_processor import wrapper_service
 from ocr_wrapper_service.utils.aws_services import s3_model_download
+from ocr_wrapper_service.utils.image_processor import load_predictors
 from time import sleep
 
 """
@@ -52,6 +53,11 @@ def sqs_scheduler():
         if not modelLoadStatus:
             logger.info(f"Models are not available in sleep for : {S3Constants.retry_sleep} seconds")
             sleep(S3Constants.retry_sleep)
+        else:
+            predictor_object=load_predictors()
+
+
+
     
 try:
     scheduler = BackgroundScheduler(timezone=utc,daemon=True)

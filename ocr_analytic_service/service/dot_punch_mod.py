@@ -12,7 +12,7 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 
-def dot_punched_data_parser(imgobj):
+def dot_punched_data_parser(imgobj,prediction):
     # config_path = "ocr_analytic_service/service/configDotPunch_file.yaml"
     config_path = "ocr_analytic_service/service/configDotPunch_file_psn.yaml"
 
@@ -23,7 +23,7 @@ def dot_punched_data_parser(imgobj):
     threshold = 0.8
     file = open('ocr_analytic_service/service/listPickle', 'rb')
     data = pickle.load(file)
-    prediction = detector(config_path, model_weight_path, threshold)
+    #prediction = detector(config_path, model_weight_path, threshold)
     try:
         str_ocr, conf, conf_band = Inference().output(data, prediction, imgobj)
         out_obj = {}

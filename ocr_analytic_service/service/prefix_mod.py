@@ -12,14 +12,14 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 
-def prefix_data_parser(imgobj, filename):
+def prefix_data_parser(imgobj, filename,prediction):
     config_path = "ocr_analytic_service/service/configPrefix_file.yaml"
     base_path = os.getenv('MODEL_PATH')
     model_weight_path = os.path.join(base_path, "model/model_prefix_v1.1.0.pth")
 
     threshold = 0.1
     try:
-        prediction = detector(config_path, model_weight_path, threshold)
+        #prediction = detector(config_path, model_weight_path, threshold)
         inference_prefix.class_names = []
         lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prediction, filename)
         # to do: sync the version for model and config within inference
