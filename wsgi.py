@@ -36,7 +36,11 @@ global modelLoadStatus
 global predictor_load_status
 modelLoadStatus = False
 predictor_load_status=False
-global predictor_object
+
+global segmentation_predictor
+global dot_punch_predictor
+global prefix_predictor
+
 s3_client_object=s3_client()
 sqs_client_object=sqs_client()
 s3_resource_object=s3_resource()
@@ -44,15 +48,17 @@ s3_resource_object=s3_resource()
 def sqs_scheduler():
     global modelLoadStatus
     global predictor_load_status
-    global predictor_object
+    global segmentation_predictor
+    global dot_punch_predictor
+    global prefix_predictor
     if modelLoadStatus:
         if not predictor_load_status:
-            predictor_object = load_predictors()
+            segmentation_predictor,dot_punch_predictor,prefix_predictor = load_predictors()
             predictor_load_status=True
         #logger.info('Requesting to receive messages...')
         #receive_messages()
         logger.info("Inside Scheduler Function")
-        wrapper_service(sqs_client_object,s3_resource_object,predictor_object)
+        wrapper_service(sqs_client_object,s3_resource_object,segmentation_predictor,dot_punch_predictor,prefix_predictor)
     else:
         logger.info("Downloading models from S3")
         modelLoadStatus = s3_model_download(s3_client_object)
