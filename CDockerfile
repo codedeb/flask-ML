@@ -4,8 +4,9 @@ FROM 598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:ubuntu1804
 
 USER root
 
-COPY pip.conf pip.conf
-ENV PIP_CONFIG_FILE pip.conf
+#COPY pip.conf pip.conf
+#ENV PIP_CONFIG_FILE pip.conf
+ENV PIP_CERT my-cert.pem
 
 RUN apt-get update -y \
     && apt-get clean \
