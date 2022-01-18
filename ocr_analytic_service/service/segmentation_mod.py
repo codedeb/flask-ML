@@ -10,7 +10,7 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 """
 logger = logging.getLogger(__name__)
 
-def img_segmenter(img):
+def img_segmenter(img,predictor):
     img_ht = img.shape[0]
     img_wd = img.shape[1]
     class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
@@ -24,7 +24,7 @@ def img_segmenter(img):
     threshold = 0.3
 
     # Make prediction
-    predictor = detector(config_path, model_weight_path, threshold)
+    #predictor = detector(config_path, model_weight_path, threshold)
     outputs = predictor(img)
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
