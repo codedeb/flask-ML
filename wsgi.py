@@ -45,7 +45,7 @@ def sqs_scheduler():
         #logger.info('Requesting to receive messages...')
         #receive_messages()
         logger.info("Inside Scheduler Function")
-        wrapper_service(sqs_client_object,s3_resource_object)
+        wrapper_service(sqs_client_object,s3_resource_object,predictor_object)
     else:
         logger.info("Downloading models from S3")
         modelLoadStatus = s3_model_download(s3_client_object)
