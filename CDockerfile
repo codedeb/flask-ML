@@ -6,7 +6,8 @@ USER root
 
 #COPY pip.conf pip.conf
 #ENV PIP_CONFIG_FILE pip.conf
-ENV PIP_CERT my-cert.pem
+COPY my-cert.pem /tmp/my-cert.pem
+ENV PIP_CERT /tmp/my-cert.pem
 
 RUN apt-get update -y \
     && apt-get clean \
