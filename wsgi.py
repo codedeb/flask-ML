@@ -33,13 +33,7 @@ logging.getLogger("apscheduler.scheduler").addFilter(my_filter)
 
 app = create_app(os.getenv('APP_SETTING_MODULE'))
 global modelLoadStatus
-global predictor_load_status
 modelLoadStatus = False
-predictor_load_status=False
-
-global segmentation_predictor
-global dot_punch_predictor
-global prefix_predictor
 
 s3_client_object=s3_client()
 sqs_client_object=sqs_client()
@@ -47,18 +41,11 @@ s3_resource_object=s3_resource()
 
 def sqs_scheduler():
     global modelLoadStatus
-    global predictor_load_status
-    global segmentation_predictor
-    global dot_punch_predictor
-    global prefix_predictor
     if modelLoadStatus:
-        if not predictor_load_status:
-            segmentation_predictor,dot_punch_predictor,prefix_predictor = load_predictors()
-            predictor_load_status=True
         #logger.info('Requesting to receive messages...')
         #receive_messages()
         logger.info("Inside Scheduler Function")
-        wrapper_service(sqs_client_object,s3_resource_object,segmentation_predictor,dot_punch_predictor,prefix_predictor)
+        wrapper_service(sqs_client_object,s3_resource_object)
     else:
         logger.info("Downloading models from S3")
         modelLoadStatus = s3_model_download(s3_client_object)

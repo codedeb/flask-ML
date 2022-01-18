@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 
-def dot_punched_data_parser(imgobj,prediction):
+def dot_punched_data_parser(imgobj):
     global dot_punch_predictor
     global dot_punch_predictor_available
     # config_path = "ocr_analytic_service/service/configDotPunch_file.yaml"
