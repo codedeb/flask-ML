@@ -16,7 +16,7 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 """
 logger = logging.getLogger(__name__)
 
-def img_segmenter(img,predictor):
+def img_segmenter(img):
     global segmentation_predictor
     global segmentation_predictor_available
     img_ht = img.shape[0]

@@ -27,7 +27,7 @@ except:
 """
 logger = logging.getLogger(__name__)
 
-def read_input_and_form_output(s3_resource,input_dict,segmentation_predictor,dot_punch_predictor,prefix_predictor):
+def read_input_and_form_output(s3_resource,input_dict):
     logger.info(f"Analytics Input: \n {json.dumps(input_dict)}")
     # logger.info('System memory usage in bytes:' % psutil.virtual_memory())
     # logger.info('SYstem CPU utilization in percent:' % psutil.cpu_percent(1))
@@ -46,7 +46,7 @@ def read_input_and_form_output(s3_resource,input_dict,segmentation_predictor,dot
                 # logger.info('Image read: %s' % im)
                 if im is not None:
                     try:
-                        seg_out = img_segmenter(im,segmentation_predictor)
+                        seg_out = img_segmenter(im)
                         logger.info('Segmentation successful!')
                         # Uncomment if need to dump segmented images for debugging
                         # try:
@@ -67,7 +67,7 @@ def read_input_and_form_output(s3_resource,input_dict,segmentation_predictor,dot
                         seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                         seg_out["PR"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                     try:
-                        psn_out = dot_punched_data_parser(seg_out['ROI']['segment'],dot_punch_predictor)
+                        psn_out = dot_punched_data_parser(seg_out['ROI']['segment'])
                         logger.info('dotpunch prediction: %s' % psn_out)
                     except Exception as e:
                         logger.info('Dot punch failure!')
@@ -78,7 +78,7 @@ def read_input_and_form_output(s3_resource,input_dict,segmentation_predictor,dot
                         psn_out["confBand"] = "LOW"
                     try:
                         # prefix_out = prefix_data_parser(im)
-                        prefix_out = prefix_data_parser(seg_out['ROI']['segment'], filename,prefix_predictor)
+                        prefix_out = prefix_data_parser(seg_out['ROI']['segment'], filename)
                         logger.info('prefix prediction: %s' % prefix_out)
                     except Exception as e:
                         logger.info('Prefix failure! %s' % e)

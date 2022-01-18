@@ -18,7 +18,7 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 
-def prefix_data_parser(imgobj, filename,prediction):
+def prefix_data_parser(imgobj, filename):
     global prefix_predictor
     global prefix_predictor_available
     config_path = "ocr_analytic_service/service/configPrefix_file.yaml"
