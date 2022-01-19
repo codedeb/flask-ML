@@ -28,6 +28,7 @@ def prefix_data_parser(imgobj, filename):
     threshold = 0.1
     try:
         #prediction = detector(config_path, model_weight_path, threshold)
+        prefix_predictor_available=False
         if not prefix_predictor_available:
             logger.info("Initialising Prefix Predictor")
             prefix_predictor = detector(ModelDetails.prefix_config_path,ModelDetails.prefix_model_path, ModelDetails.prefix_threshold)
