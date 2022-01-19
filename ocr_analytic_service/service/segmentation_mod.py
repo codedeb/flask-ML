@@ -4,12 +4,12 @@ from .model_artifacts import detector
 from .conf_band import confidence_band
 import logging
 from ocr_wrapper_service.constants import ModelDetails
-
+"""
 global segmentation_predictor
 global segmentation_predictor_available
 segmentation_predictor_available=False
 
-"""
+
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
@@ -17,8 +17,8 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 def img_segmenter(img):
-    global segmentation_predictor
-    global segmentation_predictor_available
+    #global segmentation_predictor
+    #global segmentation_predictor_available
     img_ht = img.shape[0]
     img_wd = img.shape[1]
     class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}

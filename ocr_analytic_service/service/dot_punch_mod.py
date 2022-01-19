@@ -5,12 +5,12 @@ from .inference_dotPunched import Inference
 from .model_artifacts import detector
 import logging
 from ocr_wrapper_service.constants import ModelDetails
-
+"""
 global dot_punch_predictor
 global dot_punch_predictor_available
 dot_punch_predictor_available=False
 
-"""
+
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
@@ -20,8 +20,8 @@ logger = logging.getLogger(__name__)
 
 
 def dot_punched_data_parser(imgobj):
-    global dot_punch_predictor
-    global dot_punch_predictor_available
+    #global dot_punch_predictor
+    #global dot_punch_predictor_available
     # config_path = "ocr_analytic_service/service/configDotPunch_file.yaml"
     config_path = "ocr_analytic_service/service/configDotPunch_file_psn.yaml"
 
