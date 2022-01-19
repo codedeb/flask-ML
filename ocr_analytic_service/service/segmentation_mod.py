@@ -33,6 +33,7 @@ def img_segmenter(img):
 
     # Make prediction
     #predictor = detector(config_path, model_weight_path, threshold)
+    segmentation_predictor_available=False
     if not segmentation_predictor_available:
         logger.info("Initialising Segmentation Predictor")
         segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
