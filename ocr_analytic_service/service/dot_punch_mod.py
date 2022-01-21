@@ -5,12 +5,13 @@ from .inference_dotPunched import Inference
 from .model_artifacts import detector
 import logging
 from ocr_wrapper_service.constants import ModelDetails
-"""
+from copy import deepcopy
+
 global dot_punch_predictor
 global dot_punch_predictor_available
 dot_punch_predictor_available=False
 
-
+"""
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
@@ -20,8 +21,8 @@ logger = logging.getLogger(__name__)
 
 
 def dot_punched_data_parser(imgobj):
-    #global dot_punch_predictor
-    #global dot_punch_predictor_available
+    global dot_punch_predictor
+    global dot_punch_predictor_available
     # config_path = "ocr_analytic_service/service/configDotPunch_file.yaml"
     config_path = "ocr_analytic_service/service/configDotPunch_file_psn.yaml"
 
@@ -33,13 +34,13 @@ def dot_punched_data_parser(imgobj):
     file = open('ocr_analytic_service/service/listPickle', 'rb')
     data = pickle.load(file)
     #prediction = detector(config_path, model_weight_path, threshold)
-    dot_punch_predictor_available=False
     if not dot_punch_predictor_available:
-        logger.info("Initialising Dot Punch Predictor")
+        logger.info("Initializing Dot Punch Predictor")
         dot_punch_predictor = detector(ModelDetails.dot_punch_config_path, ModelDetails.dot_punch_model_path,ModelDetails.dot_punch_threshold)
         dot_punch_predictor_available=True
+    temp_dot_punch_predictor=deepcopy(dot_punch_predictor)
     try:
-        str_ocr, conf, conf_band = Inference().output(data, dot_punch_predictor, imgobj)
+        str_ocr, conf, conf_band = Inference().output(data, temp_dot_punch_predictor, imgobj)
         out_obj = {}
         out_obj['ocrValue'] = str_ocr
         out_obj['confValue'] = conf
