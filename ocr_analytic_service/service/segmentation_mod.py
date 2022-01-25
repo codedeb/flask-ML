@@ -4,15 +4,13 @@ from .model_artifacts import detector
 from .conf_band import confidence_band
 import logging
 from ocr_wrapper_service.constants import ModelDetails
-from copy import deepcopy
 
+"""
 global segmentation_predictor
 global segmentation_predictor_available
 segmentation_predictor_available=False
 
-import pickle
-import io
-"""
+
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
@@ -20,8 +18,8 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 def img_segmenter(img):
-    global segmentation_predictor
-    global segmentation_predictor_available
+    #global segmentation_predictor
+    #global segmentation_predictor_available
     img_ht = img.shape[0]
     img_wd = img.shape[1]
     class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
@@ -36,18 +34,13 @@ def img_segmenter(img):
 
     # Make prediction
     #predictor = detector(config_path, model_weight_path, threshold)
-    if not segmentation_predictor_available:
-        logger.info("Initializing Segmentation Predictor")
-        segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
-        segmentation_predictor_available=True
-        logger.info("using pickle to load data1")
-        pickle_buffer=io.BytesIO()
-        logger.info("using pickle to load data2")
-        pickle.dump(segmentation_predictor,pickle_buffer)
-    logger.info("using pickle to load data3")
-    temp_segmentation_predictor=pickle.loads(pickle_buffer.getbuffer())
+    #uncomment if condition and enable global variables when model needs to be initialized only once
+    #if not segmentation_predictor_available:
+    logger.info("Initializing Segmentation Predictor")
+    segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
+    #segmentation_predictor_available=True
     #outputs = predictor(img)
-    outputs = temp_segmentation_predictor(img)
+    outputs = segmentation_predictor(img)
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
     scores = outputs['instances'].scores
