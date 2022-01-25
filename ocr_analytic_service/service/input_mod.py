@@ -62,7 +62,7 @@ def read_input_and_form_output(s3_resource,input_dict):
                         #     logger.info('Dumping Segmented Images failure! %s' % e)
                     except Exception as e:
                         logger.info('Segmentation failure!')
-                        print(e)
+                        logger.info(e)
                         seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
                         seg_out["ROI"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                         seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}

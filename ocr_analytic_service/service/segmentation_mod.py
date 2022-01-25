@@ -40,9 +40,11 @@ def img_segmenter(img):
         logger.info("Initializing Segmentation Predictor")
         segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
         segmentation_predictor_available=True
+        logger.info("using pickle to load data1")
         pickle_buffer=io.BytesIO()
+        logger.info("using pickle to load data2")
         pickle.dump(segmentation_predictor,pickle_buffer)
-    logger.info("using pickle to load data")
+    logger.info("using pickle to load data3")
     temp_segmentation_predictor=pickle.loads(pickle_buffer.getbuffer())
     #outputs = predictor(img)
     outputs = temp_segmentation_predictor(img)
