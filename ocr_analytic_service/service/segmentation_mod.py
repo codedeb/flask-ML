@@ -10,6 +10,8 @@ global segmentation_predictor
 global segmentation_predictor_available
 segmentation_predictor_available=False
 
+import pickle
+import io
 """
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
@@ -38,7 +40,10 @@ def img_segmenter(img):
         logger.info("Initializing Segmentation Predictor")
         segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
         segmentation_predictor_available=True
-    temp_segmentation_predictor=deepcopy(segmentation_predictor)
+        pickle_buffer=io.BytesIO()
+        pickle.dump(segmentation_predictor,pickle_buffer)
+    logger.info("using pickle to load data")
+    temp_segmentation_predictor=pickle.loads(pickle_buffer.getbuffer())
     #outputs = predictor(img)
     outputs = temp_segmentation_predictor(img)
     classes = outputs['instances'].pred_classes
