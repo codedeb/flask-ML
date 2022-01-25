@@ -42,6 +42,7 @@ def img_segmenter(img):
         segmentation_predictor_available=True
         pickle_buffer=io.BytesIO()
         pickle.dump(segmentation_predictor,pickle_buffer)
+    logger.info("using pickle to load data")
     temp_segmentation_predictor=pickle.loads(pickle_buffer.getbuffer())
     #outputs = predictor(img)
     outputs = temp_segmentation_predictor(img)
