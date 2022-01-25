@@ -60,8 +60,9 @@ def read_input_and_form_output(s3_resource,input_dict):
                         #     s3_resource.meta.client.upload_file(seg_dump_file_path, os.getenv('BUCKET_NAME'), image_path)
                         # except Exception as e:
                         #     logger.info('Dumping Segmented Images failure! %s' % e)
-                    except:
+                    except Exception as e:
                         logger.info('Segmentation failure!')
+                        print(e)
                         seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
                         seg_out["ROI"] = {"confBand": "LOW", "confValue": 0, "segment": im}
                         seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
