@@ -21,6 +21,7 @@ from ocr_wrapper_service.utils.image_processor import wrapper_service
 from ocr_wrapper_service.utils.aws_services import s3_model_download
 from ocr_wrapper_service.utils.image_processor import load_predictors
 from time import sleep
+from ocr_wrapper_service.api_1_1.register_blueprint import create_flask_app
 
 """
 logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -31,7 +32,8 @@ logger=log_initializer()
 my_filter=SkipScheduleFilter()
 logging.getLogger("apscheduler.scheduler").addFilter(my_filter)
 
-app = create_app(os.getenv('APP_SETTING_MODULE'))
+#app = create_app(os.getenv('APP_SETTING_MODULE'))
+app = create_flask_app()
 global modelLoadStatus
 modelLoadStatus = False
 
@@ -72,7 +74,7 @@ if __name__ == "__main__":
     # cProfile.run('main()')
     #logger.info('Loading Models...')
     #modelLoadStatus = load_models()
-    logger.info('Starting app server!')
+    logger.info('Starting Flask Server!')
     app.run(host=FlaskConstants.host, port=FlaskConstants.port, ssl_context=(FlaskConstants.cert_path,FlaskConstants.rsa_private_key_path))
     # if(modelLoadStatus):
     #     logger.info('Starting app main!')
