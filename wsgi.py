@@ -74,7 +74,7 @@ if __name__ == "__main__":
     # cProfile.run('main()')
     #logger.info('Loading Models...')
     #modelLoadStatus = load_models()
-    logger.info('Starting app server!')
+    logger.info('Starting Flask Server!')
     app.run(host=FlaskConstants.host, port=FlaskConstants.port, ssl_context=(FlaskConstants.cert_path,FlaskConstants.rsa_private_key_path))
     # if(modelLoadStatus):
     #     logger.info('Starting app main!')
