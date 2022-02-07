@@ -1,5 +1,5 @@
 from flask import Flask, request
-from api_1_1.health_status import health_blueprint
+from ocr_wrapper_service.api_1_1.health_status import health_blueprint
 
 def create_flask_app():
     """
