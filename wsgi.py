@@ -6,7 +6,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 #from ocr_wrapper_service.utils.s3_download_model import load_models
 #from ocr_wrapper_service.utils.sqs_consumer import receive_messages
-from ocr_wrapper_service.app import create_app
+#from ocr_wrapper_service.app import create_app
 from ocr_analytic_service.service.input_mod import read_input_and_form_output
 from ocr_wrapper_service.constants import LoggerConstants
 from ocr_wrapper_service.constants import FlaskConstants
