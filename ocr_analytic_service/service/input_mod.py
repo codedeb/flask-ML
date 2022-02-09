@@ -92,6 +92,12 @@ def read_input_and_form_output(s3_resource,input_dict):
                     final_obj["ocrValue"] = result_out["ocrValue"]
                     final_obj["ocrConfidenceValue"] = result_out["confValue"]
                     final_obj["ocrConfidenceBand"] = result_out["confBand"]
+                    final_obj["ocrPrefixValue"]=prefix_out["ocrValue"]
+                    final_obj["ocrPrefixConfidenceBand"]=prefix_out["confBand"]
+                    final_obj["ocrPrefixConfidenceValue"]=prefix_out["confValue"]
+                    final_obj["ocrNumericValue"] =psn_out["ocrValue"]
+                    final_obj["ocrNumericConfidenceBand"]=psn_out["confBand"]
+                    final_obj["ocrNumericConfidenceValue"]=psn_out["confValue"]
                     final_obj["ocrAdditional"] = ""
                     out_put_dict.append(final_obj)
                 else:
@@ -99,6 +105,12 @@ def read_input_and_form_output(s3_resource,input_dict):
                     final_obj["ocrValue"] = "FAILED"
                     final_obj["ocrConfidenceValue"] = 0.0
                     final_obj["ocrConfidenceBand"] = "LOW"
+                    final_obj["ocrPrefixValue"] = "FAILED"
+                    final_obj["ocrPrefixConfidenceBand"] = "LOW"
+                    final_obj["ocrPrefixConfidenceValue"] = 0.0
+                    final_obj["ocrNumericValue"] = "FAILED"
+                    final_obj["ocrNumericConfidenceBand"] = "LOW"
+                    final_obj["ocrNumericConfidenceValue"] = 0.0
                     final_obj["ocrAdditional"] = "Failed to read image"
                     out_put_dict.append(final_obj)
             except Exception as e:
@@ -107,6 +119,12 @@ def read_input_and_form_output(s3_resource,input_dict):
                 final_obj["ocrValue"] = "FAILED"
                 final_obj["ocrConfidenceValue"] = 0.0
                 final_obj["ocrConfidenceBand"] = "LOW"
+                final_obj["ocrPrefixValue"] = "FAILED"
+                final_obj["ocrPrefixConfidenceBand"] = "LOW"
+                final_obj["ocrPrefixConfidenceValue"] = 0.0
+                final_obj["ocrNumericValue"] = "FAILED"
+                final_obj["ocrNumericConfidenceBand"] = "LOW"
+                final_obj["ocrNumericConfidenceValue"] = 0.0
                 final_obj["ocrAdditional"] = "OCR Failed"
                 out_put_dict.append(final_obj)
         logger.info('Analytics Output: %s' % out_put_dict)

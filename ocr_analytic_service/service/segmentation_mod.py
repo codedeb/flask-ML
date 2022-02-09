@@ -5,12 +5,12 @@ from .conf_band import confidence_band
 import logging
 from ocr_wrapper_service.constants import ModelDetails
 
-"""
+
 global segmentation_predictor
 global segmentation_predictor_available
 segmentation_predictor_available=False
 
-
+"""
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
                     level=logging.INFO)
@@ -35,10 +35,10 @@ def img_segmenter(img):
     # Make prediction
     #predictor = detector(config_path, model_weight_path, threshold)
     #uncomment if condition and enable global variables when model needs to be initialized only once
-    #if not segmentation_predictor_available:
-    logger.info("Initializing Segmentation Predictor")
-    segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
-    #segmentation_predictor_available=True
+    if not segmentation_predictor_available:
+        logger.info("Initializing Segmentation Predictor")
+        segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
+        segmentation_predictor_available=True
     #outputs = predictor(img)
     outputs = segmentation_predictor(img)
     classes = outputs['instances'].pred_classes
