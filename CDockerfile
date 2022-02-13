@@ -34,4 +34,12 @@ RUN pip3 install -U detectron2/.
 
 EXPOSE 8090
 
+#as per security requirement, container process should run with non-root user. 
+#hence changing ownership of folders
+RUN chown -R gecloud:gecloud /ocr-wrapper-service && \
+    chmod +x /ocr-wrapper-service/wsgi.py
+
+#switch to gecloud user
+USER gecloud
+
 ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]
