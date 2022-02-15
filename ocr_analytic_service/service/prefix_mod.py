@@ -19,12 +19,14 @@ logger = logging.getLogger(__name__)
 
 
 def prefix_data_parser(imgobj, filename):
-    #global prefix_predictor
-    #global prefix_predictor_available
+    global prefix_predictor
+    global prefix_predictor_available
+    """
+    #uncomment if required to run without constant variables
     config_path = "ocr_analytic_service/service/configPrefix_file.yaml"
     base_path = os.getenv('MODEL_PATH')
     model_weight_path = os.path.join(base_path, "model/model_prefix_v1.1.0.pth")
-
+    """
     threshold = 0.1
     try:
         #prediction = detector(config_path, model_weight_path, threshold)

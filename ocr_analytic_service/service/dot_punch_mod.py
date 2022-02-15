@@ -21,13 +21,16 @@ logger = logging.getLogger(__name__)
 
 
 def dot_punched_data_parser(imgobj):
-    #global dot_punch_predictor
-    #global dot_punch_predictor_available
+    global dot_punch_predictor
+    global dot_punch_predictor_available
     # config_path = "ocr_analytic_service/service/configDotPunch_file.yaml"
+    """
+    #uncomment if required to run without constant variables
     config_path = "ocr_analytic_service/service/configDotPunch_file_psn.yaml"
 
     base_path = os.getenv('MODEL_PATH')
     model_weight_path = os.path.join(base_path, "model/model_dotpunch_v1.1.0.pth")
+    """
     # model_weight_path = r"/shared-volume/model_final_dotpunch.pth"
 
     threshold = 0.8
