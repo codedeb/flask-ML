@@ -40,7 +40,7 @@
 				},
 				{
 					"name": "MODEL_PATH",
-					"value": "/IDM"
+					"value": "/ocr-wrapper-service/IDM"
 				},
 				{
 					"name": "IMAGE_FOLDER_PATH",
