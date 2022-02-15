@@ -60,8 +60,9 @@ def s3_model_download(s3):
         logger.info(objects)
 
         # Path where model will be downloaded
-        base_path = LocalDirectoryConstants.model_path
-        model_path = os.path.join(base_path, 'model')
+        #base_path = LocalDirectoryConstants.model_path
+        #model_path = os.path.join(base_path, 'model')
+        model_path = LocalDirectoryConstants.model_path
         logger.info('model_path: %s' %  model_path)
 
         #Checking whether all the models are available in S3.
