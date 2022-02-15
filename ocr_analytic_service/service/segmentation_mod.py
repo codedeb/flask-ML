@@ -18,17 +18,19 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 def img_segmenter(img):
-    #global segmentation_predictor
-    #global segmentation_predictor_available
+    global segmentation_predictor
+    global segmentation_predictor_available
     img_ht = img.shape[0]
     img_wd = img.shape[1]
     class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
     dct_out_segs = dict.fromkeys(list(class_map.values()))
     dct_out_box = dict.fromkeys(list(class_map.values()))
-
+    """
+    #uncomment if required to run without constant variables
     config_path = "ocr_analytic_service/service/configSeg_file.yaml"
     base_path = os.getenv('MODEL_PATH')
     model_weight_path = os.path.join(base_path, 'model/model_segmentation_v1.1.0.pth')
+    """
     
     threshold = 0.3
 
