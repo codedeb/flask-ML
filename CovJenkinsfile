@@ -3,5 +3,5 @@
 
 // call  pipeline method
 coverityScanInPipeline(projectName: '1100788114_CapitalPartsLifing',
-                        streamName: '1100788114_CapitalPartsLifing_pldb_service_develop',
+                        streamName: '1100788114_CapitalPartsLifing_ocr_wrapper_service_develop',
                         compiler: 'python')
