@@ -39,12 +39,20 @@
 					"value": "us-east-1"
 				},
 				{
-					"name": "MODEL_PATH",
+					"name": "CONTAINER_MODEL_PATH",
+					"value": "/ocr-wrapper-service/IDM"
+				},
+				{
+					"name": "S3_MODEL_PATH",
 					"value": "/IDM"
 				},
 				{
 					"name": "IMAGE_FOLDER_PATH",
 					"value": "IDM/image"
+				},
+				{
+					"name": "DUMP_IMAGES",
+					"value": "IDM/image/dump_images"
 				}
 			],
 			"mountPoints": [],
