@@ -49,10 +49,6 @@
 				{
 					"name": "IMAGE_FOLDER_PATH",
 					"value": "IDM/image"
-				},
-				{
-					"name": "DUMP_IMAGES",
-					"value": "IDM/image/dump_images"
 				}
 			],
 			"mountPoints": [],
