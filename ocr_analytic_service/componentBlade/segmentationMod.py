@@ -1,7 +1,7 @@
 import os
-from .inference_segmentation import clean_class
-from .model_artifacts import detector
-from .conf_band import confidence_band
+from componentBlade.inferenceSegmentation import clean_class
+from componentBlade.modelArtifacts import detector
+from componentBlade.confBand import confidence_band
 import logging
 from ocr_wrapper_service.constants import ModelDetails
 

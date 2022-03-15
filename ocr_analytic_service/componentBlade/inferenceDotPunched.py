@@ -1,5 +1,5 @@
 import logging
-from .conf_band import confidence_band
+from componentBlade.confBand import confidence_band
 """
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',

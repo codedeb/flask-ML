@@ -1,7 +1,7 @@
 import os
-from .model_artifacts import detector
+from componentBlade.modelArtifacts import detector
 from . import inference_prefix
-from .conf_band import confidence_band
+from componentBlade.confBand import confidence_band
 from . import recoverPrefix
 import logging
 from ocr_wrapper_service.constants import ModelDetails
