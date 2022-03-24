@@ -7,8 +7,8 @@ from ocr_wrapper_service.constants import LocalDirectoryConstants
 from ocr_wrapper_service.utils.aws_services import sqs_receive_message
 from ocr_wrapper_service.utils.aws_services import sqs_send_message
 from ocr_wrapper_service.utils.aws_services import sqs_delete_message
-from ocr_analytic_service.service.input_mod import read_input_and_form_output
-from ocr_analytic_service.service.model_artifacts import detector
+from ocr_analytic_service.input_mod import read_input_and_form_output
+from ocr_analytic_service.componentBlade.modelArtifacts import detector
 from ocr_wrapper_service.constants import ModelDetails
 import time
 logger = logging.getLogger(__name__)
@@ -41,7 +41,6 @@ def process_image(s3_client,input_payload):
 
 
 def process_messages(sqs_client,s3_client,sqs_response):
-
     for message in sqs_response.get('Messages'):
         start = time.time()
         logger.info("Timer Initialization")

@@ -1,48 +1,28 @@
-import os
+import logging
 from .inferenceSegmentation import clean_class
 from .modelArtifacts import detector
 from .confBand import confidence_band
-import logging
 from ocr_wrapper_service.constants import ModelDetails
 
-
-global segmentation_predictor
-global segmentation_predictor_available
-segmentation_predictor_available=False
-
-"""
-logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S',
-                    level=logging.INFO)
-"""
 logger = logging.getLogger(__name__)
 
 def img_segmenter(img):
-    global segmentation_predictor
-    global segmentation_predictor_available
+    logger.info("Segment Input: %s" % img)
     img_ht = img.shape[0]
     img_wd = img.shape[1]
-    class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
+    class_map = {0: 'o_bb',1: 'sn', 2: 'bl', 3: 'seg'}
     dct_out_segs = dict.fromkeys(list(class_map.values()))
     dct_out_box = dict.fromkeys(list(class_map.values()))
-    """
-    #uncomment if required to run without constant variables
-    config_path = "ocr_analytic_service/service/configSeg_file.yaml"
-    base_path = os.getenv('MODEL_PATH')
-    model_weight_path = os.path.join(base_path, 'model/model_segmentation_v1.1.0.pth')
-    """
-    
+    # config_path = "config_shroud_segmentation_v2.yaml"
+    # # config_path = "configSeg_file.yaml"
+    # model_weight_path = r"model_shroud_segmentation_v2.pth"
+    # print(config_path)
+    # print(model_weight_path)
     threshold = 0.3
 
     # Make prediction
-    #predictor = detector(config_path, model_weight_path, threshold)
-    #uncomment if condition and enable global variables when model needs to be initialized only once
-    if not segmentation_predictor_available:
-        logger.info("Initializing Segmentation Predictor")
-        segmentation_predictor = detector(ModelDetails.segmentation_config_path, ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
-        segmentation_predictor_available=True
-    #outputs = predictor(img)
-    outputs = segmentation_predictor(img)
+    predictor = detector(ModelDetails.shroud_seg_config_path, ModelDetails.shroud_seg_model_path,ModelDetails.shroud_segmentation_threshold)
+    outputs = predictor(img)
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
     scores = outputs['instances'].scores
@@ -67,7 +47,7 @@ def img_segmenter(img):
             width = box_list[2]-box_list[0]
             height = box_list[3]-box_list[1]
         except IndexError as e:
-            logger.info('error', e)
+            print('error', e)
         if class_map[index] == 'PSN':
             multwdst = 0.1
             multhtst = 0.1
@@ -87,7 +67,7 @@ def img_segmenter(img):
         roi_cropped = img[max(1, int(box_list[1]-(height*multhtst))):min(int(img_ht-1), int(box_list[3]+(height*multhted))), max(1, int(box_list[0]-(width*multwdst))):min(int(img_wd-1), int(box_list[2]+(width*multwded)))]
         dct_out_segs[class_map[int(dct_clean_class_list[index])]] = roi_cropped
         dct_out_box[class_map[int(dct_clean_class_list[index])]] = [max(1, int(box_list[0]-(width*multwdst))), max(1, int(box_list[1]-(height*multhtst))), min(int(img_wd-1), int(box_list[2]+(width*multwded))), min(int(img_ht-1), int(box_list[3]+(height*multhted)))]
-        
+
     # Publish output
     dct_out = {}
     for seg in class_map.values():
@@ -102,7 +82,7 @@ def img_segmenter(img):
             out_obj = {}
             out_obj['segment'] = img
             out_obj['confValue'] = 0
-            out_obj['confBand'] = "LOW"
+            out_obj['confBand'] = 'LOW'
             out_obj['box'] = None
             dct_out[seg] = out_obj
     return dct_out

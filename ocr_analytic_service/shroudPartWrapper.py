@@ -4,6 +4,11 @@ import cv2
 import time
 import logging
 import numpy as np
+import matplotlib.pyplot as plt
+
+from .componentShroud.segmentationModShroud import img_segmenter
+from .componentShroud.inferenceShroudOcr import getShroudOcr
+from .componentShroud.inferenceShroud import getClassResults
 
 logger = logging.getLogger(__name__)
 
@@ -12,24 +17,65 @@ class_map_shroud = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '
 
 def shroud_part_analytics(img_obj, im, filename):
     logger.info(f"Analytics Input: \n {img_obj}")
-    ####Bounding boxes of the regions within which character strings need to be extracted
-    bboxes = []
-    if 'SN' in segDict[filename.upper()].keys():
-        box1 = segDict[filename.upper()]['SN']['xmin'],segDict[filename.upper()]['SN']['ymin'],\
-    segDict[filename.upper()]['SN']['xmax'],segDict[filename.upper()]['SN']['ymax']
-    else:
-        box1 = 0,0,0,0
-    bboxes.append(box1)
-    if 'SEG' in segDict[filename.upper()].keys():
-        box1 = segDict[filename.upper()]['SEG']['xmin'],segDict[filename.upper()]['SEG']['ymin'],\
-    segDict[filename.upper()]['SEG']['xmax'],segDict[filename.upper()]['SEG']['ymax']
-    else:
-        box1 = 0,0,0,0
-    bboxes.append(box1)
+    
+    try:
+        logger.info("Input image: %s " % im)
+        seg_out = img_segmenter(im)
+        logger.info("Segment output: %s" % seg_out)
+        
+        logger.info('Shroud Segmentation successful!')
+    except Exception as e:
+        logger.info('Shroud Segmentation failure!')
+        logger.info(e)
+        seg_out = dict.fromkeys(["o_bb", "bl", "seg", "sn"])
+        # seg_out["SEG"] = {"confBand": "LOW", "confValue": 0, "segment": im}
+        # seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
+        # seg_out["SN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
 
-    ####Output of the model that has the alphanums
-    outputs = predictor(im)
+    try:
+        ###Output of the model that has the alphanums
+        outputs = getShroudOcr(im)
+        logger.info('Shrouds OCR Flow success! %s' % outputs)
+    except Exception as e:
+        logger.info('Shrouds OCR Flow failure!')
+        logger.info(e)
+
+    try:
+        bboxes = []
+        box1 = seg_out["sn"]["box"]
+        bboxes.append(box1)
+        box2 = seg_out["seg"]["box"]
+        bboxes.append(box2)
+        #Extract the strings. Right now its 'SN'_'SEG'; it is hard coded into the result extraction
+        resultString,confidence = getClassResults(class_map_shroud,bboxes,outputs)
+        logger.info('Shrouds post processing success! %s' % resultString)
+    except Exception as e:
+        logger.info('Shrouds post processing failure!')
+        logger.info(e)
 
 
-    ###Extract the strings. Right now its 'SN'_'SEG'; it is hard coded into the result extraction
-    resultString,confidence = getClassResults(class_map_shroud,bboxes,outputs)
+    
+    # try:
+        # ###Bounding boxes of the regions within which character strings need to be extracted
+        # bboxes = []
+        # if 'SN' in segDict[filename.upper()].keys():
+        #     box1 = seg_out["SN"]['xmin'],seg_out["SN"]['ymin'],seg_out["SN"]['xmax'],seg_out["SN"]['SN']['ymax']
+        # else:
+        #     box1 = 0,0,0,0
+        # bboxes.append(box1)
+        # if 'SEG' in segDict[filename.upper()].keys():
+        #     box1 = seg_out["SEG"]['xmin'],seg_out["SEG"]['ymin'],seg_out["SEG"]['xmax'],seg_out["SEG"]['ymax']
+        # else:
+        #     box1 = 0,0,0,0
+        # bboxes.append(box1)
+
+        # ###Output of the model that has the alphanums
+        # outputs = predictor(im)
+
+        # #Extract the strings. Right now its 'SN'_'SEG'; it is hard coded into the result extraction
+        # resultString,confidence = getClassResults(class_map_shroud,bboxes,outputs)
+        # logger.info("Shrouds output: %s" % resultString)
+        # logger.info('Shrouds Flow successful!')
+    # except Exception as e:
+    #     logger.info('Shrouds Flow failure!')
+    #     logger.info(e)

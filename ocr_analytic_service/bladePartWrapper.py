@@ -1,10 +1,10 @@
 import os
 import json
 import cv2
-from componentBlade.segmentationMod import img_segmenter
-from componentBlade.dotPunchMod import dot_punched_data_parser
+from .componentBlade.segmentationMod import img_segmenter
+from .componentBlade.dotPunchMod import dot_punched_data_parser
 from .collector import data_collector
-from componentBlade.prefixMod import prefix_data_parser
+from .componentBlade.prefixMod import prefix_data_parser
 import time
 from typing import List
 import logging

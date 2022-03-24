@@ -1,8 +1,8 @@
 import os
 import json
 import cv2
-from bladePartWrapper import blade_part_analytics
-from shroudPartWrapper import shroud_part_analytics
+from ocr_analytic_service.bladePartWrapper import blade_part_analytics
+from ocr_analytic_service.shroudPartWrapper import shroud_part_analytics
 import time
 from typing import List
 import logging
@@ -25,23 +25,28 @@ except:
 """
 logger = logging.getLogger(__name__)
 
-def read_input_and_form_output(s3_resource,input_dict):
+# def read_input_and_form_output(s3_resource,input_dict):
+def read_input_and_form_output(input_dict):
     logger.info(f"Analytics Input: \n {json.dumps(input_dict)}")
     # logger.info('System memory usage in bytes:' % psutil.virtual_memory())
     # logger.info('SYstem CPU utilization in percent:' % psutil.cpu_percent(1))
     out_put_dict = []
-    partLogic = True
+    partLogic = 'SHROUD'
     try:
         for img_obj in input_dict:
             try:
-                bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
-                image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
-                img = bucket.Object(image_folder_path).get().get('Body')
-                image = np.asarray(bytearray(img.read()), dtype="uint8")
-                im = cv2.imdecode(image, cv2.IMREAD_COLOR)
-                path, filename = os.path.split(img_obj['imagePath'])
+                logger.info('Image object input: %s'% img_obj)
+                filename = img_obj["imagePath"]
+                print('filename: %s' % filename)
+                im = cv2.imread(filename)
+                # bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
+                # image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
+                # img = bucket.Object(image_folder_path).get().get('Body')
+                # image = np.asarray(bytearray(img.read()), dtype="uint8")
+                # im = cv2.imdecode(image, cv2.IMREAD_COLOR)
+                # path, filename = os.path.split(img_obj['imagePath'])
                 # Add logic to check compon based on 'componentId' and read image once and pass it across
-                if partLogic:
+                if partLogic == 'BLADE':
                     blade_part_analytics(img_obj, im, filename)
                 else:
                     shroud_part_analytics(img_obj, im, filename)

@@ -1,7 +1,7 @@
 import os
-from componentBlade.modelArtifacts import detector
-from . import inference_prefix
-from componentBlade.confBand import confidence_band
+from .modelArtifacts import detector
+from . import inferencePrefix
+from .confBand import confidence_band
 from . import recoverPrefix
 import logging
 from ocr_wrapper_service.constants import ModelDetails
@@ -35,8 +35,8 @@ def prefix_data_parser(imgobj, filename):
             logger.info("Initializing Prefix Predictor")
             prefix_predictor = detector(ModelDetails.prefix_config_path,ModelDetails.prefix_model_path, ModelDetails.prefix_threshold)
             prefix_predictor_available = True
-        inference_prefix.class_names = []
-        lbl, scr, lowChar, lowProb, scoreList = inference_prefix.getPrefix(imgobj, prefix_predictor, filename)
+        inferencePrefix.class_names = []
+        lbl, scr, lowChar, lowProb, scoreList = inferencePrefix.getPrefix(imgobj, prefix_predictor, filename)
         # to do: sync the version for model and config within inference
         logger.info('Prefix Inference result: %s' % lbl)
         conf, conf_band = confidence_band(scoreList, 4)

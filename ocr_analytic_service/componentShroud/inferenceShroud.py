@@ -4,13 +4,21 @@
 #names2LabelMap
 import time
 import numpy as np
+import logging
+from ocr_wrapper_service.constants import ModelDetails
+
+logger = logging.getLogger(__name__)
+
 debug = True
 inferenceOutputFolder = 'output_4New'
 #modelToUse = 'model_final_prefixNsegments.pth'
 #modelToUse = 'model_final_PR_seg_PSN.pth'
 #modelToUse = 'model_0094999.pth'
 #modelToUse = 'model_0075k.pth'
-modelToUse = 'shroud/model_final_shroud.pth'
+# modelToUse = 'shroud/model_final_shroud.pth'
+modelToUse = ModelDetails.shroud_model_path
+configToUse = ModelDetails.shroud_config_path
+
 #modelToUse = 'model_0124999.pth'
 #TestImagesPath = 'test_images_8'
 num=str(125)+'_PlusTVAS123_final_V2_PP'
@@ -285,6 +293,7 @@ def getBestWordWithScore(words):
     return word, score, scoreString
 cn = []
 def getClassResults(class_map,bboxes,outputs,names=['SN','SEG']):
+    logger.info('Shrouds post processing get class results! %s' % names)
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
     scores = outputs['instances'].scores
@@ -295,15 +304,19 @@ def getClassResults(class_map,bboxes,outputs,names=['SN','SEG']):
     class_names = []
     cn = list(class_map.values())
     # results=[]
+    logger.info('get class results checking results! %s' % cn)
     results = Results(cn,classes_list, boxes_list, scores_list)
     resultsInitateTime = time.time()
     #debugState = debug
     #debug = False
 
     labelDict = get_named_strings(names, results, bboxes)  # ,filename.upper())
+    logger.info('get class results calling labeldict! %s' % labelDict)
     #debug = True
     return labelDict,0.9 #Siva: Change it with probability/confidence
+
 def get_named_strings(names,results,SegBoxes=[],fname=None):
+    logger.info('get_named_strings input! %s' % names)
     extractedResults = {}
     outBoxList = []
     if fname == None:
@@ -359,6 +372,7 @@ def get_named_strings(names,results,SegBoxes=[],fname=None):
             scoreString = "0.0"
         extractedResults[label2Process].append(LabelResult(word,scoreString))
         print(''.join(word)+'-'+''.join(scoreString))
+    logger.info('get_named_strings extracting !')
     print(''.join((extractedResults['SN'][0]).label)+'-'+''.join((extractedResults['SEG'][0]).label))
     if debug == False:
         return ''.join((extractedResults['SN'][0]).label)+'-'+''.join((extractedResults['SEG'][0]).label)
@@ -498,6 +512,6 @@ def test_stub_shroud():
             debug = False
             endTime = time.time()
 debug = False
-test_stub_shroud()
+# test_stub_shroud()
 
 

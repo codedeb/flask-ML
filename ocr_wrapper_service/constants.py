@@ -31,11 +31,13 @@ class S3Constants():
     retry_sleep=300
 
 class LocalDirectoryConstants():
-    model_path=os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    # model_path=os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    model_path="/models"
 
 class ModelDetails():
-    blade_config_base_path="ocr_analytic_service/service/componentBlade"
-    model_base_path = os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    blade_config_base_path="ocr_analytic_service/componentBlade/"
+    # model_base_path = os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    model_base_path = "/shared-volume/shroud_models/"
     segmentation_config_path=blade_config_base_path+"configSeg.yaml"
     segmentation_model_path=model_base_path+"model_segmentation_v1.1.0.pth"
     segmentation_threshold=0.3
@@ -47,8 +49,11 @@ class ModelDetails():
     prefix_model_path = model_base_path + "model_prefix_v1.1.0.pth"
     prefix_threshold=0.1
 
-    shroud_config_base_path = "ocr_analytic_service/service/componentShroud"
-    prefix_config_path = shroud_config_base_path + "configShroud.yaml"
-    prefix_model_path = model_base_path + "model_shroud_OCR_v1.pth"
+    shroud_config_base_path = "ocr_analytic_service/componentShroud/"
+    shroud_config_path = shroud_config_base_path + "config_shroud_OCR_v1.yaml"
+    shroud_model_path = model_base_path + "model_shroud_OCR_v1.pth"
+    shroud_seg_config_path = shroud_config_base_path + "config_shroud_segmentation_v3.yaml"
+    shroud_seg_model_path = model_base_path + "model_shroud_segmentation_v3.pth"
+    shroud_segmentation_threshold = 0.3
 
 

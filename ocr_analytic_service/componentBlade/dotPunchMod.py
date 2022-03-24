@@ -1,8 +1,8 @@
 import os
 from logging import exception
 import pickle
-from componentBlade.inferenceDotPunched import Inference
-from componentBlade.modelArtifacts import detector
+from .inferenceDotPunched import Inference
+from .modelArtifacts import detector
 import logging
 from ocr_wrapper_service.constants import ModelDetails
 
