@@ -50,10 +50,12 @@ class ModelDetails():
     prefix_threshold=0.1
 
     shroud_config_base_path = "ocr_analytic_service/componentShroud/"
-    shroud_config_path = shroud_config_base_path + "config_shroud_OCR_v1.yaml"
-    shroud_model_path = model_base_path + "model_shroud_OCR_v1.pth"
     shroud_seg_config_path = shroud_config_base_path + "config_shroud_segmentation_v3.yaml"
     shroud_seg_model_path = model_base_path + "model_shroud_segmentation_v3.pth"
-    shroud_segmentation_threshold = 0.3
+    shroud_seg_threshold = 0.3
+    shroud_ocr_config_path = shroud_config_base_path + "config_shroud_OCR_v1.yaml"
+    shroud_ocr_model_path = model_base_path + "model_shroud_OCR_v1.pth"
+    shroud_ocr_threshold = 0.1
+    
 
 

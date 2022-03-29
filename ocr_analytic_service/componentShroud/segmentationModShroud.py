@@ -7,7 +7,7 @@ from ocr_wrapper_service.constants import ModelDetails
 logger = logging.getLogger(__name__)
 
 def img_segmenter_shrouds(img, model_params):
-    logger.info("Segment Input: %s" % img)
+    logger.info("Running image segmenter for shrouds...")
 
     model_params_seg = model_params["shroud"]["segmentation"]
     img_ht = img.shape[0]
@@ -22,7 +22,7 @@ def img_segmenter_shrouds(img, model_params):
     # threshold = float(model_params_seg["threshold"])
 
     # Make prediction
-    predictor = detector(ModelDetails.shroud_seg_config_path, ModelDetails.shroud_seg_model_path,ModelDetails.shroud_segmentation_threshold)
+    predictor = detector(ModelDetails.shroud_seg_config_path, ModelDetails.shroud_seg_model_path,ModelDetails.shroud_seg_threshold)
     outputs = predictor(img)
 
     classes = outputs['instances'].pred_classes

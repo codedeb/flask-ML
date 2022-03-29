@@ -37,7 +37,6 @@ def read_input_and_form_output(input_dict):
             try:
                 logger.info('Image object input: %s'% img_obj)
                 filename = img_obj["imagePath"]
-                print('filename: %s' % filename)
                 im = cv2.imread(filename)
                 # bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
                 # image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])

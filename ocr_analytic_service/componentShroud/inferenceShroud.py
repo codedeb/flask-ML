@@ -16,8 +16,8 @@ inferenceOutputFolder = 'output_4New'
 #modelToUse = 'model_0094999.pth'
 #modelToUse = 'model_0075k.pth'
 # modelToUse = 'shroud/model_final_shroud.pth'
-modelToUse = ModelDetails.shroud_model_path
-configToUse = ModelDetails.shroud_config_path
+modelToUse = ModelDetails.shroud_ocr_model_path
+configToUse = ModelDetails.shroud_ocr_config_path
 
 #modelToUse = 'model_0124999.pth'
 #TestImagesPath = 'test_images_8'
@@ -293,7 +293,6 @@ def getBestWordWithScore(words):
     return word, score, scoreString
 cn = []
 def getClassResults(class_map,bboxes,outputs,names=['SN','SEG']):
-    logger.info('Shrouds post processing get class results! %s' % names)
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
     scores = outputs['instances'].scores
@@ -304,19 +303,32 @@ def getClassResults(class_map,bboxes,outputs,names=['SN','SEG']):
     class_names = []
     cn = list(class_map.values())
     # results=[]
-    logger.info('get class results checking results! %s' % cn)
     results = Results(cn,classes_list, boxes_list, scores_list)
     resultsInitateTime = time.time()
     #debugState = debug
     #debug = False
 
-    labelDict = get_named_strings(names, results, bboxes)  # ,filename.upper())
-    logger.info('get class results calling labeldict! %s' % labelDict)
-    #debug = True
-    return labelDict,0.9 #Siva: Change it with probability/confidence
+    labelDict, score = get_named_strings(names, results, bboxes)  # ,filename.upper())
+
+    #Siva: delete leading SNH for shrouds
+    if labelDict.startswith('SNH'):
+        labelDict.replace('SNH','')
+
+    return labelDict,score #Siva: Change it with probability/confidence
+
+def getScoreFromString(scoreString):
+    prob = 1.0
+    strScores = scoreString.split("*")
+    for i in range(len(strScores)):
+        if len(strScores[i]) > 0:
+            prob = prob * float(strScores[i])
+    if prob == 1.0:
+        return 0.0
+    else:
+        return prob
+
 
 def get_named_strings(names,results,SegBoxes=[],fname=None):
-    logger.info('get_named_strings input! %s' % names)
     extractedResults = {}
     outBoxList = []
     if fname == None:
@@ -372,11 +384,24 @@ def get_named_strings(names,results,SegBoxes=[],fname=None):
             scoreString = "0.0"
         extractedResults[label2Process].append(LabelResult(word,scoreString))
         print(''.join(word)+'-'+''.join(scoreString))
-    logger.info('get_named_strings extracting !')
-    print(''.join((extractedResults['SN'][0]).label)+'-'+''.join((extractedResults['SEG'][0]).label))
+
+    # In case of strings reverse, check below loop:
+    scores = {}
+    prob = 1.0
+    resulString = ''
+    for key in extractedResults.keys():
+        scores[key] = getScoreFromString(extractedResults[key][0].score)
+        prob = prob * scores[key]
+        if len(resulString)> 0:
+            resulString = resulString+'_'+''.join((extractedResults[key][0]).label)
+        else:
+            resulString = ''.join((extractedResults[key][0]).label)
+
+    # print(''.join((extractedResults['SN'][0]).label)+'-'+''.join((extractedResults['SEG'][0]).label))
     if debug == False:
-        return ''.join((extractedResults['SN'][0]).label)+'-'+''.join((extractedResults['SEG'][0]).label)
-    return extractedResults
+        return resulString,prob
+    return extractedResults,prob
+
 segDict = {}
 def getSegmentDetailsDict():
     import csv
