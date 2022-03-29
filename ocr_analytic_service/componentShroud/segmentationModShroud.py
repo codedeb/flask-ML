@@ -6,23 +6,25 @@ from ocr_wrapper_service.constants import ModelDetails
 
 logger = logging.getLogger(__name__)
 
-def img_segmenter(img):
+def img_segmenter_shrouds(img, model_params):
     logger.info("Segment Input: %s" % img)
+
+    model_params_seg = model_params["shroud"]["segmentation"]
     img_ht = img.shape[0]
     img_wd = img.shape[1]
-    class_map = {0: 'o_bb',1: 'sn', 2: 'bl', 3: 'seg'}
+    class_map = {int(k):v for k,v in model_params_seg["class_map"].items()}
+
     dct_out_segs = dict.fromkeys(list(class_map.values()))
     dct_out_box = dict.fromkeys(list(class_map.values()))
-    # config_path = "config_shroud_segmentation_v2.yaml"
-    # # config_path = "configSeg_file.yaml"
-    # model_weight_path = r"model_shroud_segmentation_v2.pth"
-    # print(config_path)
-    # print(model_weight_path)
-    threshold = 0.3
+    # json line for model from Box: "model_dir": "C:\\Users\\212070706\\Box\\Capital Parts Lifing\\Intelligent Data Management\\Analytics\\IDM SNO OCR\\Shroud_Models\\Segmentation\\Version3",
+    # config_path       = os.path.join(model_params_seg["model_dir"], model_params_seg["model_config"])
+    # model_weight_path = os.path.join(model_params_seg["model_dir"], model_params_seg["model_file"])
+    # threshold = float(model_params_seg["threshold"])
 
     # Make prediction
     predictor = detector(ModelDetails.shroud_seg_config_path, ModelDetails.shroud_seg_model_path,ModelDetails.shroud_segmentation_threshold)
     outputs = predictor(img)
+
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
     scores = outputs['instances'].scores
@@ -48,7 +50,7 @@ def img_segmenter(img):
             height = box_list[3]-box_list[1]
         except IndexError as e:
             print('error', e)
-        if class_map[index] == 'PSN':
+        if class_map[index] == 'sn':
             multwdst = 0.1
             multhtst = 0.1
             multwded = 0.1
@@ -85,4 +87,54 @@ def img_segmenter(img):
             out_obj['confBand'] = 'LOW'
             out_obj['box'] = None
             dct_out[seg] = out_obj
-    return dct_out
+    
+    #            
+    # clean raw dict and form output
+    #
+    seg_out = {"O_BB": {"segment": img, "box": [0,0,0,0], "confValue": None, "confBand": None},
+               "SN":   {"segment": img, "box": [0,0,0,0], "confValue": None, "confBand": None},
+               "SEG":  {"segment": img, "box": [0,0,0,0], "confValue": None, "confBand": None}}
+    
+    # check which type of shroud layout was discovered
+    if dct_out["o_bb"]["confValue"] > dct_out["o_bb_t2"]["confValue"]:
+        bbox = dct_out["o_bb"]["box"]
+        xmin0, ymin0 = bbox[0], bbox[1]
+
+        if dct_out["o_bb"]["confValue"] > 0:
+            seg_out["O_BB"]["segment"] = dct_out["o_bb"]["segment"]
+            seg_out["O_BB"]["box"] = [0,0,0,0]
+            seg_out["O_BB"]["confValue"] = dct_out["o_bb"]["confValue"]
+            seg_out["O_BB"]["confBand"] = dct_out["o_bb"]["confBand"]
+        if dct_out["bl"]["confValue"] > 0:
+            seg_out["SN"]["segment"] = dct_out["bl"]["segment"]
+            seg_out["SN"]["box"] = [x-y for x,y in zip(dct_out["bl"]["box"],[xmin0, ymin0, xmin0, ymin0])]
+            seg_out["SN"]["confValue"] = dct_out["bl"]["confValue"]
+            seg_out["SN"]["confBand"] = dct_out["bl"]["confBand"]
+        if dct_out["seg"]["confValue"] > 0:
+            seg_out["SEG"]["segment"] = dct_out["seg"]["segment"]
+            seg_out["SEG"]["box"] = [x-y for x,y in zip(dct_out["seg"]["box"],[xmin0, ymin0, xmin0, ymin0])]
+            seg_out["SEG"]["confValue"] = dct_out["seg"]["confBand"]
+            seg_out["SEG"]["confBand"] = dct_out["seg"]["confValue"]
+    else:
+        bbox = dct_out["o_bb_t2"]["box"]
+        xmin0, ymin0 = bbox[0], bbox[1]
+
+        if dct_out["o_bb_t2"]["confValue"] > 0:
+            seg_out["O_BB"]["segment"] = dct_out["o_bb_t2"]["segment"]
+            seg_out["O_BB"]["box"] = [0,0,0,0]
+            seg_out["O_BB"]["confValue"] = dct_out["o_bb_t2"]["confValue"]
+            seg_out["O_BB"]["confBand"] = dct_out["o_bb_t2"]["confBand"]
+        if dct_out["sn_t2"]["confValue"] > 0:
+            seg_out["SN"]["segment"] = dct_out["sn_t2"]["segment"]
+            seg_out["SN"]["box"] = [x-y for x,y in zip(dct_out["sn_t2"]["box"],[xmin0, ymin0, xmin0, ymin0])]
+            seg_out["SN"]["confValue"] = dct_out["sn_t2"]["confValue"]
+            seg_out["SN"]["confBand"] = dct_out["sn_t2"]["confBand"]
+        if dct_out["dn_t2"]["confValue"] > 0:
+            seg_out["SEG"]["segment"] = dct_out["dn_t2"]["segment"]
+            seg_out["SEG"]["box"] = [x-y for x,y in zip(dct_out["dn_t2"]["box"],[xmin0, ymin0, xmin0, ymin0])]
+            seg_out["SEG"]["confValue"] = dct_out["dn_t2"]["confValue"]
+            seg_out["SEG"]["confBand"] = dct_out["dn_t2"]["confBand"]
+                   
+
+    return seg_out
+

@@ -45,7 +45,7 @@ sqs_client_object=sqs_client()
 s3_resource_object=s3_resource()
 
 try:
-    read_input_and_form_output([{"imageId":1,"partDataType":"PARTSERIALNUMBER","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath":"/shared-volume/images/S1S_298635_2021_PI_IMG_0568_o_bb.png"}])
+    read_input_and_form_output([{"imageId":1,"partDataType":"PARTSERIALNUMBER","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath":"/shared-volume/images/S1S_298635_2021_PI_IMG_0568.JPG"}])
 except Exception as e:
     logger.info('Error while starting analytics! %s' % e)
 
