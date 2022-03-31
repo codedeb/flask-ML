@@ -45,7 +45,19 @@ sqs_client_object=sqs_client()
 s3_resource_object=s3_resource()
 
 try:
-    read_input_and_form_output([{"imageId":1,"partDataType":"PARTSERIALNUMBER","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath":"/shared-volume/images/S1S_298635_2021_PI_IMG_0568.JPG"}])
+    # Folder Path
+    path = "/shared-volume/images/"
+    # iterate through all file
+    for file in os.listdir(path):
+        # Check whether file is in text format or not
+        if file.endswith(".JPG"):
+            file_path = os.path.join(path, file)
+            image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": file_path}]
+            logger.info('calling read function on image obj: %s' % image_object)
+            # call analytics function
+            read_input_and_form_output(image_object)
+        else:
+            logger.info('Image is not JPG! %s' % file)
 except Exception as e:
     logger.info('Error while starting analytics! %s' % e)
 

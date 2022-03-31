@@ -46,9 +46,9 @@ def read_input_and_form_output(input_dict):
                 # path, filename = os.path.split(img_obj['imagePath'])
                 # Add logic to check compon based on 'componentId' and read image once and pass it across
                 if partLogic == 'BLADE':
-                    blade_part_analytics(img_obj, im, filename)
+                    out_put_dict = blade_part_analytics(img_obj, im, filename)
                 else:
-                    shroud_part_analytics(img_obj, im, filename)
+                    out_put_dict = shroud_part_analytics(img_obj, im, filename)
                     
             except Exception as e:
                 logger.info('OCR Failed: %s' % e)
