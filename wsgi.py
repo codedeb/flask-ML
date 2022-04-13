@@ -52,7 +52,7 @@ try:
         # Check whether file is in text format or not
         if file.endswith(".JPG"):
             file_path = os.path.join(path, file)
-            image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": file_path}]
+            image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"SHROUDS","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": file_path}]
             logger.info('calling read function on image obj: %s' % image_object)
             # call analytics function
             read_input_and_form_output(image_object)

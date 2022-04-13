@@ -31,7 +31,6 @@ def read_input_and_form_output(input_dict):
     # logger.info('System memory usage in bytes:' % psutil.virtual_memory())
     # logger.info('SYstem CPU utilization in percent:' % psutil.cpu_percent(1))
     out_put_dict = []
-    partLogic = 'SHROUD'
     try:
         for img_obj in input_dict:
             try:
@@ -45,9 +44,9 @@ def read_input_and_form_output(input_dict):
                 # im = cv2.imdecode(image, cv2.IMREAD_COLOR)
                 # path, filename = os.path.split(img_obj['imagePath'])
                 # Add logic to check compon based on 'componentId' and read image once and pass it across
-                if partLogic == 'BLADE':
+                if img_obj["partType"] == 'BLADE':
                     out_put_dict = blade_part_analytics(img_obj, im, filename)
-                else:
+                elif img_obj["partType"] == 'SHROUDS':
                     out_put_dict = shroud_part_analytics(img_obj, im, filename)
                     
             except Exception as e:

@@ -6,6 +6,16 @@ from ocr_wrapper_service.constants import ModelDetails
 
 logger = logging.getLogger(__name__)
 
+def check_bbox1_inside_bbox2(bbox1, bbox2, use_centroid=True):
+    xmin1, ymin1, xmax1, ymax1 = bbox1[0], bbox1[1], bbox1[2], bbox1[3]
+    xmin2, ymin2, xmax2, ymax2 = bbox2[0], bbox2[1], bbox2[2], bbox2[3]
+    if use_centroid:
+        centx1 = 0.5 * (xmin1 + xmax1)
+        centy1 = 0.5 * (ymin1 + ymax1)
+        return (centx1 > xmin2) and (centy1 > ymin2) and (centx1 < xmax2) and (centy1 < ymax2)
+    else:
+        return (xmin1 > xmin2) and (ymin1 > ymin2) and (xmax1 < xmax2) and (ymax1 < ymax2)
+
 def img_segmenter_shrouds(img, model_params):
     logger.info("Running image segmenter for shrouds...")
 
@@ -55,11 +65,11 @@ def img_segmenter_shrouds(img, model_params):
             multhtst = 0.1
             multwded = 0.1
             multhted = 0.1
-        elif class_map[index] == 'ROI':
-            multwdst = 0.2
-            multhtst = 0.3
-            multwded = 0.2
-            multhted = 0.3
+        elif class_map[index] == 'seg':
+            multwdst = 0.1
+            multhtst = 0.1
+            multwded = 0.1
+            multhted = 0.1
         else:
             multwdst = 0
             multhtst = 0
@@ -100,17 +110,22 @@ def img_segmenter_shrouds(img, model_params):
         bbox = dct_out["o_bb"]["box"]
         xmin0, ymin0 = bbox[0], bbox[1]
 
+        if 0:
+            print(dct_out["seg"]["box"])
+            print(dct_out["o_bb"]["box"])
+            print(check_bbox1_inside_bbox2(dct_out["seg"]["box"], dct_out["o_bb"]["box"]))
+
         if dct_out["o_bb"]["confValue"] > 0:
-            seg_out["O_BB"]["segment"] = dct_out["o_bb"]["segment"]
-            seg_out["O_BB"]["box"] = [0,0,0,0]
+            seg_out["O_BB"]["segment"]   = dct_out["o_bb"]["segment"]
+            seg_out["O_BB"]["box"]       = [0,0,0,0]
             seg_out["O_BB"]["confValue"] = dct_out["o_bb"]["confValue"]
-            seg_out["O_BB"]["confBand"] = dct_out["o_bb"]["confBand"]
-        if dct_out["bl"]["confValue"] > 0:
-            seg_out["SN"]["segment"] = dct_out["bl"]["segment"]
-            seg_out["SN"]["box"] = [x-y for x,y in zip(dct_out["bl"]["box"],[xmin0, ymin0, xmin0, ymin0])]
-            seg_out["SN"]["confValue"] = dct_out["bl"]["confValue"]
-            seg_out["SN"]["confBand"] = dct_out["bl"]["confBand"]
-        if dct_out["seg"]["confValue"] > 0:
+            seg_out["O_BB"]["confBand"]  = dct_out["o_bb"]["confBand"]
+        if (dct_out["sn"]["confValue"] > 0) and check_bbox1_inside_bbox2(dct_out["sn"]["box"], dct_out["o_bb"]["box"]):
+            seg_out["SN"]["segment"]   = dct_out["sn"]["segment"]
+            seg_out["SN"]["box"]   = [x-y for x,y in zip(dct_out["sn"]["box"],[xmin0, ymin0, xmin0, ymin0])]
+            seg_out["SN"]["confValue"] = dct_out["sn"]["confValue"]
+            seg_out["SN"]["confBand"]  = dct_out["sn"]["confBand"]
+        if (dct_out["seg"]["confValue"] > 0) and check_bbox1_inside_bbox2(dct_out["seg"]["box"], dct_out["o_bb"]["box"]):
             seg_out["SEG"]["segment"] = dct_out["seg"]["segment"]
             seg_out["SEG"]["box"] = [x-y for x,y in zip(dct_out["seg"]["box"],[xmin0, ymin0, xmin0, ymin0])]
             seg_out["SEG"]["confValue"] = dct_out["seg"]["confBand"]
@@ -124,12 +139,12 @@ def img_segmenter_shrouds(img, model_params):
             seg_out["O_BB"]["box"] = [0,0,0,0]
             seg_out["O_BB"]["confValue"] = dct_out["o_bb_t2"]["confValue"]
             seg_out["O_BB"]["confBand"] = dct_out["o_bb_t2"]["confBand"]
-        if dct_out["sn_t2"]["confValue"] > 0:
+        if (dct_out["sn_t2"]["confValue"] > 0) and check_bbox1_inside_bbox2(dct_out["sn_t2"]["box"], dct_out["o_bb_t2"]["box"]):
             seg_out["SN"]["segment"] = dct_out["sn_t2"]["segment"]
             seg_out["SN"]["box"] = [x-y for x,y in zip(dct_out["sn_t2"]["box"],[xmin0, ymin0, xmin0, ymin0])]
             seg_out["SN"]["confValue"] = dct_out["sn_t2"]["confValue"]
             seg_out["SN"]["confBand"] = dct_out["sn_t2"]["confBand"]
-        if dct_out["dn_t2"]["confValue"] > 0:
+        if (dct_out["dn_t2"]["confValue"] > 0) and check_bbox1_inside_bbox2(dct_out["dn_t2"]["box"], dct_out["o_bb_t2"]["box"]):
             seg_out["SEG"]["segment"] = dct_out["dn_t2"]["segment"]
             seg_out["SEG"]["box"] = [x-y for x,y in zip(dct_out["dn_t2"]["box"],[xmin0, ymin0, xmin0, ymin0])]
             seg_out["SEG"]["confValue"] = dct_out["dn_t2"]["confValue"]

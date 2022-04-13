@@ -37,8 +37,8 @@
 			"model_file": "model_shroud_segmentation_v3.pth",
 			"class_map": {
 				"0": "o_bb",
-				"1": "sn",
-				"2": "bl",
+				"1": "bl",
+				"2": "sn",
 				"3": "seg",
 				"4": "dn",
 				"5": "tl",
