@@ -7,7 +7,7 @@ import atexit
 #from ocr_wrapper_service.utils.s3_download_model import load_models
 #from ocr_wrapper_service.utils.sqs_consumer import receive_messages
 #from ocr_wrapper_service.app import create_app
-from ocr_analytic_service.service.input_mod import read_input_and_form_output
+from ocr_analytic_service.input_mod import read_input_and_form_output
 from ocr_wrapper_service.constants import LoggerConstants
 from ocr_wrapper_service.constants import FlaskConstants
 from ocr_wrapper_service.constants import SchedulerConstants
@@ -23,6 +23,8 @@ from ocr_wrapper_service.utils.image_processor import load_predictors
 from time import sleep
 from ocr_wrapper_service.api_1_1.register_blueprint import create_flask_app
 
+from ocr_analytic_service.input_mod import read_input_and_form_output
+
 """
 logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
@@ -35,11 +37,29 @@ logging.getLogger("apscheduler.scheduler").addFilter(my_filter)
 #app = create_app(os.getenv('APP_SETTING_MODULE'))
 app = create_flask_app()
 global modelLoadStatus
-modelLoadStatus = False
+# modelLoadStatus = False
+modelLoadStatus = True
 
 s3_client_object=s3_client()
 sqs_client_object=sqs_client()
 s3_resource_object=s3_resource()
+
+try:
+    # Folder Path
+    path = "/shared-volume/images/"
+    # iterate through all file
+    for file in os.listdir(path):
+        # Check whether file is in text format or not
+        if file.endswith(".JPG"):
+            file_path = os.path.join(path, file)
+            image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"SHROUDS","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": file_path}]
+            logger.info('calling read function on image obj: %s' % image_object)
+            # call analytics function
+            read_input_and_form_output(image_object)
+        else:
+            logger.info('Image is not JPG! %s' % file)
+except Exception as e:
+    logger.info('Error while starting analytics! %s' % e)
 
 def sqs_scheduler():
     global modelLoadStatus
@@ -55,20 +75,17 @@ def sqs_scheduler():
         if not modelLoadStatus:
             logger.info(f"Models are not available in sleep for : {S3Constants.retry_sleep} seconds")
             sleep(S3Constants.retry_sleep)
-
-
-# test someshs, 21apr2022
     
-try:
-    scheduler = BackgroundScheduler(timezone=utc,daemon=True)
-    scheduler.add_job(func=sqs_scheduler, trigger=SchedulerConstants.trigger, seconds=SchedulerConstants.seconds)
-    scheduler.start()
-except Exception as e:
-    logger.info('Error while starting scheduler!')
-    logger.debug('Error while starting scheduler! %s' % e)
+# try:
+#     scheduler = BackgroundScheduler(timezone=utc,daemon=True)
+#     scheduler.add_job(func=sqs_scheduler, trigger=SchedulerConstants.trigger, seconds=SchedulerConstants.seconds)
+#     scheduler.start()
+# except Exception as e:
+#     logger.info('Error while starting scheduler!')
+#     logger.debug('Error while starting scheduler! %s' % e)
 
 # Shut down the scheduler when exiting the app
-atexit.register(lambda: scheduler.shutdown())
+# atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == "__main__":
     # cProfile.run('main()')

@@ -135,3 +135,5 @@ dmypy.json
 # Ignore OCRv2.0
 ocrV2.0/
 *.pth
+
+ocr_dev.conf

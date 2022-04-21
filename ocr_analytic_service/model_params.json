@@ -1,0 +1,61 @@
+{
+	"blade": {
+		"segmentation": {
+			"model_dir": ".",
+			"model_config": "configSeg.yaml",
+			"model_file": "model_segmentation_v1.1.0.pth",
+			"class_map": {
+				"0": "ROI",
+				"2": "PSN",
+				"4": "PR"
+			},
+			"threshold": "0.3"
+		},
+		"dot_punch": {
+			"model_dir": ".",
+			"model_config": "TODO",
+			"model_file": "TODO",
+			"class_map": {
+				"TODO": 1
+			},
+			"threshold": "TODO"
+		},
+		"prefix": {
+			"model_dir": ".",
+			"model_config": "TODO",
+			"model_file": "TODO",
+			"class_map": {
+				"TODO": 1
+			},
+			"threshold": "TODO"
+		}
+	},
+	"shroud": {
+		"segmentation": {
+			"model_dir": ".",
+			"model_config": "config_shroud_segmentation_v3.yaml",
+			"model_file": "model_shroud_segmentation_v3.pth",
+			"class_map": {
+				"0": "o_bb",
+				"1": "bl",
+				"2": "sn",
+				"3": "seg",
+				"4": "dn",
+				"5": "tl",
+				"6": "o_bb_t2",
+				"7": "sn_t2",
+				"8": "dn_t2"
+			},
+			"threshold": "0.3"
+		},
+		"ocr": {
+			"model_dir": ".",
+			"model_config": "TODO",
+			"model_file": "TODO",
+			"class_map": {
+				"TODO": 1
+			},
+			"threshold": "TODO"
+		}
+	}
+}

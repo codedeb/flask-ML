@@ -1,8 +1,8 @@
 import os
 from logging import exception
 import pickle
-from .inference_dotPunched import Inference
-from .model_artifacts import detector
+from .inferenceDotPunched import Inference
+from .modelArtifacts import detector
 import logging
 from ocr_wrapper_service.constants import ModelDetails
 
@@ -34,7 +34,7 @@ def dot_punched_data_parser(imgobj):
     # model_weight_path = r"/shared-volume/model_final_dotpunch.pth"
 
     threshold = 0.8
-    file = open('ocr_analytic_service/service/listPickle', 'rb')
+    file = open(ModelDetails.dot_punch_pickle_path, 'rb')
     data = pickle.load(file)
     #prediction = detector(config_path, model_weight_path, threshold)
     # uncomment if condition and enable global variables when model needs to be initialized only once

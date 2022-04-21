@@ -1,7 +1,7 @@
 import os
-from .inference_segmentation import clean_class
-from .model_artifacts import detector
-from .conf_band import confidence_band
+from .inferenceSegmentation import clean_class
+from .modelArtifacts import detector
+from .confBand import confidence_band
 import logging
 from ocr_wrapper_service.constants import ModelDetails
 
