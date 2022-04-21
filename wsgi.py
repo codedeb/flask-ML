@@ -57,7 +57,7 @@ def sqs_scheduler():
             sleep(S3Constants.retry_sleep)
 
 
-
+# test someshs, 21apr2022
     
 try:
     scheduler = BackgroundScheduler(timezone=utc,daemon=True)
