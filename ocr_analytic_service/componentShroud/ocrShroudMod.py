@@ -1,6 +1,8 @@
 import logging
+import cv2
+import numpy as np
 from ocr_wrapper_service.constants import ModelDetails
-from .inferenceShroud import getClassResults
+from .inferenceShroud_ver2 import getClassResults
 from .modelArtifacts import detector
 
 # import some common detectron2 utilities
@@ -21,6 +23,23 @@ class_map_shroud = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '
 def ocr_parser_shrouds(im, bboxes):
     try:
         ocr_shrouds_predictor = detector(ModelDetails.shroud_ocr_config_path, ModelDetails.shroud_ocr_model_path,ModelDetails.shroud_ocr_threshold)
+
+        ## image pre-processing start
+        # noise removal
+        im = cv2.GaussianBlur(im,(5,5),0)
+
+        # resize to 500px height
+        height, width = im.shape[:2]
+        resize_fac = 1.0
+        if height != 0:
+            resize_fac = 500.0 / height
+        im = cv2.resize(im,(int(np.round(resize_fac*width)), int(np.round(resize_fac*height))), interpolation = cv2.INTER_CUBIC)
+        
+        # adjust sn and seg bboxes after resizing of image
+        bboxes[0] = [int(resize_fac * x) for x in bboxes[0]]
+        bboxes[1] = [int(resize_fac * x) for x in bboxes[1]]
+        ## image pre-processing end        
+
         ocr_shrouds_outputs= ocr_shrouds_predictor(im)
         # cfg = get_cfg()
         # cfg.merge_from_file(ModelDetails.shroud_ocr_config_path)
