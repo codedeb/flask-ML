@@ -2,7 +2,7 @@ import logging
 import cv2
 import numpy as np
 from ocr_wrapper_service.constants import ModelDetails
-from .inferenceShroud_ver2 import getClassResults
+from .inferenceShroud import getClassResults
 from .modelArtifacts import detector
 
 # import some common detectron2 utilities
