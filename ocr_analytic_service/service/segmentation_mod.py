@@ -88,6 +88,12 @@ def img_segmenter(img):
         dct_out_segs[class_map[int(dct_clean_class_list[index])]] = roi_cropped
         dct_out_box[class_map[int(dct_clean_class_list[index])]] = [max(1, int(box_list[0]-(width*multwdst))), max(1, int(box_list[1]-(height*multhtst))), min(int(img_wd-1), int(box_list[2]+(width*multwded))), min(int(img_ht-1), int(box_list[3]+(height*multhted)))]
         
+    # Create boxes relative to ROI
+    list_ROI_box = dct_out_box['ROI'].copy()
+    list_ROI_box = [list_ROI_box[0], list_ROI_box[1], list_ROI_box[0], list_ROI_box[1]]
+    for seg in class_map_up.values():
+        dct_out_box[seg] = list(a-b for (a, b) in zip(dct_out_box[seg], list_ROI_box))
+
     # Publish output
     dct_out = {}
     for seg in class_map.values():
@@ -103,6 +109,6 @@ def img_segmenter(img):
             out_obj['segment'] = img
             out_obj['confValue'] = 0
             out_obj['confBand'] = "LOW"
-            out_obj['box'] = None
+            out_obj['box'] = [0, 0, 0, 0]
             dct_out[seg] = out_obj
     return dct_out
