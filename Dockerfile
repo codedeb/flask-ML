@@ -1,10 +1,10 @@
 # Using base image as slim-buster as it is 114MB when uncompressed with latest Python releases and benefits of Debian Buster
 FROM python:3.6-slim-buster
 
-ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
-ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+# ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+# ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
 
-COPY config/80proxy /etc/apt/apt.conf.d/80proxy
+# COPY config/80proxy /etc/apt/apt.conf.d/80proxy
 
 RUN apt-get update -y \
     && apt-get clean \

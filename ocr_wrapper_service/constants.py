@@ -39,11 +39,7 @@ class ModelDetails():
     segmentation_config_path=config_base_path+"configSeg_file.yaml"
     segmentation_model_path=model_base_path+"model_segmentation_v1.1.0.pth"
     segmentation_threshold=0.3
-    dot_punch_config_path = config_base_path + "configDotPunch_file_psn.yaml"
-    dot_punch_model_path = model_base_path + "model_dotpunch_v1.1.0.pth"
-    dot_punch_threshold=0.8
-    prefix_config_path = config_base_path + "configPrefix_file.yaml"
-    prefix_model_path = model_base_path + "model_prefix_v1.1.0.pth"
-    prefix_threshold=0.1
-
-
+    dot_punch_config_path = config_base_path + "config_shroud_OCR_v6.yaml"
+    dot_punch_model_path = model_base_path + "model_shroud_OCR_v6.pth"
+    dot_punch_threshold=0.5
+    
