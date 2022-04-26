@@ -1,4 +1,4 @@
-from .conf_band import overall_band
+from .componentBlade.confBand import overall_band
 import numpy as np
 
 
