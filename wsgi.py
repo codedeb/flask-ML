@@ -7,7 +7,7 @@ import atexit
 #from ocr_wrapper_service.utils.s3_download_model import load_models
 #from ocr_wrapper_service.utils.sqs_consumer import receive_messages
 #from ocr_wrapper_service.app import create_app
-from ocr_analytic_service.input_mod import read_input_and_form_output
+# from ocr_analytic_service.input_mod import read_input_and_form_output
 from ocr_wrapper_service.constants import LoggerConstants
 from ocr_wrapper_service.constants import FlaskConstants
 from ocr_wrapper_service.constants import SchedulerConstants
@@ -18,13 +18,13 @@ from ocr_wrapper_service.utils.aws_services import s3_client
 from ocr_wrapper_service.utils.aws_services import sqs_client
 from ocr_wrapper_service.utils.aws_services import s3_resource
 from ocr_wrapper_service.utils.image_processor import wrapper_service
-# from ocr_wrapper_service.utils.aws_services import s3_model_download
-from ocr_wrapper_service.utils.s3_download_model import s3_model_download
+from ocr_wrapper_service.utils.aws_services import s3_model_download
+# from ocr_wrapper_service.utils.s3_download_model import s3_model_download
 from ocr_wrapper_service.utils.image_processor import load_predictors
 from time import sleep
 from ocr_wrapper_service.api_1_1.register_blueprint import create_flask_app
 
-from ocr_analytic_service.input_mod import read_input_and_form_output
+# from ocr_analytic_service.input_mod import read_input_and_form_output
 
 """
 logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
