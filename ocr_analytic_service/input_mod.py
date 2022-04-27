@@ -44,7 +44,7 @@ def read_input_and_form_output(input_dict):
                 im = cv2.imdecode(image, cv2.IMREAD_COLOR)
                 path, filename = os.path.split(img_obj['imagePath'])
                 # Add logic to check compon based on 'componentId' and read image once and pass it across
-                if img_obj["partType"] == 'BLADE':
+                if img_obj["partType"] == 'BLADES':
                     out_put_dict = blade_part_analytics(img_obj, im, filename)
                 elif img_obj["partType"] == 'SHROUDS':
                     out_put_dict = shroud_part_analytics(img_obj, im, filename)
