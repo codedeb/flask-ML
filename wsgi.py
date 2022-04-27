@@ -18,7 +18,8 @@ from ocr_wrapper_service.utils.aws_services import s3_client
 from ocr_wrapper_service.utils.aws_services import sqs_client
 from ocr_wrapper_service.utils.aws_services import s3_resource
 from ocr_wrapper_service.utils.image_processor import wrapper_service
-from ocr_wrapper_service.utils.aws_services import s3_model_download
+# from ocr_wrapper_service.utils.aws_services import s3_model_download
+from ocr_wrapper_service.utils.s3_download_model import s3_model_download
 from ocr_wrapper_service.utils.image_processor import load_predictors
 from time import sleep
 from ocr_wrapper_service.api_1_1.register_blueprint import create_flask_app
