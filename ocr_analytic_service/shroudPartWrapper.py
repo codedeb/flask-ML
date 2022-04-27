@@ -3,7 +3,7 @@ import logging
 import json
 import numpy as np
 import traceback
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 from .componentShroud.segmentationModShroud import img_segmenter_shrouds
 from .componentShroud.ocrShroudMod import ocr_parser_shrouds
 logger = logging.getLogger(__name__)
@@ -45,28 +45,28 @@ def shroud_part_analytics(img_obj, im, filename):
             # logger.info(traceback.format_exc())
 
         # Plot image and segment output for demo
-        try:
-            logger.info('Plotting Shroud Segmentation...')
-            plt.subplot(2,2,1)
-            plt.imshow(im[...,::-1])
-            plt.title('input image')
-            plt.subplot(2,2,2)
-            plt.imshow(seg_out["O_BB"]["segment"][...,::-1])
-            bbox = seg_out["SN"]["box"]
-            xmin, ymin, xmax, ymax = bbox[0], bbox[1], bbox[2], bbox[3]
-            plt.plot([xmin, xmin, xmax, xmax, xmin], [ymin, ymax, ymax, ymin, ymin], 'r-')
-            plt.text(xmax, ymax, 'SN')
-            bbox = seg_out["SEG"]["box"]
-            xmin, ymin, xmax, ymax = bbox[0], bbox[1], bbox[2], bbox[3]
-            plt.plot([xmin, xmin, xmax, xmax, xmin], [ymin, ymax, ymax, ymin, ymin], 'r-')
-            plt.text(xmax, ymax, 'SEG')
-            plt.title('O_BB')
-            plt.subplot(2,2,3)
-            plt.imshow(seg_out["SN"]["segment"][...,::-1])
-            plt.title('SN')
-            plt.subplot(2,2,4)
-            plt.imshow(seg_out["SEG"]["segment"][...,::-1])
-            plt.title('SEG')
+        # try:
+        #     logger.info('Plotting Shroud Segmentation...')
+        #     plt.subplot(2,2,1)
+        #     plt.imshow(im[...,::-1])
+        #     plt.title('input image')
+        #     plt.subplot(2,2,2)
+        #     plt.imshow(seg_out["O_BB"]["segment"][...,::-1])
+        #     bbox = seg_out["SN"]["box"]
+        #     xmin, ymin, xmax, ymax = bbox[0], bbox[1], bbox[2], bbox[3]
+        #     plt.plot([xmin, xmin, xmax, xmax, xmin], [ymin, ymax, ymax, ymin, ymin], 'r-')
+        #     plt.text(xmax, ymax, 'SN')
+        #     bbox = seg_out["SEG"]["box"]
+        #     xmin, ymin, xmax, ymax = bbox[0], bbox[1], bbox[2], bbox[3]
+        #     plt.plot([xmin, xmin, xmax, xmax, xmin], [ymin, ymax, ymax, ymin, ymin], 'r-')
+        #     plt.text(xmax, ymax, 'SEG')
+        #     plt.title('O_BB')
+        #     plt.subplot(2,2,3)
+        #     plt.imshow(seg_out["SN"]["segment"][...,::-1])
+        #     plt.title('SN')
+        #     plt.subplot(2,2,4)
+        #     plt.imshow(seg_out["SEG"]["segment"][...,::-1])
+        #     plt.title('SEG')
             
             # ax = plt.subplot(2,2,5)
             # ax.text(3, 4, ocr_parser_out["ocrValue"] , fontsize=15,  color='red')
@@ -74,12 +74,12 @@ def shroud_part_analytics(img_obj, im, filename):
             # plt.title('OCR')
 
             # plt.show()
-            plt.suptitle(filename)
-            plt.savefig(img_obj["imagePath"]+'_seg_output.png')
-            logger.info('Plotting Shroud Segmentations successful!')
-        except Exception as e:
-            logger.info('Shroud Segmentation output plot failure!')
-            logger.info(e)
+        #     plt.suptitle(filename)
+        #     plt.savefig(img_obj["imagePath"]+'_seg_output.png')
+        #     logger.info('Plotting Shroud Segmentations successful!')
+        # except Exception as e:
+        #     logger.info('Shroud Segmentation output plot failure!')
+        #     logger.info(e)
 
         final_obj = img_obj.copy()
         final_obj["ocrValue"] = ocr_parser_out["ocrValue"]
