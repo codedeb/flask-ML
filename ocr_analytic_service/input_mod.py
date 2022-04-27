@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 def read_input_and_form_output(s3_resource,input_dict):
 # def read_input_and_form_output(input_dict):
-    logger.info(f"Analytics Input: \n {json.dumps(input_dict)}")
+    logger.info(f"Analytics Input: {json.dumps(input_dict)}")
     # logger.info('System memory usage in bytes:' % psutil.virtual_memory())
     # logger.info('SYstem CPU utilization in percent:' % psutil.cpu_percent(1))
     out_put_dict = []
@@ -43,10 +43,13 @@ def read_input_and_form_output(s3_resource,input_dict):
                 image = np.asarray(bytearray(img.read()), dtype="uint8")
                 im = cv2.imdecode(image, cv2.IMREAD_COLOR)
                 path, filename = os.path.split(img_obj['imagePath'])
+                logger.info('OCR Input fileName: %s' % filename)
                 # Add logic to check compon based on 'componentId' and read image once and pass it across
-                if img_obj["partType"] == 'BLADES':
+                if img_obj['partType'] == "BLADES":
+                    logger.info('Calling BLADES flow!')
                     out_put_dict = blade_part_analytics(img_obj, im, filename)
-                elif img_obj["partType"] == 'SHROUDS':
+                elif img_obj['partType'] == "SHROUDS":
+                    logger.info('Calling SHROUDS flow!')
                     out_put_dict = shroud_part_analytics(img_obj, im, filename)
                     
             except Exception as e:
