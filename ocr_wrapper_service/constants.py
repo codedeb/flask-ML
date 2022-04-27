@@ -26,8 +26,8 @@ class S3Constants():
     region=os.getenv("REGION")
     max_keys=10
     model_path="IDM/model/ocr_model_shrouds_v1.0.0/model"
-    model_count=3
-    model_names=["^model_dotpunch_v.*.pth$","^model_prefix_v.*.pth$","^model_segmentation_v.*.pth$"]
+    model_count=5
+    model_names=["^model_dotpunch_v.*.pth$","^model_prefix_v.*.pth$","^model_segmentation_v.*.pth$","^model_shroud_segmentation_v.*.pth$","^model_shroud_OCR_v.*.pth$"]
     retry_sleep=300
 
 class LocalDirectoryConstants():
