@@ -2,7 +2,7 @@ import numpy as np
 import logging
 import pandas as pd
 
-from ioul import get_iou, comp_norm_box_area_inside_roi
+from .ioul import get_iou, comp_norm_box_area_inside_roi
 
 logger = logging.getLogger(__name__)
 
