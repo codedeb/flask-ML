@@ -31,11 +31,13 @@ class S3Constants():
     retry_sleep=300
 
 class LocalDirectoryConstants():
-    model_path=os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    # model_path=os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    model_path="/models"
 
 class ModelDetails():
     config_base_path="ocr_analytic_service/service/"
-    model_base_path = os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    # model_base_path = os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    model_base_path = "/shared-volume/ocr_data/blade_models/"
     segmentation_config_path=config_base_path+"configSeg_file.yaml"
     segmentation_model_path=model_base_path+"model_segmentation_v1.1.0.pth"
     segmentation_threshold=0.3

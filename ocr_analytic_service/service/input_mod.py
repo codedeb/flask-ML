@@ -35,15 +35,18 @@ def read_input_and_form_output(s3_resource,input_dict):
     try:
         for img_obj in input_dict:
             try:
-                bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
-                image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
-                img = bucket.Object(image_folder_path).get().get('Body')
-                image = np.asarray(bytearray(img.read()), dtype="uint8")
-                im = cv2.imdecode(image, cv2.IMREAD_COLOR)
-                path, filename = os.path.split(img_obj['imagePath'])
+                # bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
+                # image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
+                # img = bucket.Object(image_folder_path).get().get('Body')
+                # image = np.asarray(bytearray(img.read()), dtype="uint8")
+                # im = cv2.imdecode(image, cv2.IMREAD_COLOR)
+                # path, filename = os.path.split(img_obj['imagePath'])
+                # Local setup
                 # cv2.imwrite('/idm/input/abc.jpg',im)
                 # im = cv2.imread(fl_nm, cv2.IMREAD_UNCHANGED)
-                # logger.info('Image read: %s' % im)
+                filename = img_obj["imagePath"]
+                im = cv2.imread(filename)
+                logger.info('Image read: %s' % im)
                 if im is not None:
                     try:
                         seg_out = img_segmenter(im)
