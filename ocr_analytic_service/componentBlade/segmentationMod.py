@@ -1,4 +1,5 @@
 import os
+import cv2
 from .inferenceSegmentation import clean_class
 from .modelArtifacts import detector
 from .confBand import confidence_band
@@ -69,9 +70,9 @@ def img_segmenter(img):
         except IndexError as e:
             logger.info('error', e)
         if class_map[index] == 'PSN':
-            multwdst = 0.1
+            multwdst = 0
             multhtst = 0.1
-            multwded = 0.1
+            multwded = 0
             multhted = 0.1
         elif class_map[index] == 'ROI':
             multwdst = 0.2
@@ -93,6 +94,18 @@ def img_segmenter(img):
     list_ROI_box = [list_ROI_box[0], list_ROI_box[1], list_ROI_box[0], list_ROI_box[1]]
     for seg in class_map_up.values():
         dct_out_box[seg] = list(a-b for (a, b) in zip(dct_out_box[seg], list_ROI_box))
+
+    # Scale output images and boxes to a certain size
+    roi_out_ht = 500
+    rat = roi_out_ht/dct_out_segs['ROI'].shape[0] # Set this variable to 1 if scaling shouldn't be applied
+
+    for seg in class_map_up.values():
+        im_seg = dct_out_segs[seg].copy()
+        im_resize = cv2.resize(im_seg, (int(im_seg.shape[1]*rat), int(im_seg.shape[0]*rat)), interpolation = cv2.INTER_AREA)
+        dct_out_segs[seg] = im_resize
+        box_seg = dct_out_box[seg].copy()
+        box_seg = [int(item*rat) for item in box_seg]
+        dct_out_box[seg] = box_seg
 
     # Publish output
     dct_out = {}
