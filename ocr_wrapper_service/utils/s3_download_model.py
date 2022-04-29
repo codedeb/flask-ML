@@ -16,12 +16,12 @@ except:
     s3 = boto3.client('s3', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'), aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'), aws_session_token=os.getenv('AWS_SESSION_TOKEN'), region_name=os.getenv('REGION'))
     pass
 
-def load_models():
+def s3_model_download():
     try:
         logger.info('Connecting to s3...')
         logger.debug('Listing objects for bucket: %s' % os.getenv('BUCKET_NAME'))
         # Retrieve the objects deom specific IDM model folder
-        objects = s3.list_objects(Bucket=os.getenv('BUCKET_NAME'), MaxKeys=10, Prefix='IDM/model/ocr_model_psn_v1.0.0/model')
+        objects = s3.list_objects(Bucket=os.getenv('BUCKET_NAME'), MaxKeys=10, Prefix='IDM/model/ocr_model_shrouds_v1.0.0/model')
         logger.debug('S3 objects: %s' % objects)
 
         # Path where model will be downloaded

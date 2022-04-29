@@ -132,6 +132,7 @@ def sqs_receive_message(sqs_client,queue_url):
             MaxNumberOfMessages=SQSConstants.max_number_of_messages,
             WaitTimeSeconds=SQSConstants.wait_time_seconds
         )
+        # response = 
         logger.info(f"Received Messages : {json.dumps(response)}")
         if "Messages" in response and response['ResponseMetadata']['HTTPStatusCode']==200:
             return True,response
