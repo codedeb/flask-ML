@@ -137,3 +137,17 @@ ocrV2.0/
 *.pth
 
 ocr_dev.conf
+
+api_tests
+.vscode
+__pycache__/**
+.pytest_cache
+.coveragerc
+
+ocr_wrapper_service/__pycache__/__init__.cpython-39.pyc
+ocr_wrapper_service/api_1_0/__pycache__/__init__.cpython-39.pyc
+ocr_wrapper_service/api_1_0/__pycache__/api.cpython-39.pyc
+ocr_wrapper_service/api_1_0/__pycache__/messages_api.cpython-39.pyc
+ocr_wrapper_service/__pycache__/**
+
+detectron2/
