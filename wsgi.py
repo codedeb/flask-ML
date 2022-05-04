@@ -44,48 +44,48 @@ sqs_client_object=sqs_client()
 s3_resource_object=s3_resource()
 
 # Local system testing setup
-try:
-    # Folder Path
-    path = "/shared-volume/ocr_data/images/"
-    # iterate through all file
-    for file in os.listdir(path):
-        # Check whether file is in text format or not
-        if file.endswith(".JPG"):
-            file_path = os.path.join(path, file)
-            image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"BLADES","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": file_path}]
-            logger.info('calling read function on image obj: %s' % image_object)
-            # call analytics function
-            read_input_and_form_output(s3_resource_object,image_object)
-        else:
-            logger.info('Image is not JPG! %s' % file)
-except Exception as e:
-    logger.info('Error while starting analytics! %s' % e)
-
-# def sqs_scheduler():
-#     global modelLoadStatus
-#     if modelLoadStatus:
-#         #logger.info('Requesting to receive messages...')
-#         #receive_messages()
-#         logger.info("Inside Scheduler Function")
-#         wrapper_service(sqs_client_object,s3_resource_object)
-#     else:
-#         logger.info("Downloading models from S3")
-#         modelLoadStatus = s3_model_download(s3_client_object)
-#         #sleep if models are not available
-#         if not modelLoadStatus:
-#             logger.info(f"Models are not available in sleep for : {S3Constants.retry_sleep} seconds")
-#             sleep(S3Constants.retry_sleep)
-    
 # try:
-#     scheduler = BackgroundScheduler(timezone=utc,daemon=True)
-#     scheduler.add_job(func=sqs_scheduler, trigger=SchedulerConstants.trigger, seconds=SchedulerConstants.seconds)
-#     scheduler.start()
+#     # Folder Path
+#     path = "/shared-volume/ocr_data/images/"
+#     # iterate through all file
+#     for file in os.listdir(path):
+#         # Check whether file is in text format or not
+#         if file.endswith(".JPG"):
+#             file_path = os.path.join(path, file)
+#             image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"BLADES","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": file_path}]
+#             logger.info('calling read function on image obj: %s' % image_object)
+#             # call analytics function
+#             read_input_and_form_output(s3_resource_object,image_object)
+#         else:
+#             logger.info('Image is not JPG! %s' % file)
 # except Exception as e:
-#     logger.info('Error while starting scheduler!')
-#     logger.debug('Error while starting scheduler! %s' % e)
+#     logger.info('Error while starting analytics! %s' % e)
+
+def sqs_scheduler():
+    global modelLoadStatus
+    if modelLoadStatus:
+        #logger.info('Requesting to receive messages...')
+        #receive_messages()
+        logger.info("Inside Scheduler Function")
+        wrapper_service(sqs_client_object,s3_resource_object)
+    else:
+        logger.info("Downloading models from S3")
+        modelLoadStatus = s3_model_download(s3_client_object)
+        #sleep if models are not available
+        if not modelLoadStatus:
+            logger.info(f"Models are not available in sleep for : {S3Constants.retry_sleep} seconds")
+            sleep(S3Constants.retry_sleep)
+    
+try:
+    scheduler = BackgroundScheduler(timezone=utc,daemon=True)
+    scheduler.add_job(func=sqs_scheduler, trigger=SchedulerConstants.trigger, seconds=SchedulerConstants.seconds)
+    scheduler.start()
+except Exception as e:
+    logger.info('Error while starting scheduler!')
+    logger.debug('Error while starting scheduler! %s' % e)
 
 # Shut down the scheduler when exiting the app
-# atexit.register(lambda: scheduler.shutdown())
+atexit.register(lambda: scheduler.shutdown())
 
 if __name__ == "__main__":
     # cProfile.run('main()')

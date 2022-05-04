@@ -1,10 +1,10 @@
 # Using base image as slim-buster as it is 114MB when uncompressed with latest Python releases and benefits of Debian Buster
 FROM python:3.6-slim-buster
 
-# ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
-# ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTPS_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
+ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.com:80"
 
-# COPY config/80proxy /etc/apt/apt.conf.d/80proxy
+COPY config/80proxy /etc/apt/apt.conf.d/80proxy
 
 # RUN apt-get update -y \
 #     && apt-get clean \
@@ -40,9 +40,9 @@ WORKDIR ocr-wrapper-service
 
 EXPOSE 5000
 
-ENV AWS_ACCESS_KEY_ID=ASIAYWYD474FJKVYALOV  \
-    AWS_SECRET_ACCESS_KEY=01+AqdtrsxeVhMVGs9SsVJz1N05HAUECQzpGeMn7 \
-    AWS_SESSION_TOKEN=FwoGZXIvYXdzED0aDME2HR92eZDKseUvuSKNAq9q2b7nJChKFOw+mmqw+hlyC3KesVi5nUyHB0V8uOFB1hS8+9ZwWnyu2g35JvU+u3ctTB+sk4+CWrDc1WSTU8A3M0qbP7XrtXNotb4L/tWnQdmnUrBshR+DjUfntIq+saI0kzLZklaBtLqiIyLeGIovfLPgfPNSb9+I5S6Q8tsUMJJhToAGFAUv+M+KFl67e9dOjp6sy8TiFbPuFYrkHGO8dx4RSKuEWGo6IzILJkSu5QWUukOQdc38vwd1JUMK7U0O4A7ddHkA46Xx6MZCYbVaeqSNVM9SczLpHD9pys1CLOncsFZiFm/LvJZeNZmGqeVpNv16EJ0/gMVx+b1tlEZIMIrrETBPHEhWwVZ1KKTDzJEGMitmUwkCyKPA48eNBXxSUyc+6NjltEp2prT29rs1btQ3daG+32KGKhPubEn0 \
+ENV AWS_ACCESS_KEY_ID=None  \
+    AWS_SECRET_ACCESS_KEY=None \
+    AWS_SESSION_TOKEN=None \
     REGION=us-east-1 \
     INPUT_QUEUE=uai3046767-cpl-dev-idm-input \
     OUTPUT_QUEUE=uai3046767-cpl-dev-idm-output \

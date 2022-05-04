@@ -15,7 +15,7 @@ import psutil
 logger = logging.getLogger(__name__)
 
 def blade_part_analytics(img_obj, im, filename):
-    logger.info(f"Analytics Input: \n {img_obj}")
+    logger.info(f"Analytics Input for Blades: \n {img_obj}")
     out_put_dict = []
     if im is not None:
         try:
