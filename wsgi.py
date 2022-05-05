@@ -7,7 +7,7 @@ import atexit
 #from ocr_wrapper_service.utils.s3_download_model import load_models
 #from ocr_wrapper_service.utils.sqs_consumer import receive_messages
 #from ocr_wrapper_service.app import create_app
-# from ocr_analytic_service.input_mod import read_input_and_form_output
+from ocr_analytic_service.input_mod import read_input_and_form_output
 from ocr_wrapper_service.constants import LoggerConstants
 from ocr_wrapper_service.constants import FlaskConstants
 from ocr_wrapper_service.constants import SchedulerConstants
@@ -24,7 +24,6 @@ from ocr_wrapper_service.utils.image_processor import load_predictors
 from time import sleep
 from ocr_wrapper_service.api_1_1.register_blueprint import create_flask_app
 
-# from ocr_analytic_service.input_mod import read_input_and_form_output
 
 """
 logging.basicConfig(filename="debugLogs.log", filemode='w', level=logging.INFO, format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -47,16 +46,16 @@ s3_resource_object=s3_resource()
 # Local system testing setup
 # try:
 #     # Folder Path
-#     path = "/shared-volume/images/"
+#     path = "/shared-volume/ocr_data/images/"
 #     # iterate through all file
 #     for file in os.listdir(path):
 #         # Check whether file is in text format or not
 #         if file.endswith(".JPG"):
 #             file_path = os.path.join(path, file)
-#             image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"SHROUDS","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": file_path}]
+#             image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"BLADES","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": file_path}]
 #             logger.info('calling read function on image obj: %s' % image_object)
 #             # call analytics function
-#             read_input_and_form_output(image_object)
+#             read_input_and_form_output(s3_resource_object,image_object)
 #         else:
 #             logger.info('Image is not JPG! %s' % file)
 # except Exception as e:

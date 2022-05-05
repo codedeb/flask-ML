@@ -26,7 +26,6 @@ except:
 logger = logging.getLogger(__name__)
 
 def read_input_and_form_output(s3_resource,input_dict):
-# def read_input_and_form_output(input_dict):
     logger.info(f"Analytics Input: {json.dumps(input_dict)}")
     # logger.info('System memory usage in bytes:' % psutil.virtual_memory())
     # logger.info('SYstem CPU utilization in percent:' % psutil.cpu_percent(1))

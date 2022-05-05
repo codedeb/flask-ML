@@ -15,7 +15,7 @@ import psutil
 logger = logging.getLogger(__name__)
 
 def blade_part_analytics(img_obj, im, filename):
-    logger.info(f"Analytics Input: \n {img_obj}")
+    logger.info(f"Analytics Input for Blades: \n {img_obj}")
     out_put_dict = []
     if im is not None:
         try:
@@ -29,7 +29,7 @@ def blade_part_analytics(img_obj, im, filename):
             seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
             seg_out["PR"] = {"confBand": "LOW", "confValue": 0, "segment": im}
         try:
-            psn_out = dot_punched_data_parser(seg_out['ROI']['segment'])
+            psn_out = dot_punched_data_parser(seg_out['ROI']['segment'], seg_out['PSN']['box'], exp_len=6)
             logger.info('dotpunch prediction: %s' % psn_out)
         except Exception as e:
             logger.info('Dot punch failure!')
@@ -39,8 +39,8 @@ def blade_part_analytics(img_obj, im, filename):
             psn_out["confValue"] = 0.0
             psn_out["confBand"] = "LOW"
         try:
-            # prefix_out = prefix_data_parser(im)
-            prefix_out = prefix_data_parser(seg_out['ROI']['segment'], filename)
+            # prefix_out = prefix_data_parser(seg_out['ROI']['segment'], filename)
+            prefix_out = dot_punched_data_parser(seg_out['ROI']['segment'], seg_out['PR']['box'], exp_len=4)
             logger.info('prefix prediction: %s' % prefix_out)
         except Exception as e:
             logger.info('Prefix failure! %s' % e)
