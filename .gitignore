@@ -151,3 +151,5 @@ ocr_wrapper_service/api_1_0/__pycache__/messages_api.cpython-39.pyc
 ocr_wrapper_service/__pycache__/**
 
 detectron2/
+Images/
+my-models/

@@ -39,27 +39,27 @@ class S3Constants():
     retry_sleep=300
 
 class LocalDirectoryConstants():
-    # model_path=os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    model_path=os.getenv('CONTAINER_MODEL_PATH')+"/model/"
     # # model_path="/models"
-    model_path = f"{config['S3']['MODEL_PATH']}{config['DEFAULT']['ACTIVE_RELEASE']}/"
+    # model_path = f"{config['S3']['MODEL_PATH']}{config['DEFAULT']['ACTIVE_RELEASE']}/"
 
 class ModelDetails():
     active_release = config['DEFAULT']['ACTIVE_RELEASE']
     active_version = config[active_release]
-    container_path = f"{config['S3']['MODEL_PATH']}{active_release}/"
+    model_base_path =os.getenv('CONTAINER_MODEL_PATH')+"/model/"
     blade_config_base_path="ocr_analytic_service/componentBlade/"
 
     segmentation_config_path=blade_config_base_path + active_version['SHROUD_SEG_CONFIG']
-    segmentation_model_path=container_path + active_version["BLADE_SEG_MODEL"]
+    segmentation_model_path= model_base_path  + active_version["BLADE_SEG_MODEL"]
     segmentation_threshold=active_version['BLADE_SEG_THRESHOLD']
     
     
     dot_punch_config_path = blade_config_base_path + active_version['BLADE_PSN_CONFIG']
-    dot_punch_model_path = container_path + active_version['BLADE_PSN_MODEL']
+    dot_punch_model_path =  model_base_path  + active_version['BLADE_PSN_MODEL']
     dot_punch_threshold=active_version['BLADE_PSN_THRESHOLD']
     
     prefix_config_path = blade_config_base_path + active_version['BLADE_PREFIX_CONFIG']
-    prefix_model_path = container_path + active_version['BLADE_PREFIX_MODEL']
+    prefix_model_path =  model_base_path  + active_version['BLADE_PREFIX_MODEL']
     prefix_threshold=active_version['BLADE_PREFIX_THRESHOLD']
     
     dot_punch_pickle_path = blade_config_base_path + active_version['BLADE_PICKLE']
@@ -67,11 +67,11 @@ class ModelDetails():
     shroud_config_base_path = "ocr_analytic_service/componentShroud/"
     
     shroud_seg_config_path = shroud_config_base_path + active_version['SHROUD_SEG_CONFIG']
-    shroud_seg_model_path = container_path + active_version['SHROUD_SEG_MODEL']
+    shroud_seg_model_path =  model_base_path  + active_version['SHROUD_SEG_MODEL']
     shroud_seg_threshold = float(active_version['SHROUD_SEG_THRESHOLD'])
     
     shroud_ocr_config_path = shroud_config_base_path + active_version['SHROUD_OCR_CONFIG']
-    shroud_ocr_model_path = container_path + active_version['SHROUD_OCR_MODEL']
+    shroud_ocr_model_path =  model_base_path  + active_version['SHROUD_OCR_MODEL']
     shroud_ocr_threshold = float(active_version['SHROUD_OCR_THRESHOLD'])
     
 

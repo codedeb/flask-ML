@@ -36,4 +36,7 @@ torch==1.9.0+cu102
 torchvision==0.10.0+cu102
 jellyfish~=0.8.8
 
+#for parsing CFG or INI files
+configparser==5.2.0
+
 # matplotlib==3.0.0
