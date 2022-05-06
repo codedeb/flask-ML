@@ -1,6 +1,5 @@
 .env
 api_tests/*
-.Dockerfile
 **/__pycache__
 *.pyc
 .git
@@ -15,4 +14,3 @@ api_tests/
 models/
 htmlcov/
 README.md
-detectron2/
