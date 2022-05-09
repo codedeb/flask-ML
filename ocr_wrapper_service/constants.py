@@ -49,18 +49,18 @@ class ModelDetails():
     model_base_path =os.getenv('CONTAINER_MODEL_PATH')+"/model/"
     blade_config_base_path="ocr_analytic_service/componentBlade/"
 
-    segmentation_config_path=blade_config_base_path + active_version['SHROUD_SEG_CONFIG']
+    segmentation_config_path=blade_config_base_path + active_version['BLADE_SEG_CONFIG']
     segmentation_model_path= model_base_path  + active_version["BLADE_SEG_MODEL"]
-    segmentation_threshold=active_version['BLADE_SEG_THRESHOLD']
+    segmentation_threshold=float(active_version['BLADE_SEG_THRESHOLD'])
     
     
     dot_punch_config_path = blade_config_base_path + active_version['BLADE_PSN_CONFIG']
     dot_punch_model_path =  model_base_path  + active_version['BLADE_PSN_MODEL']
-    dot_punch_threshold=active_version['BLADE_PSN_THRESHOLD']
+    dot_punch_threshold=float(active_version['BLADE_PSN_THRESHOLD'])
     
     prefix_config_path = blade_config_base_path + active_version['BLADE_PREFIX_CONFIG']
     prefix_model_path =  model_base_path  + active_version['BLADE_PREFIX_MODEL']
-    prefix_threshold=active_version['BLADE_PREFIX_THRESHOLD']
+    prefix_threshold=float(active_version['BLADE_PREFIX_THRESHOLD'])
     
     dot_punch_pickle_path = blade_config_base_path + active_version['BLADE_PICKLE']
 
