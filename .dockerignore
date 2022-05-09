@@ -1,14 +1,10 @@
-.env
 api_tests/*
 **/__pycache__
 *.pyc
 .git
 .vscode
-.coveragerc
 .dockerignore
 .gitignore
-.coverage
-models/
 detectron2/
 api_tests/
 models/
