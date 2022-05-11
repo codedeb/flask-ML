@@ -71,9 +71,9 @@ def img_segmenter(img):
             logger.info('error', e)
         if class_map[index] == 'PSN':
             multwdst = 0
-            multhtst = 0.1
+            multhtst = 0
             multwded = 0
-            multhted = 0.1
+            multhted = 0
         elif class_map[index] == 'ROI':
             multwdst = 0.2
             multhtst = 0.3
@@ -96,7 +96,7 @@ def img_segmenter(img):
         dct_out_box[seg] = list(a-b for (a, b) in zip(dct_out_box[seg], list_ROI_box))
 
     # Scale output images and boxes to a certain size
-    roi_out_ht = 500
+    roi_out_ht = 1000
     rat = roi_out_ht/dct_out_segs['ROI'].shape[0] # Set this variable to 1 if scaling shouldn't be applied
 
     for seg in class_map_up.values():

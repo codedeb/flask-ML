@@ -46,7 +46,7 @@ s3_resource_object=s3_resource()
 # Local system testing setup
 # try:
 #     # Folder Path
-#     path = "/shared-volume/ocr_data/images/"
+#     path = "/ocr_data/shroud_models/images/"
 #     # iterate through all file
 #     for file in os.listdir(path):
 #         # Check whether file is in text format or not

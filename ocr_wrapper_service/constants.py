@@ -31,34 +31,34 @@ class S3Constants():
     retry_sleep=300
 
 class LocalDirectoryConstants():
-    model_path=os.getenv('CONTAINER_MODEL_PATH')+"/model/"
-    # model_path="/models"
+    # model_path=os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    model_path="/models"
 
 class ModelDetails():
     blade_config_base_path="ocr_analytic_service/componentBlade/"
     model_base_path = os.getenv('CONTAINER_MODEL_PATH')+"/model/"
-    # model_base_path = "/shared-volume/ocr_data/shroud_models/"
+    # model_base_path = "/ocr_data/shroud_models/blade_models/"
     segmentation_config_path=blade_config_base_path+"configSeg.yaml"
     segmentation_model_path=model_base_path+"model_segmentation_v1.1.0.pth"
     segmentation_threshold=0.3
-    dot_punch_pickle_path = blade_config_base_path + "listPickle"
-    # dot_punch_config_path = blade_config_base_path + "configDotPunchPSN.yaml"
-    # dot_punch_model_path = model_base_path + "model_dotpunch_v1.1.0.pth"
-    # dot_punch_threshold=0.8
-    dot_punch_config_path = blade_config_base_path + "config_shroud_OCR_v6.yaml"
-    dot_punch_model_path = model_base_path + "model_shroud_OCR_v6.pth"
-    dot_punch_threshold=0.5
 
-    prefix_config_path = blade_config_base_path + "configPrefix.yaml"
-    prefix_model_path = model_base_path + "model_prefix_v1.1.0.pth"
-    prefix_threshold=0.1
+    # dot_punch_pickle_path = blade_config_base_path + "listPickle"
+    dot_punch_config_path_main = blade_config_base_path + "config_shroud_OCR_v7.yaml"
+    dot_punch_model_path_main = model_base_path + "model_shroud_OCR_v7.pth"
+    dot_punch_threshold=0.2
+    dot_punch_config_path_alt = blade_config_base_path + "config_shroud_OCR_v1.yaml"
+    dot_punch_model_path_alt = model_base_path + "model_shroud_OCR_v1.pth"
+
+    # prefix_config_path = blade_config_base_path + "configPrefix.yaml"
+    # prefix_model_path = model_base_path + "model_prefix_v1.1.0.pth"
+    # prefix_threshold=0.1
 
     shroud_config_base_path = "ocr_analytic_service/componentShroud/"
     shroud_seg_config_path = shroud_config_base_path + "config_shroud_segmentation_v3.yaml"
     shroud_seg_model_path = model_base_path + "model_shroud_segmentation_v3.pth"
     shroud_seg_threshold = 0.1
-    shroud_ocr_config_path = shroud_config_base_path + "config_shroud_OCR_v6.yaml"
-    shroud_ocr_model_path = model_base_path + "model_shroud_OCR_v6.pth"
+    shroud_ocr_config_path = shroud_config_base_path + "config_shroud_OCR_v7.yaml"
+    shroud_ocr_model_path = model_base_path + "model_shroud_OCR_v7.pth"
     shroud_ocr_threshold = 0.3
     
 

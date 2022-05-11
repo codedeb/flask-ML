@@ -1,5 +1,6 @@
 import logging
 from .confBand import confidence_band
+from .modelArtifacts import iou_calc, delete_multiple_element
 """
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',
@@ -28,15 +29,33 @@ class Inference:
         sorted_list = sorted(box_list)
 
         [
-            serial_number.append(
-                data[classes[x_left[1]].item()]
+            scores_list.append(
+                scores[x_left[1]].item()
             )
             for x_left in sorted_list
         ]
 
+        # Find boxes which are intersecting and remove them
+        list_rem = iou_calc(boxes_list)
+        if list_rem:
+            list_idx_rem = []
+            for item in list_rem:
+                list_idx_rem.append(scores_list.index(min([scores_list[num] for num in item])))
+                list_idx_rem = list(set(list_idx_rem))
+                boxes_list = delete_multiple_element(boxes_list, list_idx_rem)
+                sorted_list = delete_multiple_element(sorted_list, list_idx_rem)
+                scores_list = delete_multiple_element(scores_list, list_idx_rem)
+
+        # If there are still more than exp_len number of boxes remaining
+        list_keep = sorted(range(len(scores_list)), key=lambda k: scores_list[k], reverse=True)[0:exp_len]
+        list_keep.sort()
+        boxes_list = [boxes_list[item] for item in list_keep]
+        sorted_list = [sorted_list[item] for item in list_keep]
+        scores_list = [scores_list[item] for item in list_keep]
+
         [
-            scores_list.append(
-                scores[x_left[1]].item()
+            serial_number.append(
+                data[classes[x_left[1]].item()]
             )
             for x_left in sorted_list
         ]
