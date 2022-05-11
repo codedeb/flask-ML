@@ -2,9 +2,9 @@ import boto3
 import os
 import logging
 import json
-from ocr_wrapper_service.constants import S3Constants
-from ocr_wrapper_service.constants import SQSConstants
-from ocr_wrapper_service.constants import LocalDirectoryConstants
+from wrapper_service.constants import S3Constants
+from wrapper_service.constants import SQSConstants
+from wrapper_service.constants import LocalDirectoryConstants
 import re
 
 logger = logging.getLogger(__name__)

@@ -3,7 +3,7 @@ import os
 
 import pika
 import logging
-from ocr_wrapper_service.service.analytic_service import process_images as process
+from wrapper_service.service.analytic_service import process_images as process
 """
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',

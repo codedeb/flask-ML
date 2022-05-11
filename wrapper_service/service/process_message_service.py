@@ -1,5 +1,5 @@
-from ocr_wrapper_service.service.analytic_service import process_images
-from ocr_wrapper_service.utils.sqs_sender import send_sqs_messages
+from wrapper_service.service.analytic_service import process_images
+from wrapper_service.utils.sqs_sender import send_sqs_messages
 
 import logging
 """

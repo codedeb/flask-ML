@@ -4,7 +4,7 @@ import pickle
 from .inferenceDotPunched import Inference
 from .modelArtifacts import detector
 import logging
-from ocr_wrapper_service.constants import ModelDetails
+from wrapper_service.constants import ModelDetails
 
 global dot_punch_predictor
 global dot_punch_predictor_available

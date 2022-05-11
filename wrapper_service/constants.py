@@ -1,7 +1,7 @@
 import os
 
 from configparser import ConfigParser
-filename = 'ocr_wrapper_service/config.ini'
+filename = 'wrapper_service/config.ini'
 config = ConfigParser()
 config.read(filename)
 

@@ -1,7 +1,7 @@
 import json
 from flask_restplus import Resource, Namespace
 from flask import jsonify, request
-from ocr_wrapper_service.service.analytic_service import process_images
+from wrapper_service.service.analytic_service import process_images
 
 api = Namespace(name='analytic-ns', description='Analytic Operations')
 

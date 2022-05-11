@@ -3,9 +3,9 @@ import boto3
 import botocore
 import logging
 import os
-from ocr_wrapper_service.service.process_message_service import process_messages
-from ocr_wrapper_service.service.analytic_service import process_images
-from ocr_wrapper_service.utils.sqs_delete import delete_sqs_messages
+from wrapper_service.service.process_message_service import process_messages
+from wrapper_service.service.analytic_service import process_images
+from wrapper_service.utils.sqs_delete import delete_sqs_messages
 
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S',

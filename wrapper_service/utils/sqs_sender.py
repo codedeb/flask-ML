@@ -5,7 +5,7 @@ import os
 logger = logging.getLogger(__name__)
 """
 #uncomment when required to run old code
-from ocr_wrapper_service.utils.sqs_delete import delete_sqs_messages
+from wrapper_service.utils.sqs_delete import delete_sqs_messages
 import os
 
 logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:%(lineno)d [%(levelname)s] %(message)s',

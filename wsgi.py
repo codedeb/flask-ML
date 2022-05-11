@@ -4,17 +4,17 @@ from time import sleep
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 
-from ocr_wrapper_service.constants import FlaskConstants
-from ocr_wrapper_service.constants import SchedulerConstants
-from ocr_wrapper_service.constants import S3Constants
-from ocr_wrapper_service.utils.base_logger import log_initializer
-from ocr_wrapper_service.utils.base_logger import SkipScheduleFilter
-from ocr_wrapper_service.utils.aws_services import s3_client
-from ocr_wrapper_service.utils.aws_services import sqs_client
-from ocr_wrapper_service.utils.aws_services import s3_resource
-from ocr_wrapper_service.utils.image_processor import wrapper_service
-from ocr_wrapper_service.utils.aws_services import s3_model_download
-from ocr_wrapper_service.api_1_1.register_blueprint import create_flask_app
+from wrapper_service.constants import FlaskConstants
+from wrapper_service.constants import SchedulerConstants
+from wrapper_service.constants import S3Constants
+from wrapper_service.utils.base_logger import log_initializer
+from wrapper_service.utils.base_logger import SkipScheduleFilter
+from wrapper_service.utils.aws_services import s3_client
+from wrapper_service.utils.aws_services import sqs_client
+from wrapper_service.utils.aws_services import s3_resource
+from wrapper_service.utils.image_processor import wrapper_service
+from wrapper_service.utils.aws_services import s3_model_download
+from wrapper_service.api_1_1.register_blueprint import create_flask_app
 
 
 """

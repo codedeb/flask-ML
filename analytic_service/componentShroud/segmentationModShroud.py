@@ -2,7 +2,7 @@ import logging
 from .inferenceSegmentation import clean_class
 from .modelArtifacts import detector
 from .confBand import confidence_band
-from ocr_wrapper_service.constants import ModelDetails
+from wrapper_service.constants import ModelDetails
 
 logger = logging.getLogger(__name__)
 

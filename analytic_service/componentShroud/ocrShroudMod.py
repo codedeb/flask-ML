@@ -1,7 +1,7 @@
 import logging
 import cv2
 import numpy as np
-from ocr_wrapper_service.constants import ModelDetails
+from wrapper_service.constants import ModelDetails
 from .inferenceShroud import getClassResults
 from .modelArtifacts import detector
 
