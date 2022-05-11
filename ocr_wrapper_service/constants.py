@@ -50,7 +50,7 @@ class ModelDetails():
     active_version = config[active_release]
     model_base_path=os.getenv('CONTAINER_MODEL_PATH')+"/models/"
     blade_config_base_path="ocr_analytic_service/componentBlade/"
-    model_base_path = os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    model_base_path = os.getenv('CONTAINER_MODEL_PATH')+"/models/"
     # model_base_path = "/shared-volume/ocr_data/shroud_models/"
     segmentation_config_path=blade_config_base_path+"configSeg.yaml"
     segmentation_model_path=model_base_path+"model_segmentation_v1.1.0.pth"
