@@ -5,7 +5,7 @@ dictitems:
     dictitems:
       ASPECT_RATIO_GROUPING: true
       FILTER_EMPTY_ANNOTATIONS: true
-      NUM_WORKERS: 3
+      NUM_WORKERS: 1
       REPEAT_THRESHOLD: 0.0
       SAMPLER_TRAIN: TrainingSampler
     state:
