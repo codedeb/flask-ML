@@ -104,7 +104,7 @@ def s3_model_download(s3):
             logger.info(json.dumps(models_available))
 
         # downloading files
-        for object in objects['Contents'][1:]:
+        for object in objects['Contents']:
             path, filename = os.path.split(object['Key'])
             logger.info('file to be downloaded: %s' %  filename)
             # Create directory if doesnt exist
