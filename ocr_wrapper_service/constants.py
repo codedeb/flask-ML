@@ -29,24 +29,26 @@ class SQSConstants():
     region = os.getenv("REGION")
 
 class S3Constants():
+    active_release = config['DEFAULT']['ACTIVE_RELEASE']
+    active_version = config[active_release]
     bucket_name=os.getenv("BUCKET_NAME")
     region=os.getenv("REGION")
     max_keys=10
-    # model_path="IDM/model/ocr_model_psn_v1.0.0/model"
-    model_path = "IDM/model/ocr_model_shrouds_v1.0.0/"
+    # model_path="IDM/model/v1.1.0"
+    model_path = f"{config['S3']['MODEL_PATH']}{config['DEFAULT']['ACTIVE_RELEASE']}"
     model_count=3
     model_names=["^model_dotpunch_v.*.pth$","^model_prefix_v.*.pth$","^model_segmentation_v.*.pth$"]
     retry_sleep=300
 
 class LocalDirectoryConstants():
-    model_path=os.getenv('CONTAINER_MODEL_PATH')+"/model/"
-    # # model_path="/models"
-    # model_path = f"{config['S3']['MODEL_PATH']}{config['DEFAULT']['ACTIVE_RELEASE']}/"
+    model_path=os.getenv('CONTAINER_MODEL_PATH')+"/models/"
+    # model_path="models/"
+
 
 class ModelDetails():
     active_release = config['DEFAULT']['ACTIVE_RELEASE']
     active_version = config[active_release]
-    model_base_path =os.getenv('CONTAINER_MODEL_PATH')+"/model/"
+    model_base_path=os.getenv('CONTAINER_MODEL_PATH')+"/models/"
     blade_config_base_path="ocr_analytic_service/componentBlade/"
 
     segmentation_config_path=blade_config_base_path + active_version['BLADE_SEG_CONFIG']
