@@ -6,16 +6,11 @@ ENV HTTP_PROXY "http://PITC-Zscaler-Americas-Alpharetta3pr.proxy.corporate.ge.co
 
 COPY config/80proxy /etc/apt/apt.conf.d/80proxy
 
-# RUN apt-get update -y \
-#     && apt-get clean \
-#     && apt-get autoremove
-
 RUN apt-get update && apt-get upgrade -y && apt-get install -y python3-pip
+
 # gcc compiler and opencv prerequisites
 RUN apt-get -y install nano git build-essential libglib2.0-0 libsm6 libxext6 libxrender-dev libgl1-mesa-glx pkg-config libcairo2-dev libjpeg-dev libgif-dev libgirepository1.0-dev
 
-# python3 pip manager
-# RUN apt-get install -y python3-pip
 RUN python3 -m pip install --upgrade pip
 
 # Docker’s layer caching to skip reinstallation of dependencies if no change in requirements.txt
@@ -29,14 +24,12 @@ RUN pip3 install torch==1.9.0+cu102 torchvision==0.10.0+cu102 --trusted-host=dow
 RUN pip3 install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 # Detectron2 - CPU copy
-# RUN python3 -m pip install detectron2==0.5+cpu --trusted-host=dl.fbaipublicfiles.com -f https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/index.html
 RUN git clone --depth 1 --branch v0.1 https://github.com/facebookresearch/detectron2.git
-RUN ls
 RUN pip3 install -U detectron2/.
 
 # Copy the code from local to docker contanier
 COPY . /ocr-wrapper-service
-WORKDIR ocr-wrapper-service
+WORKDIR /ocr-wrapper-service
 
 EXPOSE 5000
 
