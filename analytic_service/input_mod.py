@@ -28,6 +28,10 @@ def read_input_and_form_output(s3_resource,input_dict):
     try:
         for img_obj in input_dict:
             try:
+                # Local Testing setup:
+                # logger.info('Image object input: %s'% img_obj)
+                # filename = img_obj["imagePath"]
+                # im = cv2.imread(filename)
                 bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
                 image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
                 img = bucket.Object(image_folder_path).get().get('Body')
