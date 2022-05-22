@@ -6,7 +6,7 @@ import atexit
 
 from wrapper_service.constants import FlaskConstants
 from wrapper_service.constants import SchedulerConstants
-from wrapper_service.constants import S3Constants
+from wrapper_service.constants import S3Constants,SQSConstants
 from wrapper_service.utils.base_logger import log_initializer
 from wrapper_service.utils.base_logger import SkipScheduleFilter
 from wrapper_service.utils.aws_services import s3_client
@@ -33,7 +33,10 @@ global modelLoadStatus
 modelLoadStatus = False
 
 s3_client_object=s3_client()
-sqs_client_object=sqs_client()
+
+sqs_client_input_object=sqs_client(queue_url=SQSConstants.input_queue)
+sqs_client_output_object=sqs_client(queue_url=SQSConstants.output_queue)
+
 s3_resource_object=s3_resource()
 
 # Local system testing setup
@@ -58,7 +61,7 @@ def sqs_scheduler():
     global modelLoadStatus
     if modelLoadStatus:
         logger.info("Inside Scheduler Function")
-        wrapper_service(sqs_client_object,s3_resource_object)
+        wrapper_service(sqs_client_input_object,sqs_client_output_object ,s3_resource_object, )
     else:
         logger.info("Downloading models from S3")
         modelLoadStatus = s3_model_download(s3_client_object)
