@@ -12,12 +12,12 @@ import time
 logger = logging.getLogger(__name__)
 
 
-def wrapper_service(sqs_client_input_object,sqs_client_output_object, s3_resource):
+def wrapper_service(sqs_client,s3_resource):
     logger.info("Inside Wrapper Function")
-    bool_flag,received_messages=sqs_receive_message(sqs_client_input_object,SQSConstants.input_queue)
+    bool_flag,received_messages=sqs_receive_message(sqs_client,SQSConstants.input_queue)
     if not bool_flag:
         return False
-    bool_flag=process_messages(sqs_client_output_object,s3_resource,received_messages)
+    bool_flag=process_messages(sqs_client,s3_resource,received_messages)
     return bool_flag
 
 
@@ -37,7 +37,8 @@ def process_image(s3_client,input_payload):
         return False,output
 
 
-def process_messages(sqs_client_output_object,s3_client,sqs_response):
+
+def process_messages(sqs_client,s3_client,sqs_response):
     for message in sqs_response.get('Messages'):
         start = time.time()
         logger.info("Timer Initialization")
@@ -48,12 +49,12 @@ def process_messages(sqs_client_output_object,s3_client,sqs_response):
             body = json.loads(message['Body'])
             input_payload['body'] = body
             bool_flag,result=process_image(s3_client,input_payload)
-            bool_flag,response=sqs_send_message(sqs_client_output_object,SQSConstants.output_queue,result.get('body'))
+            bool_flag,response=sqs_send_message(sqs_client,SQSConstants.output_queue,result.get('body'))
             if bool_flag:
-                bool_flag,response=sqs_delete_message(sqs_client_output_object,SQSConstants.input_queue,input_payload['receipt_handle'])
+                bool_flag,response=sqs_delete_message(sqs_client,SQSConstants.input_queue,input_payload['receipt_handle'])
         else:
             logger.info(f"skipped processing , body not present in the message : receipt_handle :{input_payload['reciept_handle']}")
-            bool_flag,response=sqs_delete_message(sqs_client_output_object,SQSConstants.input_queue,input_payload['receipt_handle'])
+            bool_flag,response=sqs_delete_message(sqs_client,SQSConstants.input_queue,input_payload['receipt_handle'])
         end=time.time()
         elapsed =end-start
         logger.info(f"Elapsed time is {elapsed} seconds.")
