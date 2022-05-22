@@ -61,7 +61,7 @@ def sqs_scheduler():
     global modelLoadStatus
     if modelLoadStatus:
         logger.info("Inside Scheduler Function")
-        wrapper_service(sqs_client_input_object,sqs_client_output_object ,s3_resource_object, )
+        wrapper_service(sqs_client_input_object,sqs_client_output_object,s3_resource_object)
     else:
         logger.info("Downloading models from S3")
         modelLoadStatus = s3_model_download(s3_client_object)
