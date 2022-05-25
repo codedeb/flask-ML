@@ -40,7 +40,7 @@ def sqs_client():
         sqs_client = boto3.client(
                                 'sqs', 
                                 region_name=SQSConstants.region,
-                                config=Config(connect_timeout=6, read_timeout=10, retries={'max_attempts': 2})
+                                config=Config(connect_timeout=120, read_timeout=10, retries={'max_attempts': 2})
                                 )
     except Exception as e:
         logger.error(f"error while intializing sqs client : {e}")
