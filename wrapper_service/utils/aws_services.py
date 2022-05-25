@@ -1,4 +1,5 @@
 import boto3
+from botocore.client import Config
 import os
 import logging
 import json
@@ -36,7 +37,11 @@ def s3_resource():
 def sqs_client():
     try:
         logger.info('initializing sqs client')
-        sqs_client = boto3.client('sqs', region_name=SQSConstants.region)
+        sqs_client = boto3.client(
+                                'sqs', 
+                                region_name=SQSConstants.region,
+                                config=Config(connect_timeout=6, read_timeout=10, retries={'max_attempts': 2})
+                                )
     except Exception as e:
         logger.error(f"error while intializing sqs client : {e}")
         sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
