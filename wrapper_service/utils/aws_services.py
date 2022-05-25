@@ -119,7 +119,7 @@ def s3_model_download(s3):
         logger.error(f"error while downloading models from s3 : {e}")
         return False
 
-def sqs_receive_message(sqs_client,queue_url):
+def sqs_receive_message(sqs_client,queue_url=SQSConstants.input_queue):
     """
 
     :param sqs_client:
