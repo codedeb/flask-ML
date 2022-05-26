@@ -39,11 +39,7 @@ def sqs_client():
         logger.info('initializing sqs client')
         sqs_client = boto3.client(
                                 'sqs', 
-                                region_name=SQSConstants.region,
-                                config=Config(connect_timeout=120, read_timeout=120, retries={'max_attempts': 5,
-                                'mode': 'standard'}
-                                )
-                                )
+                                region_name=SQSConstants.region)
     except Exception as e:
         logger.error(f"error while intializing sqs client : {e}")
         sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
