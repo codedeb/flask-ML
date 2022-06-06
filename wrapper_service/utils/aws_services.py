@@ -133,8 +133,9 @@ def sqs_receive_message(sqs_client,queue_url=SQSConstants.input_queue):
         logger.info(f"Polling SQS URL: {queue_url}")
         response = sqs_client.receive_message(
             QueueUrl=queue_url,
-            MaxNumberOfMessages=SQSConstants.max_number_of_messages,
-            WaitTimeSeconds=SQSConstants.wait_time_seconds
+            MaxNumberOfMessages=1,
+            WaitTimeSeconds=SQSConstants.wait_time_seconds,
+            VisibilityTimeout=60
         )
         # response = 
         logger.info(f"Received Messages : {json.dumps(response)}")
