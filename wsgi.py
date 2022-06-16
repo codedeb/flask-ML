@@ -72,8 +72,8 @@ try:
     scheduler.add_job(func=sqs_scheduler, trigger=SchedulerConstants.trigger, seconds=SchedulerConstants.seconds)
     scheduler.start()
 except Exception as e:
-    logger.info('Error while starting scheduler!')
-    logger.debug('Error while starting scheduler! %s' % e)
+    # logger.info('Error while starting scheduler!')
+    logger.error('Error while starting scheduler! %s' % e)
 
 # Shut down the scheduler when exiting the app
 atexit.register(lambda: scheduler.shutdown())

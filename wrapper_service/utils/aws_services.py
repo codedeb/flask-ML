@@ -39,7 +39,12 @@ def sqs_client():
         logger.info('initializing sqs client')
         sqs_client = boto3.client(
                                 'sqs', 
+                                endpoint_url=SQSConstants.endpoint_url,
                                 region_name=SQSConstants.region)
+        
+        # sqs_client = boto3.client(
+        #                         'sqs',
+        #                         region_name=SQSConstants.region)
     except Exception as e:
         logger.error(f"error while intializing sqs client : {e}")
         sqs_client = boto3.client('sqs', aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
@@ -135,7 +140,7 @@ def sqs_receive_message(sqs_client,queue_url=SQSConstants.input_queue):
             QueueUrl=queue_url,
             MaxNumberOfMessages=1,
             WaitTimeSeconds=SQSConstants.wait_time_seconds,
-            VisibilityTimeout=60
+            VisibilityTimeout=120
         )
         # response = 
         logger.info(f"Received Messages : {json.dumps(response)}")

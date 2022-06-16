@@ -47,7 +47,7 @@ def read_input_and_form_output(s3_resource,input_dict):
                     out_put_dict = shroud_part_analytics(img_obj, im)
                     
             except Exception as e:
-                logger.info('OCR Failed: %s' % e)
+                logger.error('OCR Failed: %s' % e)
                 final_obj = img_obj.copy()
                 final_obj["ocrValue"] = "FAILED"
                 final_obj["ocrConfidenceValue"] = 0.0
