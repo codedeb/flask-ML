@@ -48,13 +48,18 @@ def process_messages(sqs_client,s3_client,sqs_response):
         if 'Body' in message:
             body = json.loads(message['Body'])
             input_payload['body'] = body
-            bool_flag,result=process_image(s3_client,input_payload)
-            bool_flag,response=sqs_send_message(sqs_client,SQSConstants.output_queue,result.get('body'))
-            if bool_flag:
-                bool_flag,response=sqs_delete_message(sqs_client,SQSConstants.input_queue,input_payload['receipt_handle'])
+            image_processed,result=process_image(s3_client,input_payload)
+            if image_processed:
+                message_sent,response=sqs_send_message(sqs_client,SQSConstants.output_queue,result.get('body'))
+                if message_sent:
+                    message_deleted,response=sqs_delete_message(sqs_client,SQSConstants.input_queue,input_payload['receipt_handle'])
+            else:
+                # do nothing the message stays in SQS untill the visibility timeout
+                pass
         else:
             logger.info(f"skipped processing , body not present in the message : receipt_handle :{input_payload['reciept_handle']}")
-            bool_flag,response=sqs_delete_message(sqs_client,SQSConstants.input_queue,input_payload['receipt_handle'])
+            ## message is not as per our expectation, so we delete (what if we let it stay... will it clutter the queue.... where are these messages coming fron the first place?)
+            message_deleted,response=sqs_delete_message(sqs_client,SQSConstants.input_queue,input_payload['receipt_handle'])
         end=time.time()
         elapsed =end-start
         logger.info(f"Elapsed time is {elapsed} seconds.")

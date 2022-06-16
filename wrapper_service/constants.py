@@ -24,6 +24,8 @@ class SchedulerConstants():
 class SQSConstants():
     input_queue="https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('ACCOUNT_NUMBER'), os.getenv('INPUT_QUEUE'))
     output_queue="https://sqs.us-east-1.amazonaws.com/{}/{}".format(os.getenv('ACCOUNT_NUMBER'), os.getenv('OUTPUT_QUEUE'))
+    endpoint_url='https://sqs.us-east-1.amazonaws.com'
+    vpc_endpoint_url = 'https://vpce-0a1d31ed30e6eb61e-pvxlitlq.sqs.us-east-1.vpce.amazonaws.com'
     max_number_of_messages=10
     wait_time_seconds=20
     region = os.getenv("REGION")
