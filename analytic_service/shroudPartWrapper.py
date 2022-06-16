@@ -14,8 +14,8 @@ def shroud_part_analytics(img_obj, im):
             model_params = json.load(file)
         try:
             seg_out = img_segmenter_shrouds(im, model_params)
-            logger.info('Shroud Segmentation successful! %s' % seg_out)
-            logger.debug('Shroud Segmentation successful! %s' % seg_out)
+            logger.info('Shroud Segmentation successful!')
+            # logger.debug('Shroud Segmentation successful! %s' % seg_out)
         except Exception as e:
             logger.info('Shroud Segmentation failure! %s' % e)
             seg_out = dict.fromkeys(["O_BB", "SN", "SEG"])
