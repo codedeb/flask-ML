@@ -3,6 +3,7 @@ import json
 import cv2
 from analytic_service.bladePartWrapper import blade_part_analytics
 from analytic_service.shroudPartWrapper import shroud_part_analytics
+from analytic_service.tpCapLinerPartWrapper import tp_cap_liner_part_analytics
 import logging
 import numpy as np
 
@@ -45,6 +46,9 @@ def read_input_and_form_output(s3_resource,input_dict):
                 elif img_obj['partType'] == "SHROUDS":
                     logger.info('Calling SHROUDS flow!')
                     out_put_dict = shroud_part_analytics(img_obj, im)
+                elif img_obj['partType'] == "TRANS PIECE" or img_obj['partType'] == "CAP ASSY" or img_obj['partType'] == "LINER ASSY":
+                    logger.info('Calling TP CAP LINER flow!')
+                    out_put_dict = tp_cap_liner_part_analytics(img_obj, im)
                     
             except Exception as e:
                 logger.error('OCR Failed: %s' % e)
