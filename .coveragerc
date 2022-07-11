@@ -1,0 +1,12 @@
+[run]
+    omit =
+            *\api_tests\__init__.py, 
+                *\wrapper_service\__init__.py, 
+                    *\wrapper_service\api_1_0\__init__.py,
+                        *\wrapper_service\config.ini,
+                            *\wrapper_service\service\rabbitq_service.py,
+                                *\wrapper_service\service\process_message_service.py,
+                                    *\wrapper_service\service\resize_image_service.py
+
+
+

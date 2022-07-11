@@ -22,11 +22,13 @@ def wrapper_service(sqs_client,s3_resource):
 
 
 
-def process_image(s3_client,input_payload):
+def process_image(input_payload):
+    output={}
     try:
         logger.info("Invoking Analytics Engine")
-        output = {'receipt_handle': input_payload['receipt_handle']}
-        output_messages = read_input_and_form_output(s3_client,input_payload['body'])
+        input_payload= json.loads(input_payload)
+        # output = {'receipt_handle': input_payload['receipt_handle']}
+        output_messages = read_input_and_form_output(input_payload)
         output['body'] = output_messages
         logger.info(f"OCR output :  {json.dumps(output)}")
         return True,output
