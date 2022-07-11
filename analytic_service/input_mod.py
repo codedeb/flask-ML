@@ -1,8 +1,10 @@
 import os
 import json
 import cv2
+import time
 from analytic_service.bladePartWrapper import blade_part_analytics
 from analytic_service.shroudPartWrapper import shroud_part_analytics
+from analytic_service.tpCapLinerPartWrapper import tp_cap_liner_part_analytics
 import logging
 import numpy as np
 
@@ -28,15 +30,27 @@ def read_input_and_form_output(s3_resource,input_dict):
     try:
         for img_obj in input_dict:
             try:
-                # Local Testing setup:
-                # logger.info('Image object input: %s'% img_obj)
-                # filename = img_obj["imagePath"]
-                # im = cv2.imread(filename)
-                bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
-                image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
-                img = bucket.Object(image_folder_path).get().get('Body')
-                image = np.asarray(bytearray(img.read()), dtype="uint8")
-                im = cv2.imdecode(image, cv2.IMREAD_COLOR)
+                attempts = 0
+                success = False
+                while attempts < 3 and not success:
+                    try:
+                        # Local Testing setup:
+                        # logger.info('Image object input: %s'% img_obj)
+                        # filename = img_obj["imagePath"]
+                        # im = cv2.imread(filename)
+                        bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
+                        image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
+                        img = bucket.Object(image_folder_path).get().get('Body')
+                        image = np.asarray(bytearray(img.read()), dtype="uint8")
+                        im = cv2.imdecode(image, cv2.IMREAD_COLOR)
+                        success = True
+                    except Exception as e:
+                        logger.error('Not able to read image: %s' % e)
+                        time.sleep(3)
+                        logger.error('Trying to read image after 3 secs')
+                        attempts += 1
+                        if attempts == 3:
+                            break
                
                 # Add logic to check compon based on 'componentId' and read image once and pass it across
                 if img_obj['partType'] == "BLADES":
@@ -45,6 +59,9 @@ def read_input_and_form_output(s3_resource,input_dict):
                 elif img_obj['partType'] == "SHROUDS":
                     logger.info('Calling SHROUDS flow!')
                     out_put_dict = shroud_part_analytics(img_obj, im)
+                elif img_obj['partType'] == "TRANS PIECE" or img_obj['partType'] == "CAP ASSY" or img_obj['partType'] == "LINER ASSY":
+                    logger.info('Calling TP CAP LINER flow!')
+                    out_put_dict = tp_cap_liner_part_analytics(img_obj, im)
                     
             except Exception as e:
                 logger.error('OCR Failed: %s' % e)
