@@ -22,13 +22,11 @@ def wrapper_service(sqs_client,s3_resource):
 
 
 
-def process_image(input_payload):
-    output={}
+def process_image(s3_client,input_payload):
     try:
         logger.info("Invoking Analytics Engine")
-        input_payload= json.loads(input_payload)
-        # output = {'receipt_handle': input_payload['receipt_handle']}
-        output_messages = read_input_and_form_output(input_payload)
+        output = {'receipt_handle': input_payload['receipt_handle']}
+        output_messages = read_input_and_form_output(s3_client,input_payload['body'])
         output['body'] = output_messages
         logger.info(f"OCR output :  {json.dumps(output)}")
         return True,output
@@ -73,4 +71,3 @@ def load_predictors():
     segmentation_predictor=detector(ModelDetails.segmentation_config_path,ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
     dot_punch_predictor=detector(ModelDetails.dot_punch_config_path,ModelDetails.dot_punch_model_path,ModelDetails.dot_punch_threshold)
     return segmentation_predictor,dot_punch_predictor
-
