@@ -21,4 +21,3 @@ api.add_namespace(messages_ns, path='/messages-ns')
 api.add_namespace(analytic_ns, path='/analytic-ns')
 api.add_namespace(image_ns, path='/image-ns')
 api.add_namespace(status_ns, path='/api')
-# from .views import api

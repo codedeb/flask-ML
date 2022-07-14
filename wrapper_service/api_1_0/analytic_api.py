@@ -13,4 +13,3 @@ class ProcessMessages(Resource):
         print('data', request.data)
         result = process_images(request.data)
         return result
-
