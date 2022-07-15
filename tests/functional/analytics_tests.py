@@ -1,7 +1,6 @@
 
 import pytest
 from werkzeug.test import Client
-from wsgi import app
 import json
 from flask import jsonify
 from analytic_service.input_mod import read_input_and_form_output

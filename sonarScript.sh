@@ -2,6 +2,6 @@
 
 echo "Run SonarScan SCRIPT - Building" 
 
-sonar-scanner.bat
+sonar-scanner
 
 echo "Completed SonarScan for OCR"
