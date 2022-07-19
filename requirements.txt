@@ -34,5 +34,5 @@ torchvision==0.10.0+cu102
 pytest==6.2.5
 coverage==6.1.2
 
-Werkzeug==0.16.1
+Werkzeug==2.0.0
 
