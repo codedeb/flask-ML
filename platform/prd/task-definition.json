@@ -28,7 +28,7 @@
 				},
 				{
 					"name": "ACCOUNT_NUMBER",
-					"value": "907050794246"
+					"value": "598619258634"
 				},
 				{
 					"name": "BUCKET_NAME",
@@ -39,12 +39,16 @@
 					"value": "us-east-1"
 				},
 				{
+					"name": "CONTAINER_MODEL_PATH",
+					"value": "/ocr-wrapper-service/IDM"
+				},
+				{
 					"name": "MODEL_PATH",
 					"value": "/IDM"
 				},
 				{
 					"name": "IMAGE_FOLDER_PATH",
-					"value": "IDM/prd"
+					"value": "IDM/image"
 				}
 			],
 			"mountPoints": [],
