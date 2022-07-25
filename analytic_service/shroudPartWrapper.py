@@ -2,7 +2,7 @@ import json
 import logging
 import json
 from .componentShroud.segmentationModShroud import img_segmenter_shrouds
-from .componentShroud.ocrTpCapLinerMod import ocr_parser_shrouds
+from .componentShroud.ocrShroudMod import ocr_parser_shrouds
 
 logger = logging.getLogger(__name__)
 

@@ -36,9 +36,9 @@ def tp_cap_liner_part_analytics(img_obj, im):
             # logger.info(traceback.format_exc())
 
         final_obj = img_obj.copy()
-        final_obj["ocrValue"] = ""
-        final_obj["ocrConfidenceValue"] = 0.0
-        final_obj["ocrConfidenceBand"] = ""
+        final_obj["ocrValue"] = ocr_parser_out["ocrValue"]
+        final_obj["ocrConfidenceValue"] = ocr_parser_out["confValue"]
+        final_obj["ocrConfidenceBand"] = ocr_parser_out["confBand"]
         final_obj["ocrPrefixValue"] = ""
         final_obj["ocrPrefixConfidenceBand"] = ""
         final_obj["ocrPrefixConfidenceValue"] = ""
