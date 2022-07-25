@@ -66,5 +66,13 @@ class ModelDetails():
     shroud_ocr_model_path = model_base_path + "model_shroud_OCR_v7.pth"
     shroud_ocr_threshold = 0.3
     
+    tp_cap_liner_config_base_path = "analytic_service/componentTpCapLiner/"
+    tp_cap_liner_seg_config_path = tp_cap_liner_config_base_path + "model_LNCPTN_segmentation_v1.yaml"
+    tp_cap_liner_seg_model_path = model_base_path + "model_LNCPTN_segmentation_v1.pth"
+    tp_cap_liner_seg_threshold = 0.1
+    tp_cap_liner_ocr_config_path = tp_cap_liner_config_base_path + "model_LNCPTN_OCR_v8.yaml"
+    tp_cap_liner_ocr_model_path = model_base_path + "model_LNCPTN_OCR_v8.pth"
+    tp_cap_liner_ocr_threshold = 0.1
+    
 
 

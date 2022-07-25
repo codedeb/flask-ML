@@ -1,6 +1,8 @@
 import json
 import logging
 import json
+from .componentTpCapLiner.segmentationModTpCapLiner import img_segmenter_tp_cap_liner
+from .componentTpCapLiner.ocrTpCapLinerMod import ocr_parser_tp_cap_liner
 
 logger = logging.getLogger(__name__)
 
@@ -10,6 +12,28 @@ def tp_cap_liner_part_analytics(img_obj, im):
     if im is not None:
         with open('/ocr-wrapper-service/analytic_service/model_params.json') as file:
             model_params = json.load(file)
+        try:
+            seg_out, label_type = img_segmenter_tp_cap_liner(im, model_params)
+            logger.info('Tp Cap Liner Segmentation successful!')
+            # logger.debug('Shroud Segmentation successful! %s' % seg_out)
+        except Exception as e:
+            logger.info('Tp Cap Liner Segmentation failure! %s' % e)
+            seg_out = dict.fromkeys(["O_BB", "SN", "O_BB_SN"])
+            seg_out["O_BB"] = {"segment": im, "box": [0,0,0,0], "confValue": None, "confBand": None}
+            seg_out["SN"] = {"segment": im, "box": [0,0,0,0], "confValue": None, "confBand": None}
+            seg_out["O_BB_SN"] =  {"segment": im, "box": [0,0,0,0], "confValue": None, "confBand": None}
+
+        ocr_parser_out = {}
+        try:
+            ###Output of the model that has the alphanums
+            ocr_parser_out = ocr_parser_tp_cap_liner(seg_out, model_params, label_type)
+            logger.info('TP/Cap/Liner OCR Flow success! %s' % ocr_parser_out)
+        except Exception as e:
+            logger.info('TP/Cap/Liner OCR Flow failure! %s' % e)
+            ocr_parser_out["ocrValue"] = "OCR_UNKN"
+            ocr_parser_out["confValue"] = 0.0
+            ocr_parser_out["confBand"] = "LOW"
+            # logger.info(traceback.format_exc())
 
         final_obj = img_obj.copy()
         final_obj["ocrValue"] = ""

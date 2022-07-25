@@ -31,30 +31,31 @@ def check_bbox1_inside_bbox2(bbox1, bbox2, use_centroid=True):
     else:
         return (xmin1 > xmin2) and (ymin1 > ymin2) and (xmax1 < xmax2) and (ymax1 < ymax2)
 
-def compute_shroud_type(dct_out):
+# returns "label_not_found", "ln_cp_tp_o_bb", "ln_cp_tp_o_bb_sn"
+def compute_label_type(dct_out):
 
-    result = "invalid" # must be one of: "o_bb_not_detected", "o_bb", "o_bb_t2"
+    result = "label_not_found" # must be one of: "label_not_found", "ln_cp_tp_o_bb", "ln_cp_tp_o_bb_sn"
     
-    if dct_out["o_bb"]["box"] is None and dct_out["o_bb_t2"]["box"] is None:
-        result = "o_bb_not_detected"
+    if dct_out["o_bb"]["box"] is None and dct_out["o_bb_sn"]["box"] is None:
+        result = "label_not_found"
     else:
         if dct_out["o_bb"]["box"] is None:
-            result = "o_bb_t2"
+            result = "ln_cp_tp_o_bb_sn"
         else:
-            if dct_out["o_bb_t2"]["box"] is None:
-                result = "o_bb"
+            if dct_out["o_bb_sn"]["box"] is None:
+                result = "ln_cp_tp_o_bb"
             else:    
                 # now both boxes are not None
-                if dct_out["o_bb"]["confValue"] > dct_out["o_bb_t2"]["confValue"]:
-                    result = "o_bb"
+                if dct_out["o_bb"]["confValue"] > dct_out["o_bb_sn"]["confValue"]:
+                    result = "ln_cp_tp_o_bb"
                 else:
-                    result = "o_bb_t2"
+                    result = "ln_cp_tp_o_bb_sn"
     return result
 
-def img_segmenter_shrouds(img, model_params):
-    logger.info("Running image segmenter for shrouds...")
+def img_segmenter_to_cap_liner(img, model_params):
+    logger.info("Running image segmenter for TP/Cap/Liner...")
 
-    model_params_seg = model_params["shroud"]["segmentation"]
+    model_params_seg = model_params["tp_cap_liner"]["segmentation"]
     img_ht = img.shape[0]
     img_wd = img.shape[1]
     class_map = {int(k):v for k,v in model_params_seg["class_map"].items()}
@@ -67,7 +68,7 @@ def img_segmenter_shrouds(img, model_params):
     # threshold = float(model_params_seg["threshold"])
 
     # Make prediction
-    predictor = detector(ModelDetails.shroud_seg_config_path, ModelDetails.shroud_seg_model_path,ModelDetails.shroud_seg_threshold)
+    predictor = detector(ModelDetails.tp_cap_liner_seg_config_path, ModelDetails.tp_cap_liner_seg_model_path,ModelDetails.tp_cap_liner_seg_threshold)
     outputs = predictor(img)
 
     classes = outputs['instances'].pred_classes
@@ -100,22 +101,29 @@ def img_segmenter_shrouds(img, model_params):
             multhtst = 0.2
             multwded = 0.1
             multhted = 0.2
-        elif class_map[index] == 'seg':
-            multwdst = 0.1
-            multhtst = 0.1
-            multwded = 0.1
-            multhted = 0.1
         else:
             multwdst = 0
             multhtst = 0
             multwded = 0
             multhted = 0
 
-        roi_cropped = img[max(1, int(box_list[1]-(height*multhtst))):min(int(img_ht-1), int(box_list[3]+(height*multhted))), max(1, int(box_list[0]-(width*multwdst))):min(int(img_wd-1), int(box_list[2]+(width*multwded)))]
+        roi_cropped = img[max(1, 
+                              int(box_list[1]-(height*multhtst))):min(int(img_ht-1), 
+                                                                      int(box_list[3]+(height*multhted))
+                                 ), 
+                              max(1, 
+                                  int(box_list[0]-(width*multwdst))):min(int(img_wd-1), 
+                                                                         int(box_list[2]+(width*multwded))
+                                  )
+                          ]
         dct_out_segs[class_map[int(dct_clean_class_list[index])]] = roi_cropped
-        dct_out_box[class_map[int(dct_clean_class_list[index])]] = [max(1, int(box_list[0]-(width*multwdst))), max(1, int(box_list[1]-(height*multhtst))), min(int(img_wd-1), int(box_list[2]+(width*multwded))), min(int(img_ht-1), int(box_list[3]+(height*multhted)))]
+        dct_out_box[class_map[int(dct_clean_class_list[index])]] = [max(1, 
+                                                                        int(box_list[0]-(width*multwdst))), 
+                                                                    max(1, int(box_list[1]-(height*multhtst))), 
+                                                                    min(int(img_wd-1), int(box_list[2]+(width*multwded))), 
+                                                                    min(int(img_ht-1), int(box_list[3]+(height*multhted)))]
 
-    # Publish output
+    # create raw dictionary for class_map found in segmentation
     dct_out = {}
     for seg in class_map.values():
         if seg in class_map_up.values():
@@ -137,17 +145,19 @@ def img_segmenter_shrouds(img, model_params):
     # expand outer bounding box to include all boxes inside it
     #
     if True:
-        shroud_type = compute_shroud_type(dct_out)
-    
-        if shroud_type == 'o_bb_not_detected':
-            logger.info('o_bb and o_bb_t2 not detected')
+        label_type = compute_label_type(dct_out)
+
+        if label_type == 'label_not_found':
+            print('ln_cp_tp_o_bb and ln_cp_tp_o_bb_sn not detected')
         else:
-            if shroud_type == 'o_bb':
-    
-                # if non o_bb boxes do not overlap with outer bounding box then do not use them
-                #  to expand the o_bb ; we have to drop the concerned non o_bb box completely
+            # expand o_bb box to include sn box (if sn is completely outsize o_bb then 
+            #     assume sn was not detected since it could be wrong)
+            # this is for o_bb and not for o_bb_sn since any detected sn box is ignored for o_bb_sn
+            if label_type == 'ln_cp_tp_o_bb':
+                # if sn box does not overlap with outer bounding box then do not use them
+                # to expand the o_bb ; we have to drop the concerned non o_bb box completely
                 tmp_class_list = []
-                for cc in ["sn", "seg", "tl", "bl", "dn"]:
+                for cc in ["sn"]:
                     if check_bbox1_overlap_bbox2(dct_out[cc]["box"], dct_out["o_bb"]["box"]):
                         tmp_class_list.append(cc)
                     else:
@@ -176,91 +186,45 @@ def img_segmenter_shrouds(img, model_params):
     
                 dct_out["o_bb"]["box"] = bbr
                 dct_out["o_bb"]["segment"] = img[bbr[1]:bbr[3],bbr[0]:bbr[2],:]
-    
-                logger.info('o_bb after expansion={}'.format(str(bbr)))
-                
-            else: # o_bb_t2
-                tmp_class_list = []
-                for cc in ["sn_t2", "dn_t2"]:
-                    if check_bbox1_overlap_bbox2(dct_out[cc]["box"], dct_out["o_bb_t2"]["box"]):
-                        tmp_class_list.append(cc)
-                    else:
-                        if dct_out[cc]["box"] is not None:
-                            logger.info('dropping {} from o_bb_t2'.format(cc))
-                        dct_out[cc]["segment"] = img
-                        dct_out[cc]["box"] = None
-                        dct_out[cc]["confValue"] = 0
-                        dct_out[cc]["confBand"] = 'LOW'
-    
-                # initialize result
-                bbr = dct_out["o_bb_t2"]["box"] # bbr <=> bbox_result
-    
-                # in code below, dct_out[cc]["box"][0] != 0 condition is another 
-                # layer of safety on top of None check
-    
-                # modify xmin, ymin, xmax, and ymax (ii = 0, 1, 2, 3 resp.)
-                if len(tmp_class_list) > 0:
-                    for ii in range(4):
-                        for cc in tmp_class_list:
-                            if dct_out[cc]["box"] is not None and dct_out[cc]["box"][ii] != 0:
-                                if ii == 0 or ii == 1:
-                                    bbr[ii] = min(dct_out[cc]["box"][ii], bbr[ii]) # xmin, ymin modification
-                                else:
-                                    bbr[ii] = max(dct_out[cc]["box"][ii], bbr[ii]) # xmax, ymax modification
-    
-                dct_out["o_bb_t2"]["box"] = bbr
-                dct_out["o_bb"]["segment"] = img[bbr[1]:bbr[3],bbr[0]:bbr[2],:]
 
+                logger.info('o_bb after expansion={}'.format(str(bbr)))
     #            
     # clean raw dict and form output
     #
     seg_out = {"O_BB": {"segment": img, "box": [0,0,0,0], "confValue": None, "confBand": None},
-               "SN":   {"segment": img, "box": [0,0,0,0], "confValue": None, "confBand": None},
-               "SEG":  {"segment": img, "box": [0,0,0,0], "confValue": None, "confBand": None}}
-    
-    shroud_type = compute_shroud_type(dct_out)
+               "O_BB_SN": {"segment": img, "box": [0,0,0,0], "confValue": None, "confBand": None},
+               "SN": {"segment": img, "box": [0,0,0,0], "confValue": None, "confBand": None}}
 
-    if shroud_type != 'o_bb_not_detected':
+    label_type = compute_label_type(dct_out)
 
-        if shroud_type == 'o_bb':
+    if label_type != 'label_not_found':
+
+        if dct_out["o_bb"]["confValue"] > 0:
+            seg_out["O_BB"]["segment"]   = dct_out["o_bb"]["segment"]
+            seg_out["O_BB"]["box"]       = dct_out["o_bb"]["box"]
+            seg_out["O_BB"]["confValue"] = dct_out["o_bb"]["confValue"]
+            seg_out["O_BB"]["confBand"]  = dct_out["o_bb"]["confBand"]
+
+        if dct_out["o_bb_sn"]["confValue"] > 0:
+            seg_out["O_BB_SN"]["segment"]   = dct_out["o_bb_sn"]["segment"]
+            seg_out["O_BB_SN"]["box"]       = dct_out["o_bb_sn"]["box"]
+            seg_out["O_BB_SN"]["confValue"] = dct_out["o_bb_sn"]["confValue"]
+            seg_out["O_BB_SN"]["confBand"]  = dct_out["o_bb_sn"]["confBand"]
+
+        # compute which box to use for relative location of sn
+        if label_type == 'ln_cp_tp_o_bb':
             bbox = dct_out["o_bb"]["box"]
-            xmin0, ymin0 = bbox[0], bbox[1]
-    
-            if dct_out["o_bb"]["confValue"] > 0:
-                seg_out["O_BB"]["segment"]   = dct_out["o_bb"]["segment"]
-                seg_out["O_BB"]["box"]       = [0,0,0,0]
-                seg_out["O_BB"]["confValue"] = dct_out["o_bb"]["confValue"]
-                seg_out["O_BB"]["confBand"]  = dct_out["o_bb"]["confBand"]
-            if dct_out["sn"]["confValue"] > 0:
-                seg_out["SN"]["segment"]   = dct_out["sn"]["segment"]
-                seg_out["SN"]["box"]   = [x-y for x,y in zip(dct_out["sn"]["box"],[xmin0, ymin0, xmin0, ymin0])]
-                seg_out["SN"]["confValue"] = dct_out["sn"]["confValue"]
-                seg_out["SN"]["confBand"]  = dct_out["sn"]["confBand"]
-            if dct_out["seg"]["confValue"] > 0:
-                seg_out["SEG"]["segment"] = dct_out["seg"]["segment"]
-                seg_out["SEG"]["box"] = [x-y for x,y in zip(dct_out["seg"]["box"],[xmin0, ymin0, xmin0, ymin0])]
-                seg_out["SEG"]["confValue"] = dct_out["seg"]["confBand"]
-                seg_out["SEG"]["confBand"] = dct_out["seg"]["confValue"]
         else:
-            bbox = dct_out["o_bb_t2"]["box"]
-            xmin0, ymin0 = bbox[0], bbox[1]
-    
-            if dct_out["o_bb_t2"]["confValue"] > 0:
-                seg_out["O_BB"]["segment"] = dct_out["o_bb_t2"]["segment"]
-                seg_out["O_BB"]["box"] = [0,0,0,0]
-                seg_out["O_BB"]["confValue"] = dct_out["o_bb_t2"]["confValue"]
-                seg_out["O_BB"]["confBand"] = dct_out["o_bb_t2"]["confBand"]
-            if dct_out["sn_t2"]["confValue"] > 0:
-                seg_out["SN"]["segment"] = dct_out["sn_t2"]["segment"]
-                seg_out["SN"]["box"] = [x-y for x,y in zip(dct_out["sn_t2"]["box"],[xmin0, ymin0, xmin0, ymin0])]
-                seg_out["SN"]["confValue"] = dct_out["sn_t2"]["confValue"]
-                seg_out["SN"]["confBand"] = dct_out["sn_t2"]["confBand"]
-            if dct_out["dn_t2"]["confValue"] > 0:
-                seg_out["SEG"]["segment"] = dct_out["dn_t2"]["segment"]
-                seg_out["SEG"]["box"] = [x-y for x,y in zip(dct_out["dn_t2"]["box"],[xmin0, ymin0, xmin0, ymin0])]
-                seg_out["SEG"]["confValue"] = dct_out["dn_t2"]["confValue"]
-                seg_out["SEG"]["confBand"] = dct_out["dn_t2"]["confBand"]
-                   
+            bbox = dct_out["o_bb_sn"]["box"]
+        xmin0, ymin0 = bbox[0], bbox[1]
 
-    return seg_out
+        # compute relative location of sn for o_bb and not for o_bb_sn
+        if label_type == 'ln_cp_tp_o_bb':
+            if dct_out["sn"]["confValue"] > 0:
+                seg_out["SN"]["segment"] = dct_out["sn"]["segment"]
+                seg_out["SN"]["box"] = [x-y for x,y in zip(dct_out["sn"]["box"],[xmin0, ymin0, xmin0, ymin0])]
+                seg_out["SN"]["confValue"] = dct_out["sn"]["confBand"]
+                seg_out["SN"]["confBand"] = dct_out["sn"]["confValue"]
+
+    return seg_out, label_type
 
