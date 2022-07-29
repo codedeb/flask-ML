@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Run SonarScan SCRIPT - Building" 
+echo "Run SonarScan SCRIPT" 
 
 sonar-scanner
 
