@@ -1,10 +1,19 @@
 #!/bin/bash
 echo "UTSCRIPT - Run OCR Unit Tests!!!"
 
-echo "set CHROME_BIN"
-export CHROME_BIN="/bin/google-chrome"
 echo "starting pytest"
 
-python -m pytest tests/functional/analytics_tests.py
 
-echo "Testing ends!!!"
+coverage run -m pytest tests/functional/analytics_tests.py
+
+echo "Testing Finished"
+
+echo "getting coverage report"
+
+coverage report -m
+
+coverage xml
+
+echo "coverage to be found in coverage.xml file !!!"
+
+
