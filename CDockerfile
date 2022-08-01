@@ -1,6 +1,6 @@
 ARG BASE_IMAGE=598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:ubuntu1804
-FROM 598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:ubuntu2004
-#FROM $BASE_IMAGE
+#FROM 598619258634.dkr.ecr.us-east-1.amazonaws.com/uai3046767-cpl-dev:ubuntu2004
+FROM $BASE_IMAGE
 ARG DEBIAN_FRONTEND=noninteractive
 USER root
 

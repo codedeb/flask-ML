@@ -43,7 +43,7 @@
 					"value": "/ocr-wrapper-service/IDM"
 				},
 				{
-					"name": "S3_MODEL_PATH",
+					"name": "MODEL_PATH",
 					"value": "/IDM"
 				},
 				{

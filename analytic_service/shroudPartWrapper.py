@@ -10,7 +10,7 @@ def shroud_part_analytics(img_obj, im):
     logger.info(f"Shrouds Analytics Input: {img_obj}")
     out_put_dict = []
     if im is not None:
-        with open('/ocr-wrapper-service/analytic_service/model_params.json') as file:
+        with open('analytic_service/model_params.json') as file:
             model_params = json.load(file)
         try:
             seg_out = img_segmenter_shrouds(im, model_params)

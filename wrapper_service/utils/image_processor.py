@@ -71,4 +71,3 @@ def load_predictors():
     segmentation_predictor=detector(ModelDetails.segmentation_config_path,ModelDetails.segmentation_model_path,ModelDetails.segmentation_threshold)
     dot_punch_predictor=detector(ModelDetails.dot_punch_config_path,ModelDetails.dot_punch_model_path,ModelDetails.dot_punch_threshold)
     return segmentation_predictor,dot_punch_predictor
-

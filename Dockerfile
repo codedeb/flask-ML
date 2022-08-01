@@ -42,7 +42,6 @@ ENV AWS_ACCESS_KEY_ID=None  \
     ACCOUNT_NUMBER=598619258634 \
     BUCKET_NAME=uai3046767-cpl-dev \
     MODEL_PATH=/IDM \
-    IMAGE_FOLDER_PATH=IDM/dev \
-    DUMP_IMAGES=IDM/dev/dump_images
+    IMAGE_FOLDER_PATH=IDM/dev
 
 ENTRYPOINT ["python3", "/ocr-wrapper-service/wsgi.py"]

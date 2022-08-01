@@ -43,13 +43,13 @@ class S3Constants():
     retry_sleep=300
 
 class LocalDirectoryConstants():
-    model_path=os.getenv('CONTAINER_MODEL_PATH')+"/models/"
+    model_path=str(os.getenv('CONTAINER_MODEL_PATH'))+"/model/"
+    #for local 
     # model_path="models/"
 
 class ModelDetails():
-    active_release = config['DEFAULT']['ACTIVE_RELEASE']
-    active_version = config[active_release]
-    model_base_path=os.getenv('CONTAINER_MODEL_PATH')+"/models/"
+    model_base_path=LocalDirectoryConstants.model_path
+    #for local
     # model_base_path="models/"
     blade_config_base_path="analytic_service/componentBlade/"
    
