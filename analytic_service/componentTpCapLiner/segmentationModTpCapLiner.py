@@ -52,7 +52,7 @@ def compute_label_type(dct_out):
                     result = "ln_cp_tp_o_bb_sn"
     return result
 
-def img_segmenter_to_cap_liner(img, model_params):
+def img_segmenter_tp_cap_liner(img, model_params):
     logger.info("Running image segmenter for TP/Cap/Liner...")
 
     model_params_seg = model_params["tp_cap_liner"]["segmentation"]

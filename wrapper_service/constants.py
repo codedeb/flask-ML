@@ -44,11 +44,13 @@ class S3Constants():
 
 class LocalDirectoryConstants():
     model_path=os.getenv('CONTAINER_MODEL_PATH')+"/models/"
+    # model_path="models/"
 
 class ModelDetails():
     active_release = config['DEFAULT']['ACTIVE_RELEASE']
     active_version = config[active_release]
     model_base_path=os.getenv('CONTAINER_MODEL_PATH')+"/models/"
+    # model_base_path="models/"
     blade_config_base_path="analytic_service/componentBlade/"
    
     segmentation_config_path = blade_config_base_path+"config_segmentation_v1.1.0.yaml"

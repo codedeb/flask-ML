@@ -39,7 +39,9 @@ def ocr_parser_tp_cap_liner(seg_out, model_params, label_type):
                 tmp_o_bb = seg_out["O_BB"]["box"] 
                 xmin, ymin, xmax, ymax = tmp_o_bb[0], tmp_o_bb[1], tmp_o_bb[2], tmp_o_bb[3]
                 bboxes_dict['sn'] = [0, 0, xmax-xmin, ymax-ymin]
-        else: # ln_cp_tp_o_bb_sn - use outer bounding box for both o_bb and sn
+                
+        # else: # ln_cp_tp_o_bb_sn - use outer bounding box for both o_bb and sn
+        if label_type == 'ln_cp_tp_o_bb_sn':
             im = seg_out["O_BB_SN"]["segment"]
             tmp_sn = seg_out["O_BB_SN"]["box"] # use o_bb_sn as sn for this case (for now)
             xmin, ymin, xmax, ymax = tmp_sn[0], tmp_sn[1], tmp_sn[2], tmp_sn[3]
@@ -77,7 +79,7 @@ def ocr_parser_tp_cap_liner(seg_out, model_params, label_type):
         out_obj = {}
         out_obj["ocrValue"] = resultString
         out_obj["confValue"] = confidence
-        out_obj["confBand"] = confidence_band
+        out_obj["confBand"] = "LOW"
         logger.info('TP/Cap/Liner post processing success! %s' % out_obj)
     except Exception as e:
         logger.info('TP/Cap/Liner post processing failure!')

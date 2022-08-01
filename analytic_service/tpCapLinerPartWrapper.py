@@ -10,10 +10,11 @@ def tp_cap_liner_part_analytics(img_obj, im):
     logger.info(f"TP Cap Liner Analytics Input: {img_obj}")
     out_put_dict = []
     if im is not None:
-        with open('/ocr-wrapper-service/analytic_service/model_params.json') as file:
+        with open('analytic_service/model_params.json') as file:
             model_params = json.load(file)
         try:
             seg_out, label_type = img_segmenter_tp_cap_liner(im, model_params)
+            logger.info(f"label type : {label_type}")
             logger.info('Tp Cap Liner Segmentation successful!')
             # logger.debug('Shroud Segmentation successful! %s' % seg_out)
         except Exception as e:
