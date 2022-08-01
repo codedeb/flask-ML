@@ -3,6 +3,7 @@ import logging
 import pandas as pd
 
 from .ioul import get_iou, comp_norm_box_area_inside_roi
+from .confBand import confidence_band
 
 logger = logging.getLogger(__name__)
 
@@ -396,17 +397,17 @@ def compute_str_from_bbox(bbox_sn, boxes_list, classes_list, scores_list, cn, ve
     # find boxes overlapping sn box
     df_sn = make_bbox_df(bbox_sn, boxes_list, classes_list, scores_list, cn, debug = debug)
     if len(df_sn) == 0:
-        return ''
+        return '', 0.0, 'LOW'
     
     # remove iou=0.0
     df_sn = df_sn[df_sn['iou'] > 0.0]  
     if len(df_sn) == 0:
-        return ''
+        return '', 0.0, 'LOW'
 
     # keep norm_ydist within +/-0.3
     df_sn = df_sn[np.abs(df_sn['norm_ydist']) < 0.3]  
     if len(df_sn) == 0:
-        return ''
+        return '', 0.0, 'LOW'
 
     # sort rows based on norm_xdist
     df_sn = df_sn.sort_values('norm_xloc', ignore_index=True)
@@ -414,7 +415,7 @@ def compute_str_from_bbox(bbox_sn, boxes_list, classes_list, scores_list, cn, ve
     # filter out boxes whose xloc is outside [0,1]
     df_sn = df_sn[ (df_sn['norm_xloc'] >= 0.0) &  (df_sn['norm_xloc'] <= 1.0)]
     if len(df_sn) == 0:
-        return ''
+        return '', 0.0, 'LOW'
 
     if verbose > 0:
         print(df_sn.to_string())
@@ -423,12 +424,12 @@ def compute_str_from_bbox(bbox_sn, boxes_list, classes_list, scores_list, cn, ve
     area_thresh = 0.1 * np.amax(df_sn.loc[:,'norm_box_area'].to_numpy())
     df_sn = df_sn[df_sn['norm_box_area'] > area_thresh]
     if len(df_sn) == 0:
-        return ''
+        return '', 0.0, 'LOW'
 
     # filter out boxes that lie much above or below the center y-line of bbox_roi
     df_sn = df_sn[df_sn['box_area_ratio'] < 10.0]
     if len(df_sn) == 0:
-        return ''
+        return '', 0.0, 'LOW'
 
     if verbose > 0:
         print(df_sn.to_string())
@@ -443,7 +444,7 @@ def compute_str_from_bbox(bbox_sn, boxes_list, classes_list, scores_list, cn, ve
         print('resolved {} colocations for df_sn'.format(num_colocated))
 
     if len(df_sn) == 0:
-        return ''
+        return '', 0.0, 'LOW'
 
     if verbose > 0:
         print(df_sn.to_string())
@@ -456,15 +457,17 @@ def compute_str_from_bbox(bbox_sn, boxes_list, classes_list, scores_list, cn, ve
         print(df_sn.to_string())
 
     if len(df_sn) == 0:
-        return ''
+        return '', 0.0, 'LOW'
 
     # compute the string from the dataframe
     sn_str = ''.join(df_sn['class'].to_list())
 
+    conf, conf_band = confidence_band(df_sn['score'], len(df_sn['score']))
+
     if verbose > 0:
         print(sn_str)
     
-    return sn_str
+    return sn_str, conf, conf_band
 
 def compute_str_from_bbox_o_bb_sn(bbox_sn, boxes_list, classes_list, scores_list, cn, verbose = 1, debug = 1):
 
@@ -474,10 +477,12 @@ def compute_str_from_bbox_o_bb_sn(bbox_sn, boxes_list, classes_list, scores_list
     # find boxes overlapping this box, which is the whole image in o_bb_sn
     df_list = make_bbox_df_ylines(bbox_sn, boxes_list, classes_list, scores_list, cn, debug = debug)
     if len(df_list) == 0:
-        return ''
+        return '', 0.0, 'LOW'
 
     sno_detected = []
     str_yline_list = []
+    conf_list = []
+    conf_band_list = []
 
     for df_sn in df_list:
         
@@ -492,7 +497,10 @@ def compute_str_from_bbox_o_bb_sn(bbox_sn, boxes_list, classes_list, scores_list
         area_thresh = 0.1 * np.amax(df_sn.loc[:,'norm_box_area'].to_numpy())
         df_sn = df_sn[df_sn['norm_box_area'] > area_thresh]
         if len(df_sn) == 0:
-            return ''
+            str_yline_list.append('')
+            sno_detected.append(0)
+            conf_list.append(0.0)
+            conf_band_list.append("LOW")
     
         # do NOT filter out horizontal boxes (using h_w_ratio < 1.0) since SNO box is horizontal
         # df_sn = df_sn[df_sn['h_w_ratio'] > 1.0]
@@ -518,9 +526,16 @@ def compute_str_from_bbox_o_bb_sn(bbox_sn, boxes_list, classes_list, scores_list
         if len(df_sn) == 0:
             str_yline_list.append('')
             sno_detected.append(0)
+
+            conf_list.append(0.0)
+            conf_band_list.append("LOW")
         else:    
             str_yline_list.append(''.join(df_sn['class'].to_list()))
             sno_detected.append(int(np.any(df_sn['class'] == 'SNO')))
+
+            conf, conf_band = confidence_band(df_sn['score'], len(df_sn['score']))
+            conf_list.append(conf)
+            conf_band_list.append(conf_band)
 
         if verbose > 0:
             print(str_yline_list[-1])
@@ -528,23 +543,29 @@ def compute_str_from_bbox_o_bb_sn(bbox_sn, boxes_list, classes_list, scores_list
     # find the longest line without SNO box as output string
     if len(str_yline_list) == 0:
         sn_str = ''
+        conf = 0.0
+        conf_band = "LOW"
     elif len(str_yline_list) == 1:
         sn_str = str_yline_list[0]
+        conf = conf_list[0]
+        conf_band = conf_band_list[0]
     else:
         sn_str_len = np.array([(1-sno_detected[ii])*len(str_yline_list[ii]) \
                                for ii in range(len(str_yline_list))])
         indx = np.min(np.nonzero(sn_str_len == np.max(sn_str_len)))
         sn_str = str_yline_list[indx]
+        conf = conf_list[indx]
+        conf_band = conf_band_list[indx]
 
     if verbose > 0:
         print(sn_str)
 
-    return sn_str
+    return sn_str, conf, conf_band
 
 def getClassResults(class_map, bboxes, outputs, label_type):
 
     if label_type == 'label_not_detected':
-        return '',0.0
+        return '', 0.0, 'LOW'
         
     classes = outputs['instances'].pred_classes
     boxes = outputs['instances'].pred_boxes
@@ -562,9 +583,9 @@ def getClassResults(class_map, bboxes, outputs, label_type):
         sn_str = ''
     else:
         if label_type == 'ln_cp_tp_o_bb':
-            sn_str = compute_str_from_bbox(bbox_sn, boxes_list, classes_list, scores_list, cn, verbose = 0, debug = 0)
+            sn_str, conf, conf_band = compute_str_from_bbox(bbox_sn, boxes_list, classes_list, scores_list, cn, verbose = 0, debug = 0)
         else: # ln_cp_tp_o_bb_sn
             # here, bbox_sn is the whole image ; needed for xloc calculations
-            sn_str = compute_str_from_bbox_o_bb_sn(bbox_sn, boxes_list, classes_list, scores_list, cn, verbose = 0, debug = 0)
+            sn_str, conf, conf_band = compute_str_from_bbox_o_bb_sn(bbox_sn, boxes_list, classes_list, scores_list, cn, verbose = 0, debug = 0)
 
-    return sn_str, 0.9 #Siva: Change it with probability/confidence
+    return sn_str, conf, conf_band #Siva: Change it with probability/confidence

@@ -73,14 +73,14 @@ def ocr_parser_tp_cap_liner(seg_out, model_params, label_type):
         bboxes = [tuple(bboxes_dict["o_bb"]), \
                   tuple(bboxes_dict["sn"])]
         # Extract the strings 
-        resultString, confidence = getClassResults(class_map_tp_cap_liner, bboxes, ocr_tp_cap_liner_outputs, label_type)
+        resultString, confidence, confidence_band = getClassResults(class_map_tp_cap_liner, bboxes, ocr_tp_cap_liner_outputs, label_type)
         out_obj = {}
         out_obj["ocrValue"] = resultString
         out_obj["confValue"] = confidence
-        out_obj["confBand"] = "LOW"
-        logger.info('Shrouds post processing success! %s' % out_obj)
+        out_obj["confBand"] = confidence_band
+        logger.info('TP/Cap/Liner post processing success! %s' % out_obj)
     except Exception as e:
-        logger.info('Shrouds post processing failure!')
+        logger.info('TP/Cap/Liner post processing failure!')
         logger.info(e)
 
     return out_obj    
