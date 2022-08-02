@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "Run SonarScan SCRIPT" 
-
-sonar-scanner
-
+echo "Run Sonar scanner" 
+sonar-scanner.sh
 echo "Completed SonarScan for OCR"
