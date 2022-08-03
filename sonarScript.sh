@@ -2,22 +2,18 @@
 
 echo "Run Sonar scanner" 
 
-mkdir sonarscanner -p
-
-cd /sonarscanner
-
 /usr/local/bin/pip3 install wget
 
 wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.2.0.1873-linux.zip
 
 unzip sonar-scanner-cli-4.2.0.1873-linux.zip
 
-rm sonar-scanner-cli-4.2.0.1873-linux.zip
+mv sonar-scanner-cli-4.2.0.1873 /opt/sonar/
 
-chmod +x sonar-scanner-4.2.0.1873-linux/bin/sonar-scanner
 
-ln -s sonarscanner/sonar-scanner-4.2.0.1873-linux/bin/sonar-scanner /usr/local/bin/sonar-scanner
 
-/usr/local/bin/sonar-scanner.sh start
+PATH=/opt/sonar/ sonar-scanner-4.2.0.1873/bin
+
+sonar-scanner
 
 echo "Completed SonarScan for OCR"
