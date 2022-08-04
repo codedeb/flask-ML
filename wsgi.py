@@ -16,7 +16,7 @@ from wrapper_service.utils.image_processor import wrapper_service
 from wrapper_service.utils.aws_services import s3_model_download
 from wrapper_service.api_1_1.register_blueprint import create_flask_app
 
-# from ocr_analytic_service.input_mod import read_input_and_form_output
+from analytic_service.input_mod import read_input_and_form_output
 
 
 """
@@ -38,19 +38,13 @@ s3_resource_object=s3_resource()
 
 # Local system testing setup
 # try:
-#     # Folder Path
-#     path = "/ocr_data/shroud_models/images/"
-#     # iterate through all file
-#     for file in os.listdir(path):
-#         # Check whether file is in text format or not
-#         if file.endswith(".JPG"):
-#             file_path = os.path.join(path, file)
-#             image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"BLADES","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": file_path}]
-#             logger.info('calling read function on image obj: %s' % image_object)
-#             # call analytics function
-#             read_input_and_form_output(s3_resource_object,image_object)
-#         else:
-#             logger.info('Image is not JPG! %s' % file)
+# #     # Folder Path
+
+#     image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"CAP ASSY","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": "CAP_5_9_Image_4 2019-06-04_16-10-50.jpeg"}]
+#     logger.info('calling read function on image obj: %s' % image_object)
+#     # call analytics function
+#     read_input_and_form_output("CAP_5_9_Image_4 2019-06-04_16-10-50.jpeg",image_object)
+
 # except Exception as e:
 #     logger.info('Error while starting analytics! %s' % e)
 
