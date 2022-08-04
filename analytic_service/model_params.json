@@ -52,7 +52,7 @@
 	"tp_cap_liner": {
 		"segmentation": {
 			"model_dir": ".",
-			"model_config": "model_LNCPTN_segmentation_v1.yaml",
+			"model_config": "config_LNCPTN_segmentation_v1.yaml",
 			"model_config_md5sum": "9cad24b01b3ac8179153019a1cb274dc",
 			"model_file": "model_LNCPTN_segmentation_v1.pth",
 			"model_file_md5sum": "2a0adcf8dfe8a4c4f2f6fb200a57308a",
@@ -65,7 +65,7 @@
 		},
 		"ocr": {
 			"model_dir": ".",
-			"model_config": "model_LNCPTN_OCR_v8.yaml",
+			"model_config": "config_LNCPTN_OCR_v8.yaml",
 			"model_config_md5sum": "2e4c9cc5dfdc2f6554c46685f4855629",
 			"model_file": "model_LNCPTN_OCR_v8.pth",
 			"model_file_md5sum": "0854b251c4ba29bcdbf409dd223a99df",
