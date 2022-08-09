@@ -61,7 +61,7 @@ def read_input_and_form_output(s3_resource,input_dict):
                 elif img_obj['partType'] == "SHROUDS":
                     logger.info('Calling SHROUDS flow!')
                     out_put_dict = shroud_part_analytics(img_obj, im)
-                elif img_obj['partType'] == "TRANS PIECE" or img_obj['partType'] == "CAP ASSY" or img_obj['partType'] == "LINER ASSY":
+                elif img_obj['partType'] == "TRANSPIECE" or img_obj['partType'] == "CAPASSY" or img_obj['partType'] == "LINERASSY":
                     logger.info('Calling TP CAP LINER flow!')
                     out_put_dict = tp_cap_liner_part_analytics(img_obj, im)
                     
