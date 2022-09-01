@@ -24,12 +24,12 @@ except:
 """
 logger = logging.getLogger(__name__)
 
-def s3_Resource(s3_resource):                     
-    bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
-    image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
-    img = bucket.Object(image_folder_path).get().get('Body')
-    image = np.asarray(bytearray(img.read()), dtype="uint8")
-    return image
+# def s3_Resource(s3_resource):                     
+#     bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
+#     image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
+#     img = bucket.Object(image_folder_path).get().get('Body')
+#     image = np.asarray(bytearray(img.read()), dtype="uint8")
+#     return image
 
 def read_input_and_form_output(s3_resource,input_dict):
     logger.info(f"Analytics Input: {json.dumps(input_dict)}")
