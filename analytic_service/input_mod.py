@@ -24,6 +24,13 @@ except:
 """
 logger = logging.getLogger(__name__)
 
+# def s3_Resource(s3_resource):                     
+#     bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
+#     image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
+#     img = bucket.Object(image_folder_path).get().get('Body')
+#     image = np.asarray(bytearray(img.read()), dtype="uint8")
+#     return image
+
 def read_input_and_form_output(s3_resource,input_dict):
     logger.info(f"Analytics Input: {json.dumps(input_dict)}")
     out_put_dict = []
@@ -35,24 +42,33 @@ def read_input_and_form_output(s3_resource,input_dict):
                 while attempts < 3 and not success:
                     try:
                         # Local Testing setup:
-                        # success = True
+                        
                         # logger.info('Image object input: %s'% img_obj)
                         # filename = img_obj["imagePath"]
                         # im = cv2.imread(filename)
+                        # if im is None:
+                        #     success = False
+                        #     time.sleep(5)
+                        #     attempts += 1
+                        # else:
+                        #     success = True
+                            
+                        # Production  code
                         
                         bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
                         image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
                         img = bucket.Object(image_folder_path).get().get('Body')
                         image = np.asarray(bytearray(img.read()), dtype="uint8")
                         im = cv2.imdecode(image, cv2.IMREAD_COLOR)
-                        success = True
+                        if im is None:
+                            success = False
+                            time.sleep(5)
+                            attempts += 1
+                        else:
+                            success = True
+                            
                     except Exception as e:
                         logger.error('Not able to read image: %s' % e)
-                        time.sleep(3)
-                        logger.error('Trying to read image after 3 secs')
-                        attempts += 1
-                        if attempts == 3:
-                            break
                
                 # Add logic to check compon based on 'componentId' and read image once and pass it across
                 if img_obj['partType'] == "BLADES":
