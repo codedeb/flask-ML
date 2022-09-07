@@ -1,3 +1,4 @@
+from cmath import log
 import os
 import json
 import cv2
@@ -26,9 +27,19 @@ logger = logging.getLogger(__name__)
 
 def read_input_and_form_output(s3_resource,input_dict):
     logger.info(f"Analytics Input: {json.dumps(input_dict)}")
+    
     out_put_dict = []
     try:
         for img_obj in input_dict:
+            img_path = img_obj['imagePath']
+            logger.info(f"img_path  {img_path}")
+            if img_path.startswith('https'):
+                logger.info(f"img_path starts with {img_path.startswith('https')}")
+                img_path = img_path.split('?')
+                img_path = img_obj['imagePath'][0]
+                logger.info(f"img_path {img_path}")
+            else:
+                img_path=img_obj['imagePath']
             try:
                 attempts = 0
                 success = False
@@ -41,7 +52,7 @@ def read_input_and_form_output(s3_resource,input_dict):
                         # im = cv2.imread(filename)
                         
                         bucket = s3_resource.Bucket(os.getenv('BUCKET_NAME'))
-                        image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_obj['imagePath'])
+                        image_folder_path = os.path.join(os.getenv('IMAGE_FOLDER_PATH'), img_path)
                         img = bucket.Object(image_folder_path).get().get('Body')
                         image = np.asarray(bytearray(img.read()), dtype="uint8")
                         im = cv2.imdecode(image, cv2.IMREAD_COLOR)
