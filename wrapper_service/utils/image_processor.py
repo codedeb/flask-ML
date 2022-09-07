@@ -19,13 +19,12 @@ def wrapper_service(sqs_client,s3_resource):
         return False
     bool_flag=process_messages(sqs_client,s3_resource,received_messages)
     return bool_flag
-
-
+ 
 
 def process_image(s3_client,input_payload):
     try:
         logger.info("Invoking Analytics Engine")
-        logger.info("image path:",input_payload['body'][0]['imagePath'] )
+        logger.info(f"'image path' {input_payload['body'][0]['imagePath']}")
         output = {'receipt_handle': input_payload['receipt_handle']}
         output_messages = read_input_and_form_output(s3_client,input_payload['body'])
         output['body'] = output_messages
@@ -49,7 +48,7 @@ def process_messages(sqs_client,s3_client,sqs_response):
         if 'Body' in message:
             body = json.loads(message['Body'])
             input_payload['body'] = body
-            logger.info("input payload", input_payload)
+            logger.info(f"input payload' {input_payload}")
             image_processed,result=process_image(s3_client,input_payload)
             if image_processed:
                 message_sent,response=sqs_send_message(sqs_client,SQSConstants.output_queue,result.get('body'))
