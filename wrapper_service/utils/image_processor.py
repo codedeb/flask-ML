@@ -48,7 +48,7 @@ def process_messages(sqs_client,s3_client,sqs_response):
         if 'Body' in message:
             body = json.loads(message['Body'])
             input_payload['body'] = body
-            logger.info(f"input payload' {input_payload}")
+            logger.info(f"input payload' {input_payload['body']}")
             image_processed,result=process_image(s3_client,input_payload)
             if image_processed:
                 message_sent,response=sqs_send_message(sqs_client,SQSConstants.output_queue,result.get('body'))
