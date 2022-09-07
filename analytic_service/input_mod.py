@@ -34,10 +34,10 @@ def read_input_and_form_output(s3_resource,input_dict):
             img_path = img_obj['imagePath']
             logger.info(f"img_path  {img_path}")
             if img_path.startswith('https'):
-                logger.info(f"img_path starts with {img_path.startswith('https')}")
+                logger.info(f"img_path starts with https: {img_path.startswith('https')}")
                 img_path = img_path.split('?')
-                img_path = img_obj['imagePath'][0]
-                logger.info(f"img_path {img_path}")
+                img_path = img_path[0]
+                logger.info(f"img_path:  {img_path}")
             else:
                 img_path=img_obj['imagePath']
             try:
