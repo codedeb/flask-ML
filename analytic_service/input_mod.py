@@ -32,26 +32,12 @@ def read_input_and_form_output(s3_resource,input_dict):
     try:
         for img_obj in input_dict:
             img_path = img_obj['imagePath']
-            logger.info(f"img_path  {img_path}")
-            if img_path.startswith('https'):
-                logger.info(f"img_path starts with https: {img_path.startswith('https')}")
-                img_path = img_path.split('?')
-                img_path = img_path[0]
-                logger.info(f"img_path:  {img_path}")
-                img_path= img_path.split('/')
-                img5 = img_path[5]
-                img6= img_path[6]
-                img7 = img_path[7]
-                img_path=(f"{img5}/{img6}/{img7}")
-                img_obj['imagePath']= img_path
-            else:
-                img_path=img_obj['imagePath']
             try:
                 attempts = 0
                 success = False
                 while attempts < 3 and not success:
                     try:
-                        # # Local Testing setup:
+                        # Local Testing setup:
                         # success = True
                         # logger.info('Image object input: %s'% img_obj)
                         # # filename = img_obj["imagePath"]
