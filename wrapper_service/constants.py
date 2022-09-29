@@ -60,7 +60,7 @@ class ModelDetails():
     segmentation_threshold = 0.3
     
     dot_punch_config_path = ocr_config_base_path + "config_file.yaml"
-    dot_punch_model_path = model_base_path + "OCR_generalized_v9.pth"
+    dot_punch_model_path = model_base_path + "model_OCR_generalized_v9.pth"
     dot_punch_threshold = 0.2
 
   
@@ -69,7 +69,7 @@ class ModelDetails():
     shroud_seg_threshold = 0.1
     
     shroud_ocr_config_path = ocr_config_base_path + "config_file.yaml"
-    shroud_ocr_model_path = model_base_path + "OCR_generalized_v9.pth"
+    shroud_ocr_model_path = model_base_path + "model_OCR_generalized_v9.pth"
     shroud_ocr_threshold = 0.3
     
   
@@ -78,7 +78,7 @@ class ModelDetails():
     tp_cap_liner_seg_threshold = 0.1
     
     tp_cap_liner_ocr_config_path = ocr_config_base_path + "config_file.yaml"
-    tp_cap_liner_ocr_model_path = model_base_path + "OCR_generalized_v9.pth"
+    tp_cap_liner_ocr_model_path = model_base_path + "model_OCR_generalized_v9.pth"
     tp_cap_liner_ocr_threshold = 0.1
     
 
