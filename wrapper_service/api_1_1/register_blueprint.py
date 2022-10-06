@@ -1,5 +1,5 @@
 from flask import Flask, request
-from wrapper_service.api_1_1.health_status import health_blueprint
+from wrapper_service.api_1_1.health_status import healthy
 
 def create_flask_app():
     """
@@ -7,6 +7,5 @@ def create_flask_app():
     :return:
     """
     app = Flask(__name__)
-    # app.register_blueprint(index_blueprint)
-    app.register_blueprint(health_blueprint)
+    app.register_blueprint(healthy)
     return app

@@ -29,6 +29,15 @@ class SQSConstants():
     max_number_of_messages=10
     wait_time_seconds=20
     region = os.getenv("REGION")
+    
+class BoomiConstants():
+    BOOMI_BASE_URL= os.getenv("BOOMI_BASE_URL")
+    BOOMI_PARTS_IN_SET_URL= os.getenv("BOOMI_PARTS_IN_SET_URL")
+    BOOMI_PARTS_IN_CHILD_URL=os.getenv("BOOMI_PARTS_IN_CHILD_URL")
+    BOOMI_PARTS_OUT_SET_URL= os.getenv("BOOMI_PARTS_OUT_SET_URL")
+    BOOMI_PARTS_OUT_CHILD_URL=os.getenv("BOOMI_PARTS_OUT_CHILD_")
+    BOOMI_USERNAME= os.getenv("BOOMI_USERNAME")
+    BOOMI_PASSWORD=os.getenv("BOOMI_PASSWORD")
 
 class S3Constants():
     active_release = config['DEFAULT']['ACTIVE_RELEASE']
