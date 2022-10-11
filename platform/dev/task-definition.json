@@ -56,11 +56,11 @@
 				},
 				{
 					"name": "BOOMI_USERNAME",
-					"valueFrom": "arn:aws:secretsmanager:us-east-1:598619258634:secret:/uai3046767/cpl/dev/IDM-pN9lBV:BOOMI_USERNAME::"
+					"value": "arn:aws:secretsmanager:us-east-1:598619258634:secret:/uai3046767/cpl/dev/IDM-pN9lBV:BOOMI_USERNAME::"
 				},
 				{
 					"name": "BOOMI_PASSWORD",
-					"valueFrom": "arn:aws:secretsmanager:us-east-1:598619258634:secret:/uai3046767/cpl/dev/IDM-pN9lBV:BOOMI_PASSWORD::"
+					"value": "arn:aws:secretsmanager:us-east-1:598619258634:secret:/uai3046767/cpl/dev/IDM-pN9lBV:BOOMI_PASSWORD::"
 				},
 				{
 					"name": "BOOMI_PARTS_IN_SET_URL",
