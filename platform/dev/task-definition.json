@@ -55,14 +55,6 @@
 					"value": "https://test-boomi.power.ge.com/"
 				},
 				{
-					"name": "BOOMI_USERNAME",
-					"value": "arn:aws:secretsmanager:us-east-1:598619258634:secret:/uai3046767/cpl/dev/IDM-pN9lBV:BOOMI_USERNAME::"
-				},
-				{
-					"name": "BOOMI_PASSWORD",
-					"value": "arn:aws:secretsmanager:us-east-1:598619258634:secret:/uai3046767/cpl/dev/IDM-pN9lBV:BOOMI_PASSWORD::"
-				},
-				{
 					"name": "BOOMI_PARTS_IN_SET_URL",
 					"value": "ws/rest/gegaspower/CPL/Parts/Nomination/PartsIn/parts-in-set-data/"
 				},
