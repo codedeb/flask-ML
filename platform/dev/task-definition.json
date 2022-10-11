@@ -71,6 +71,17 @@
 					"value": "ws/rest/gegaspower/CPL/Parts/Nomination/PartsOutChild/parts-out-child-data/"
 				}
 			],
+			"secrets": [
+				{
+					"name": "BOOMI_USERNAME",
+					"valueFrom": "arn:aws:secretsmanager:us-east-1:598619258634:secret:/uai3046767/cpl/dev/IDM-pN9lBV:BOOMI_USERNAME::"
+				},
+				{
+					"name": "BOOMI_PASSWORD",
+					"valueFrom": "arn:aws:secretsmanager:us-east-1:598619258634:secret:/uai3046767/cpl/dev/IDM-pN9lBV:BOOMI_PASSWORD::"
+				}
+
+			],
 			"mountPoints": [],
 			"volumesFrom": [],
 			"dnsServers": [],
