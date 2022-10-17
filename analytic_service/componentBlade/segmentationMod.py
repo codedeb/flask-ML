@@ -22,7 +22,7 @@ def img_segmenter(img):
     global segmentation_predictor_available
     img_ht = img.shape[0]
     img_wd = img.shape[1]
-    class_map = {0: 'ROI', 2: 'PSN', 4: 'PR'}
+    class_map = {0: 'pr', 1: 'psn', 2: 'obb_b', 3: 'snb',4:'sn'}
     dct_out_segs = dict.fromkeys(list(class_map.values()))
     dct_out_box = dict.fromkeys(list(class_map.values()))
   
@@ -58,12 +58,12 @@ def img_segmenter(img):
             height = box_list[3]-box_list[1]
         except IndexError as e:
             logger.info('error', e)
-        if class_map[index] == 'PSN':
+        if class_map[index] == 'psn':
             multwdst = 0
             multhtst = 0
             multwded = 0
             multhted = 0
-        elif class_map[index] == 'ROI':
+        elif class_map[index] == 'obb_b':
             multwdst = 0.2
             multhtst = 0.3
             multwded = 0.2
@@ -79,14 +79,14 @@ def img_segmenter(img):
         dct_out_box[class_map[int(dct_clean_class_list[index])]] = [max(1, int(box_list[0]-(width*multwdst))), max(1, int(box_list[1]-(height*multhtst))), min(int(img_wd-1), int(box_list[2]+(width*multwded))), min(int(img_ht-1), int(box_list[3]+(height*multhted)))]
         
     # Create boxes relative to ROI
-    list_ROI_box = dct_out_box['ROI'].copy()
+    list_ROI_box = dct_out_box['obb_b'].copy()
     list_ROI_box = [list_ROI_box[0], list_ROI_box[1], list_ROI_box[0], list_ROI_box[1]]
     for seg in class_map_up.values():
         dct_out_box[seg] = list(a-b for (a, b) in zip(dct_out_box[seg], list_ROI_box))
 
     # Scale output images and boxes to a certain size
     roi_out_ht = 1000
-    rat = roi_out_ht/dct_out_segs['ROI'].shape[0] # Set this variable to 1 if scaling shouldn't be applied
+    rat = roi_out_ht/dct_out_segs['obb_b'].shape[0] # Set this variable to 1 if scaling shouldn't be applied
 
     for seg in class_map_up.values():
         im_seg = dct_out_segs[seg].copy()

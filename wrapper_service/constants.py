@@ -64,12 +64,12 @@ class ModelDetails():
     seg_config_base_path="analytic_service/config/segmentation/"
     ocr_config_base_path="analytic_service/config/ocr/"
    
-    segmentation_config_path = seg_config_base_path+"config_segmentation_v1.1.0.yaml"
-    segmentation_model_path = model_base_path+"model_segmentation_v1.1.0.pth"
+    segmentation_config_path = seg_config_base_path+"seg_config_file_v9.yaml"
+    segmentation_model_path = model_base_path+"model_final_seg_v9.pth"
     segmentation_threshold = 0.3
     
-    dot_punch_config_path = ocr_config_base_path + "config_file.yaml"
-    dot_punch_model_path = model_base_path + "model_OCR_generalized_v9.pth"
+    dot_punch_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
+    dot_punch_model_path = model_base_path + "model_final_ocr_v9.pth"
     dot_punch_threshold = 0.2
 
   
@@ -77,8 +77,8 @@ class ModelDetails():
     shroud_seg_model_path = model_base_path + "model_shroud_segmentation_v3.pth"
     shroud_seg_threshold = 0.1
     
-    shroud_ocr_config_path = ocr_config_base_path + "config_file.yaml"
-    shroud_ocr_model_path = model_base_path + "model_OCR_generalized_v9.pth"
+    shroud_ocr_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
+    shroud_ocr_model_path = model_base_path + "model_final_ocr_v9.pth"
     shroud_ocr_threshold = 0.3
     
   
@@ -86,8 +86,8 @@ class ModelDetails():
     tp_cap_liner_seg_model_path = model_base_path + "model_LNCPTN_segmentation_v1.pth"
     tp_cap_liner_seg_threshold = 0.1
     
-    tp_cap_liner_ocr_config_path = ocr_config_base_path + "config_file.yaml"
-    tp_cap_liner_ocr_model_path = model_base_path + "model_OCR_generalized_v9.pth"
+    tp_cap_liner_ocr_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
+    tp_cap_liner_ocr_model_path = model_base_path + "model_final_ocr_v9.pth"
     tp_cap_liner_ocr_threshold = 0.1
     
 

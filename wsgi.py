@@ -16,7 +16,7 @@ from wrapper_service.utils.image_processor import wrapper_service
 from wrapper_service.utils.aws_services import s3_model_download
 from wrapper_service.api_1_1.register_blueprint import create_flask_app
 
-# from analytic_service.input_mod import read_input_and_form_output
+from analytic_service.input_mod import read_input_and_form_output
 
 
 """
@@ -39,11 +39,12 @@ s3_resource_object=s3_resource()
 # Local system testing setup
 # try:
 # #     # Folder Path
+#     test_path = 'test_images/' + '124_1426984_PI_9_6_PSN.jpg'
 
-#     image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"CAP ASSY","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": "CAP_5_9_Image_4 2019-06-04_16-10-51.jpeg"}]
+#     image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"BLADES","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": test_path}]
 #     logger.info('calling read function on image obj: %s' % image_object)
 #     # call analytics function
-#     read_input_and_form_output("CAP_5_9_Image_4 2019-06-04_16-10-51.jpeg",image_object)
+#     read_input_and_form_output(test_path,image_object)
 
 # except Exception as e:
 #     logger.info('Error while starting analytics! %s' % e)
