@@ -11,7 +11,7 @@ def blade_part_analytics(img_obj, im):
     if im is not None:
         try:
             seg_out = img_segmenter(im)
-            logger.info(f"seg_out--------->{seg_out}")
+            # logger.info(f"seg_out--------->{seg_out}")
             # logger.info(f"ROI results------, {seg_out['ROI']}")
             # logger.info(f"PSN results-----, {seg_out['PSN']}")
             # logger.info(f"PR results-----, {seg_out['PR']}")
@@ -24,9 +24,9 @@ def blade_part_analytics(img_obj, im):
             seg_out["pr"] = {"confBand": "LOW", "confValue": 0, "segment": im}
         try:
             psn_out = dot_punched_data_parser(seg_out['obb_b']['segment'], seg_out['psn']['box'], exp_len=6)
-            logger.info('Dotpunch successful! %s' % psn_out)
+            logger.info('psn successful! %s' % psn_out)
         except Exception as e:
-            logger.info('Dotpunch failure! %s' % e)
+            logger.info('psn failure! %s' % e)
             psn_out = {}
             psn_out["ocrValue"] = "S_UNKN"
             psn_out["confValue"] = 0.0
@@ -41,7 +41,18 @@ def blade_part_analytics(img_obj, im):
             prefix_out["confValue"] = 0.0
             prefix_out["confBand"] = "LOW"
             
-        result_out = data_collector(seg_out, psn_out, prefix_out)
+        # try SNB out
+        try:
+            snb_out = dot_punched_data_parser(seg_out['obb_b']['segment'], seg_out['snb']['box'], exp_len=10)
+            logger.info('snb successful! %s' % snb_out)
+        except Exception as e:
+            logger.info('snb failure! %s' % e)
+            snb_out = {}
+            snb_out["ocrValue"] = "P_UNKN"
+            snb_out["confValue"] = 0.0
+            snb_out["confBand"] = "LOW"
+            
+        result_out = data_collector(seg_out, psn_out, prefix_out, snb_out)
         final_obj = img_obj.copy()
         final_obj["ocrValue"] = result_out["ocrValue"]
         final_obj["ocrConfidenceValue"] = result_out["confValue"]

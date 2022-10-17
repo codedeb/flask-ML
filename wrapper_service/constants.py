@@ -29,6 +29,15 @@ class SQSConstants():
     max_number_of_messages=10
     wait_time_seconds=20
     region = os.getenv("REGION")
+    
+class BoomiConstants():
+    BOOMI_BASE_URL= os.getenv("BOOMI_BASE_URL")
+    BOOMI_PARTS_IN_SET_URL= os.getenv("BOOMI_PARTS_IN_SET_URL")
+    BOOMI_PARTS_IN_CHILD_URL=os.getenv("BOOMI_PARTS_IN_CHILD_URL")
+    BOOMI_PARTS_OUT_SET_URL= os.getenv("BOOMI_PARTS_OUT_SET_URL")
+    BOOMI_PARTS_OUT_CHILD_URL=os.getenv("BOOMI_PARTS_OUT_CHILD_")
+    BOOMI_USERNAME= os.getenv("BOOMI_USERNAME")
+    BOOMI_PASSWORD=os.getenv("BOOMI_PASSWORD")
 
 class S3Constants():
     active_release = config['DEFAULT']['ACTIVE_RELEASE']
@@ -48,34 +57,37 @@ class LocalDirectoryConstants():
     # model_path="models/"
 
 class ModelDetails():
-    # model_base_path=LocalDirectoryConstants.model_path
+    model_base_path=LocalDirectoryConstants.model_path
     #for local
-    model_base_path="models/"
-    blade_config_base_path="analytic_service/componentBlade/"
+    # model_base_path="models/"
+    
+    seg_config_base_path="analytic_service/config/segmentation/"
+    ocr_config_base_path="analytic_service/config/ocr/"
    
-    segmentation_config_path = blade_config_base_path+"seg_config_file_v9.yaml"
+    segmentation_config_path = seg_config_base_path+"seg_config_file_v9.yaml"
     segmentation_model_path = model_base_path+"model_final_seg_v9.pth"
     segmentation_threshold = 0.3
     
-    
-    dot_punch_config_path = blade_config_base_path + "OCR_config_file_v9.yaml"
+    dot_punch_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
     dot_punch_model_path = model_base_path + "model_final_ocr_v9.pth"
     dot_punch_threshold = 0.2
 
-    shroud_config_base_path = "analytic_service/componentShroud/"
-    shroud_seg_config_path = shroud_config_base_path + "config_shroud_segmentation_v3.yaml"
+  
+    shroud_seg_config_path = seg_config_base_path + "config_shroud_segmentation_v3.yaml"
     shroud_seg_model_path = model_base_path + "model_shroud_segmentation_v3.pth"
     shroud_seg_threshold = 0.1
-    shroud_ocr_config_path = shroud_config_base_path + "config_shroud_OCR_v7.yaml"
-    shroud_ocr_model_path = model_base_path + "model_shroud_OCR_v7.pth"
+    
+    shroud_ocr_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
+    shroud_ocr_model_path = model_base_path + "model_final_ocr_v9.pth"
     shroud_ocr_threshold = 0.3
     
-    tp_cap_liner_config_base_path = "analytic_service/componentTpCapLiner/"
-    tp_cap_liner_seg_config_path = tp_cap_liner_config_base_path + "config_LNCPTN_segmentation_v1.yaml"
+  
+    tp_cap_liner_seg_config_path = seg_config_base_path + "config_LNCPTN_segmentation_v1.yaml"
     tp_cap_liner_seg_model_path = model_base_path + "model_LNCPTN_segmentation_v1.pth"
     tp_cap_liner_seg_threshold = 0.1
-    tp_cap_liner_ocr_config_path = tp_cap_liner_config_base_path + "config_LNCPTN_OCR_v8.yaml"
-    tp_cap_liner_ocr_model_path = model_base_path + "model_LNCPTN_OCR_v8.pth"
+    
+    tp_cap_liner_ocr_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
+    tp_cap_liner_ocr_model_path = model_base_path + "model_final_ocr_v9.pth"
     tp_cap_liner_ocr_threshold = 0.1
     
 
