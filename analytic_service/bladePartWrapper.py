@@ -11,15 +11,19 @@ def blade_part_analytics(img_obj, im):
     if im is not None:
         try:
             seg_out = img_segmenter(im)
+            logger.info(f"seg_out--------->{seg_out}")
+            # logger.info(f"ROI results------, {seg_out['ROI']}")
+            # logger.info(f"PSN results-----, {seg_out['PSN']}")
+            # logger.info(f"PR results-----, {seg_out['PR']}")
             logger.info('Segmentation successful!')
         except Exception as e:
             logger.info('Segmentation failure! %s' % e)
-            seg_out = dict.fromkeys(["ROI", "PSN", "PR"])
-            seg_out["ROI"] = {"confBand": "LOW", "confValue": 0, "segment": im}
-            seg_out["PSN"] = {"confBand": "LOW", "confValue": 0, "segment": im}
-            seg_out["PR"] = {"confBand": "LOW", "confValue": 0, "segment": im}
+            seg_out = dict.fromkeys(["obb_b", "psn", "pr"])
+            seg_out["obb_b"] = {"confBand": "LOW", "confValue": 0, "segment": im}
+            seg_out["psn"] = {"confBand": "LOW", "confValue": 0, "segment": im}
+            seg_out["pr"] = {"confBand": "LOW", "confValue": 0, "segment": im}
         try:
-            psn_out = dot_punched_data_parser(seg_out['ROI']['segment'], seg_out['PSN']['box'], exp_len=6)
+            psn_out = dot_punched_data_parser(seg_out['obb_b']['segment'], seg_out['psn']['box'], exp_len=6)
             logger.info('Dotpunch successful! %s' % psn_out)
         except Exception as e:
             logger.info('Dotpunch failure! %s' % e)
@@ -28,7 +32,7 @@ def blade_part_analytics(img_obj, im):
             psn_out["confValue"] = 0.0
             psn_out["confBand"] = "LOW"
         try:
-            prefix_out = dot_punched_data_parser(seg_out['ROI']['segment'], seg_out['PR']['box'], exp_len=4)
+            prefix_out = dot_punched_data_parser(seg_out['obb_b']['segment'], seg_out['pr']['box'], exp_len=4)
             logger.info('Prefix successful! %s' % prefix_out)
         except Exception as e:
             logger.info('Prefix failure! %s' % e)

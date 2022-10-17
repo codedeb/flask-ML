@@ -48,16 +48,18 @@ class LocalDirectoryConstants():
     # model_path="models/"
 
 class ModelDetails():
-    model_base_path=LocalDirectoryConstants.model_path
+    # model_base_path=LocalDirectoryConstants.model_path
     #for local
-    # model_base_path="models/"
+    model_base_path="models/"
     blade_config_base_path="analytic_service/componentBlade/"
    
-    segmentation_config_path = blade_config_base_path+"config_segmentation_v1.1.0.yaml"
-    segmentation_model_path = model_base_path+"model_segmentation_v1.1.0.pth"
+    segmentation_config_path = blade_config_base_path+"seg_config_file_v9.yaml"
+    segmentation_model_path = model_base_path+"model_final_seg_v9.pth"
     segmentation_threshold = 0.3
-    dot_punch_config_path = blade_config_base_path + "config_shroud_OCR_v7.yaml"
-    dot_punch_model_path = model_base_path + "model_shroud_OCR_v7.pth"
+    
+    
+    dot_punch_config_path = blade_config_base_path + "OCR_config_file_v9.yaml"
+    dot_punch_model_path = model_base_path + "model_final_ocr_v9.pth"
     dot_punch_threshold = 0.2
 
     shroud_config_base_path = "analytic_service/componentShroud/"
