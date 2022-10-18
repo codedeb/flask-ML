@@ -11,10 +11,6 @@ def blade_part_analytics(img_obj, im):
     if im is not None:
         try:
             seg_out = img_segmenter(im)
-            # logger.info(f"seg_out--------->{seg_out}")
-            # logger.info(f"ROI results------, {seg_out['ROI']}")
-            # logger.info(f"PSN results-----, {seg_out['PSN']}")
-            # logger.info(f"PR results-----, {seg_out['PR']}")
             logger.info('Segmentation successful!')
         except Exception as e:
             logger.info('Segmentation failure! %s' % e)
