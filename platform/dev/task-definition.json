@@ -49,26 +49,6 @@
 				{
 					"name": "IMAGE_FOLDER_PATH",
 					"value": "IDM/image"
-				},
-				{
-					"name": "BOOMI_BASE_URL",
-					"value": "https://test-boomi.power.ge.com/"
-				},
-				{
-					"name": "BOOMI_PARTS_IN_SET_URL",
-					"value": "ws/rest/gegaspower/CPL/Parts/Nomination/PartsIn/parts-in-set-data/"
-				},
-				{
-					"name": "BOOMI_PARTS_IN_CHILD_URL",
-					"value": "ws/rest/gegaspower/CPL/Parts/Nomination/PartsInChild/parts-in-child-data/"
-				},
-				{
-					"name": "BOOMI_PARTS_OUT_SET_URL",
-					"value": "ws/rest/gegaspower/CPL/Parts/Nomination/PartsOut/parts-out-set-data/"
-				},
-				{
-					"name": "BOOMI_PARTS_OUT_CHILD_URL",
-					"value": "ws/rest/gegaspower/CPL/Parts/Nomination/PartsOutChild/parts-out-child-data/"
 				}
 			],
 			"mountPoints": [],

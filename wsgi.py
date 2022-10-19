@@ -16,7 +16,8 @@ from wrapper_service.utils.image_processor import wrapper_service
 from wrapper_service.utils.aws_services import s3_model_download
 from wrapper_service.api_1_1.register_blueprint import create_flask_app
 
-from analytic_service.input_mod import read_input_and_form_output
+# from analytic_service.input_mod import read_input_and_form_output
+# import os
 
 
 """
@@ -39,12 +40,21 @@ s3_resource_object=s3_resource()
 # Local system testing setup
 # try:
 # #     # Folder Path
-#     test_path = 'test_images/' + '124_1426984_PI_9_6_PSN.jpg'
+#     directory = 'test_images'
+#     path = 'test_images/'
+#     json_array = []
+#     count = 0
+#     for img in os.listdir(directory):
+#         count += 1
 
-#     image_object = [{"imageId":1,"partDataType":"PARTSERIALNUMBER","partType":"BLADES","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": test_path}]
-#     logger.info('calling read function on image obj: %s' % image_object)
-#     # call analytics function
-#     read_input_and_form_output(test_path,image_object)
+#         image_object = [{"imageId":count,"partDataType":"PARTSERIALNUMBER","partType":"BLADES","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": path + img}]
+#         json_array.append(image_object)
+
+#     for img_obj in json_array:
+#         test_path = path + img_obj[0]['imagePath']
+#         read_input_and_form_output(test_path, img_obj)
+#         print('-----------------')
+#         print('-------------------')
 
 # except Exception as e:
 #     logger.info('Error while starting analytics! %s' % e)
