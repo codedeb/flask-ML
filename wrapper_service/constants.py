@@ -45,7 +45,7 @@ class S3Constants():
     bucket_name=os.getenv("BUCKET_NAME")
     region=os.getenv("REGION")
     max_keys=10
-    model_path="IDM/model/v2.0.0/model"
+    model_path="IDM/model/v2.0.3/model"
     # model_path = f"{config['S3']['MODEL_PATH']}{config['DEFAULT']['ACTIVE_RELEASE']}"
     model_count=4
     model_names=["^model_segmentation_v.*.pth$","^model_shroud_segmentation_v.*.pth$","^model_shroud_OCR_v.*.pth$"]
