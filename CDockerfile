@@ -15,7 +15,7 @@ RUN apt-get -y install git build-essential libglib2.0-0 libsm6 libxext6 libxrend
 #RUN python3 -m pip install --upgrade pip -v
 RUN python3 -m pip install --upgrade pip pygobject pyxdg -v
 
-RUN pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U --ignore-installed
+# RUN pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U --ignore-installed
 
 # gcc compiler and opencv prerequisites
 #RUN apt-get -y install git build-essential libglib2.0-0 libsm6 libxext6 libxrender-dev libgl1-mesa-glx
