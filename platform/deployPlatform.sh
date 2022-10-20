@@ -33,12 +33,12 @@ if [[ -z $LOG_GROUP || $LOG_GROUP == 'None' || $LOG_GROUP == '' ]]; then
 	echo "Running SERVICE_COMMAND: $LOG_COMMAND"
 	if ! $LOG_COMMAND; then
 		echo "Error, exiting deploy script due to an error while creating log group..."
-#		exit 1
+	#	exit 1
 	fi
 	echo "Running LOG_STREAM_COMMAND: $LOG_STREAM_COMMAND"
 	if ! $LOG_STREAM_COMMAND; then
 		echo "Error, exiting deploy script due to an error while creating log stream group..."
-#		exit 1
+	#	exit 1
 	fi
 fi
 
