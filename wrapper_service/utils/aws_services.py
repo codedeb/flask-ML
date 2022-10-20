@@ -74,42 +74,42 @@ def s3_model_download(s3):
         logger.info('model_path: %s' %  model_path)
 
         #Checking whether all the models are available in S3.
-        if objects.get('Contents'):
-            models_available=len(objects.get('Contents'))
-            if models_available>=S3Constants.model_count:
-                logger.info(f"No of available models in S3 : {models_available} , Required no of models : {S3Constants.model_count} ")
+        # if objects.get('Contents'):
+        #     models_available=len(objects.get('Contents'))
+        #     if models_available>=S3Constants.model_count:
+        #         logger.info(f"No of available models in S3 : {models_available} , Required no of models : {S3Constants.model_count} ")
 
-            else:
-                logger.info(f"No of available models in S3 : {models_available} , Required no of models : {S3Constants.model_count} ")
-                return False
-        else:
-            logger.info("Model files are not available")
-            return False
+        #     else:
+        #         logger.info(f"No of available models in S3 : {models_available} , Required no of models : {S3Constants.model_count} ")
+        #         return False
+        # else:
+        #     logger.info("Model files are not available")
+        #     return False
 
-        #Verify whether filename regex matches
-        models_available={}
-        models_flag = False
-        for object in objects['Contents']:
-            model_name=object["Key"].split("/")[-1]
-            for regex_model_name in S3Constants.model_names:
-                regex_result = re.search(regex_model_name, model_name)
-                if regex_result:
-                    models_available[regex_model_name] = True
-                    models_flag = True
-                else:
-                    if not models_available.get(regex_model_name):
-                        models_available[regex_model_name] = False
-                        models_flag = False
+        # #Verify whether filename regex matches
+        # models_available={}
+        # models_flag = False
+        # for object in objects['Contents']:
+        #     model_name=object["Key"].split("/")[-1]
+        #     for regex_model_name in S3Constants.model_names:
+        #         regex_result = re.search(regex_model_name, model_name)
+        #         if regex_result:
+        #             models_available[regex_model_name] = True
+        #             models_flag = True
+        #         else:
+        #             if not models_available.get(regex_model_name):
+        #                 models_available[regex_model_name] = False
+        #                 models_flag = False
 
-        if not models_flag:
-            logger.info("Models filenames are not matching")
-            logger.info(f"Models Flag : {models_flag}")
-            logger.info(json.dumps(models_available))
-            return False
-        else:
-            logger.info("Models filenames are matching")
-            logger.info(f"Models Flag : {models_flag}")
-            logger.info(json.dumps(models_available))
+        # if not models_flag:
+        #     logger.info("Models filenames are not matching")
+        #     logger.info(f"Models Flag : {models_flag}")
+        #     logger.info(json.dumps(models_available))
+        #     return False
+        # else:
+        #     logger.info("Models filenames are matching")
+        #     logger.info(f"Models Flag : {models_flag}")
+        #     logger.info(json.dumps(models_available))
 
         # downloading files
         for object in objects['Contents']:
