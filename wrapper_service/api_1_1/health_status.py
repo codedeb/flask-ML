@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 healthy= Blueprint('healthy', __name__)
 
-@healthy.route('/ocr/health/status')
+@healthy.route('/api/status')
 def OCR_health():
     status = {'status' : 'UP'}
     logger.info(f" {status} @ {datetime.now().strftime('%d-%m-%Y %H:%M:%S')}")
