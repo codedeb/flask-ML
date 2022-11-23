@@ -16,8 +16,8 @@ from wrapper_service.utils.image_processor import wrapper_service
 from wrapper_service.utils.aws_services import s3_model_download
 from wrapper_service.api_1_1.register_blueprint import create_flask_app
 
-# from analytic_service.input_mod import read_input_and_form_output
-# import os
+from analytic_service.input_mod import read_input_and_form_output
+import os
 
 
 """
@@ -40,8 +40,8 @@ s3_resource_object=s3_resource()
 # Local system testing setup
 # try:
 # #     # Folder Path
-#     directory = 'test_images'
-#     path = 'test_images/'
+#     directory = 'test_images_blades'
+#     path = f"{directory}/"
 #     json_array = []
 #     count = 0
 #     for img in os.listdir(directory):

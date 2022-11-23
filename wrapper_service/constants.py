@@ -64,13 +64,13 @@ class ModelDetails():
     seg_config_base_path="analytic_service/config/segmentation/"
     ocr_config_base_path="analytic_service/config/ocr/"
    
-    segmentation_config_path = seg_config_base_path+"seg_config_file_v9.yaml"
-    segmentation_model_path = model_base_path+"model_final_seg_v9.pth"
-    segmentation_threshold = 0.3
+    blades_seg_config_path = seg_config_base_path+"seg_config_file_v9.yaml"
+    blades_seg_model_path = model_base_path+"model_final_seg_v9.pth"
+    blades_seg_threshold = 0.3
     
-    dot_punch_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
-    dot_punch_model_path = model_base_path + "model_final_ocr_v9.pth"
-    dot_punch_threshold = 0.2
+    blades_ocr_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
+    blades_ocr_model_path = model_base_path + "model_final_ocr_v9.pth"
+    blades_ocr_threshold = 0.2
 
   
     shroud_seg_config_path = seg_config_base_path + "config_shroud_segmentation_v3.yaml"
@@ -89,6 +89,14 @@ class ModelDetails():
     tp_cap_liner_ocr_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
     tp_cap_liner_ocr_model_path = model_base_path + "model_final_ocr_v9.pth"
     tp_cap_liner_ocr_threshold = 0.1
+    
+    fuel_nozzles_seg_config_path = seg_config_base_path + "config_file.yaml"
+    fuel_nozzles_seg_model_path = model_base_path + "model_final.pth"
+    fuel_nozzles_seg_threshold = 0.1
+    
+    fuel_nozzles_ocr_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
+    fuel_nozzles_ocr_model_path = model_base_path + "model_final_ocr_v9.pth"
+    fuel_nozzles_ocr_threshold = 0.1
     
 
 

@@ -28,7 +28,7 @@ def dot_punched_data_parser(imgobj, psn_box, exp_len=6):
 
     # uncomment if condition and enable global variables when model needs to be initialized only once
     if not dot_punch_predictor_available:
-        dot_punch_predictor = detector(ModelDetails.blades_ocr_config_path, ModelDetails.blades_ocr_model_path, ModelDetails.blades_ocr_threshold)
+        dot_punch_predictor = detector(ModelDetails.fuel_nozzles_ocr_config_path, ModelDetails.fuel_nozzles_ocr_model_path, ModelDetails.fuel_nozzles_ocr_threshold)
         dot_punch_predictor_available=True
     try:
         str_ocr, conf, conf_band = Inference().output(data, dot_punch_predictor, imgobj, psn_box, exp_len)

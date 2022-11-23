@@ -30,7 +30,7 @@ def img_segmenter(img):
     #uncomment if condition and enable global variables when model needs to be initialized only once
     if not segmentation_predictor_available:
         logger.info("Initializing Segmentation Predictor")
-        segmentation_predictor = detector(ModelDetails.blades_seg_config_path, ModelDetails.blades_seg_model_path,ModelDetails.blades_seg_threshold)
+        segmentation_predictor = detector(ModelDetails.fuel_nozzles_seg_config_path, ModelDetails.fuel_nozzles_seg_model_path,ModelDetails.fuel_nozzles_seg_threshold)
         segmentation_predictor_available=True
     outputs = segmentation_predictor(img)
     classes = outputs['instances'].pred_classes

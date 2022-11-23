@@ -6,6 +6,7 @@ import time
 from analytic_service.bladePartWrapper import blade_part_analytics
 from analytic_service.shroudPartWrapper import shroud_part_analytics
 from analytic_service.tpCapLinerPartWrapper import tp_cap_liner_part_analytics
+from analytic_service.nozzlesWrapper import nozzles_part_analytics
 import logging
 import numpy as np
 
@@ -24,6 +25,36 @@ except:
     pass
 """
 logger = logging.getLogger(__name__)
+
+
+    
+def blade_operation(img_obj, im):
+    logger.info('Calling BLADES flow!')
+    return blade_part_analytics(img_obj, im)
+
+def shroud_operation(img_obj, im):
+    logger.info('Calling SHROUDS flow!')
+    return shroud_part_analytics(img_obj, im)
+
+def trans_cap_liner_operation(img_obj, im):
+    logger.info('Calling TPCAPASSY flow!')
+    return tp_cap_liner_part_analytics(img_obj, im)
+
+def fuel_nozzles_operation(img_obj, im):
+    logger.info('Calling FUELNOZZLES flow!')
+    return nozzles_part_analytics(img_obj, im)
+
+def perform_operaions(operation, img_obj, im):
+    ops = {
+    "BLADES": blade_operation,
+    "SHROUDS": shroud_operation,
+    "TRANSPIECE": trans_cap_liner_operation,
+    "CAPASSY":trans_cap_liner_operation,
+    "LINERASSY":trans_cap_liner_operation, 
+    "NOZZLES": fuel_nozzles_operation
+  }
+    chosen_operation_function = ops.get(operation)
+    return chosen_operation_function(img_obj, im)
 
 def read_input_and_form_output(s3_resource,input_dict):
     logger.info(f"Analytics Input: {json.dumps(input_dict)}")
@@ -58,17 +89,9 @@ def read_input_and_form_output(s3_resource,input_dict):
                         if attempts == 3:
                             break
                
-                # Add logic to check compon based on 'componentId' and read image once and pass it across
-                if img_obj['partType'] == "BLADES":
-                    logger.info('Calling BLADES flow!')
-                    out_put_dict = blade_part_analytics(img_obj, im)
-                elif img_obj['partType'] == "SHROUDS":
-                    logger.info('Calling SHROUDS flow!')
-                    out_put_dict = shroud_part_analytics(img_obj, im)
-                elif img_obj['partType'] == "TRANSPIECE" or img_obj['partType'] == "CAPASSY" or img_obj['partType'] == "LINERASSY":
-                    logger.info('Calling TP CAP LINER flow!')
-                    out_put_dict = tp_cap_liner_part_analytics(img_obj, im)
-                    
+                # calling operations which handles log according to the component type
+                output_dict = perform_operaions(img_obj['partType'], img_obj, im)
+        
             except Exception as e:
                 logger.error('OCR Failed: %s' % e)
                 final_obj = img_obj.copy()
@@ -83,10 +106,10 @@ def read_input_and_form_output(s3_resource,input_dict):
                 final_obj["ocrNumericConfidenceValue"] = 0.0
                 final_obj["ocrAdditional"] = "OCR Failed"
                 out_put_dict.append(final_obj)
-        logger.info('Analytics Output: %s' % out_put_dict)
+        logger.info('Analytics Output: %s' % output_dict)
         return out_put_dict
     except Exception as e:
         logger.info('Error while detecting OCR!')
         logger.debug('Error while detecting OCR! %s' % e)
 
-    return out_put_dict
+    return output_dict
