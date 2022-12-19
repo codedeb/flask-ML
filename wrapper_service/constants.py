@@ -91,11 +91,11 @@ class ModelDetails():
     tp_cap_liner_ocr_threshold = 0.1
     
     fuel_nozzles_seg_config_path = seg_config_base_path + "config_file.yaml"
-    fuel_nozzles_seg_model_path = model_base_path + "model_final.pth"
+    fuel_nozzles_seg_model_path = model_base_path + "model_final_fn_seg.pth"
     fuel_nozzles_seg_threshold = 0.1
     
-    fuel_nozzles_ocr_config_path = ocr_config_base_path + "OCR_config_file_v9.yaml"
-    fuel_nozzles_ocr_model_path = model_base_path + "model_final_ocr_v9.pth"
+    fuel_nozzles_ocr_config_path = ocr_config_base_path + "config_file.yaml"
+    fuel_nozzles_ocr_model_path = model_base_path + "model_final_fn_ocr.pth"
     fuel_nozzles_ocr_threshold = 0.1
     
 

@@ -18,7 +18,7 @@ logging.basicConfig(format='%(asctime)s %(process)d,%(threadName)s %(filename)s:
 logger = logging.getLogger(__name__)
 
 
-def dot_punched_data_parser(imgobj, psn_box, exp_len=6):
+def dot_punched_data_parser(imgobj, psn_box, exp_len=None):
     global dot_punch_predictor
     global dot_punch_predictor_available
   

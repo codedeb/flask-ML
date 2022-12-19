@@ -40,19 +40,22 @@ s3_resource_object=s3_resource()
 # Local system testing setup
 # try:
 # #     # Folder Path
-#     directory = 'test_images_blades'
+#     directory = r"C:\Users\503244041\Downloads\test_nozzle_fn\test_nozzle_fn"
+
 #     path = f"{directory}/"
 #     json_array = []
 #     count = 0
 #     for img in os.listdir(directory):
 #         count += 1
 
-#         image_object = [{"imageId":count,"partDataType":"PARTSERIALNUMBER","partType":"BLADES","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": path + img}]
+#         image_object = [{"imageId":count,"partDataType":"PARTSERIALNUMBER","partType":"NOZZLE","positionNumber":2,"componentId":9,"componentName":"Comp1","imagePath": path + img}]
 #         json_array.append(image_object)
 
 #     for img_obj in json_array:
 #         test_path = path + img_obj[0]['imagePath']
-#         read_input_and_form_output(test_path, img_obj)
+#         result = read_input_and_form_output(test_path, img_obj)
+#         with open('res.txt', 'a') as f:
+#             f.write(str(result[0]['imagePath']) + "\n"*2)
 #         print('-----------------')
 #         print('-------------------')
 

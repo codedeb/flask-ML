@@ -51,7 +51,7 @@ def perform_operaions(operation, img_obj, im):
     "TRANSPIECE": trans_cap_liner_operation,
     "CAPASSY":trans_cap_liner_operation,
     "LINERASSY":trans_cap_liner_operation, 
-    "NOZZLES": fuel_nozzles_operation
+    "NOZZLE": fuel_nozzles_operation
   }
     chosen_operation_function = ops.get(operation)
     return chosen_operation_function(img_obj, im)
@@ -107,9 +107,8 @@ def read_input_and_form_output(s3_resource,input_dict):
                 final_obj["ocrAdditional"] = "OCR Failed"
                 out_put_dict.append(final_obj)
         logger.info('Analytics Output: %s' % output_dict)
-        return out_put_dict
     except Exception as e:
         logger.info('Error while detecting OCR!')
         logger.debug('Error while detecting OCR! %s' % e)
-
+        
     return output_dict
