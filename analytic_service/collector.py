@@ -17,7 +17,7 @@ def data_collector(seg_out, psn_out, prefix_out, snb_out):
     res_conf = seg_out['obb_b']['confValue']*psn_out['confValue']*prefix_out['confValue']*snb_out['confValue']
     
     # put the logic here
-    if len(psn_out['ocrValue'])==6 and len(prefix_out['ocrValue'])==4:
+    if len(psn_out['ocrValue'])==5 and len(prefix_out['ocrValue'])==4:
         res_conf = np.round(res_conf,2)
         res_ocr = prefix_out['ocrValue']+psn_out['ocrValue']
         

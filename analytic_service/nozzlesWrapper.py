@@ -12,7 +12,6 @@ def nozzles_part_analytics(img_obj, im):
         try:
             seg_out = img_segmenter(im)
             logger.info('Segmentation successful!')
-            # print("--------->", seg_out)
         except Exception as e:
             logger.info('Segmentation failure! %s' % e)
             seg_out = dict.fromkeys(["obb_b", "psn", "pr"])
@@ -20,7 +19,7 @@ def nozzles_part_analytics(img_obj, im):
             seg_out["psn"] = {"confBand": "LOW", "confValue": 0, "segment": im}
             seg_out["pr"] = {"confBand": "LOW", "confValue": 0, "segment": im}
         try:
-            psn_out = dot_punched_data_parser(seg_out['obb_b']['segment'], seg_out['psn']['box'], exp_len=6)
+            psn_out = dot_punched_data_parser(seg_out['obb_b']['segment'], seg_out['psn']['box'], exp_len=5)
             logger.info('psn successful! %s' % psn_out)
         except Exception as e:
             logger.info('psn failure! %s' % e)
@@ -40,7 +39,7 @@ def nozzles_part_analytics(img_obj, im):
             
         # try SNB out
         try:
-            snb_out = dot_punched_data_parser(seg_out['obb_b']['segment'], seg_out['snb']['box'], exp_len=10)
+            snb_out = dot_punched_data_parser(seg_out['obb_b']['segment'], seg_out['snb']['box'], exp_len=9)
             logger.info('snb successful! %s' % snb_out)
         except Exception as e:
             logger.info('snb failure! %s' % e)
