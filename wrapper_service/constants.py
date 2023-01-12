@@ -96,7 +96,7 @@ class ModelDetails():
     
     fuel_nozzles_ocr_config_path = ocr_config_base_path + "config_file.yaml"
     fuel_nozzles_ocr_model_path = model_base_path + "model_final_fn_ocr.pth"
-    fuel_nozzles_ocr_threshold = 0.1
+    fuel_nozzles_ocr_threshold = 0.4
     
 
 
